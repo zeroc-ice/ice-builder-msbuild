@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ImportGroup Condition="'$(MSBuildProjectExtension)' == '.vcxproj'">
+        <Import Project="$(MSBuildThisFileDirectory)zeroc.icebuilder.msbuild.cpp.targets"/>
+    </ImportGroup>
+
+    <ImportGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+        <Import Project="$(MSBuildThisFileDirectory)zeroc.icebuilder.msbuild.cpp.targets"/>
+    </ImportGroup>
+</Project>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <!-- Import SliceCompile schema -->
+    <ItemGroup>
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml" >
+            <Context>Project</Context>
+        </PropertyPageSchema>
+        <AvailableItemName Include="SliceCompile" />
+    </ItemGroup>
+
+    <Target Name="SliceCompile" BeforeTargets="CLCompile">
+
+        <Error Text="Ice Installation not detected. Please update Ice Home in 'Tools > Options > Projects and Solutions > Ice Builder'"
+               Condition="'$(IceHome)' == '' Or '$(IceVersion)' == '' Or '$(IceIntVersion)' == ''" />
+
+        <Error Text="The selected C++ Runtime Library is not supported by Ice; Ice requires /MD or /MDd."
+               Condition="'%(ClCompile.RuntimeLibrary)' != 'MultiThreadedDebugDLL' And
+                          '%(ClCompile.RuntimeLibrary)' != 'MultiThreadedDLL' "/>
+
+        <Error Text="the Ice Builder requires Ice Version 3.6 or later but $(IceHome) is version $(IceVersion.Replace('.51', 'b'))"
+               Condition="'$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
+
+        <!--
+            Include all C++ generated source items that have not been manually include
+        -->
+        <ItemGroup>
+            <ClCompile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).$(SliceCompileSourceExt)')"
+                       Exclude="@(ClCompile)" />
+        </ItemGroup>
+
+        <!--
+            Create the output directory
+        -->
+        <MakeDir Directories="$(SliceCompileOutputDir)"/>
+
+        <!--
+            Write build settings to SliceCompile.command.log it will be compared to
+            the preivous build command log SliceCompile.command.0.log if exists and
+            will trigger a rebuild of Slice files if the settings changed.
+        -->
+        <WriteLinesToFile
+            File="$(SliceCompileOutputDir)\SliceCompile.command.log"
+            Lines="Ice Home: $(IceHome);
+                   Slice Compiler: $(IceToolsPath)\slice2cpp.exe;
+                   Output Dir: $(SliceCompileOutputDir);
+                   Header Output Dir: $(SliceCompileHeaderOutputDir);
+                   Include Directories: $(SliceCompileIncludeDirectories);
+                   Additional Options: $(SliceCompileAdditionalOptions);
+                   Base Directory For Generated Include: $(SliceCompileBaseDirectoryForGeneratedInclude);
+                   Header Ext: $(SliceCompileHeaderExt);
+                   Source Ext: $(SliceCompileSourceExt)"
+            Overwrite="true"/>
+
+        <!-- First we check dependencies and decide what must be rebuild -->
+        <Slice2CppDependTask
+            OutputDir                         = "$(SliceCompileOutputDir)"
+            HeaderOutputDir                   = "$(SliceCompileHeaderOutputDir)"
+            WorkingDirectory                  = "$(MSBuildProjectDirectory)"
+            SourceExt                         = "$(SliceCompileSourceExt)"
+            HeaderExt                         = "$(SliceCompileHeaderExt)"
+            SliceCompiler                     = "$(IceToolsPath)\slice2cpp.exe"
+            DependFile                        = "$(SliceCompileOutputDir)\SliceCompile.d"
+            CommandLog                        = "$(SliceCompileOutputDir)\SliceCompile.command.log"
+            Sources                           = "@(SliceCompile)">
+
+            <Output
+                ItemName                      = "_SliceCompile"
+                TaskParameter                 = "ComputedSources"/>
+
+            <Output
+                PropertyName                  = "_SliceCompileUdateDepends"
+                TaskParameter                 = "UpdateDepends"/>
+
+        </Slice2CppDependTask>
+
+        <!-- Compile the Slice files to produce the generated code -->
+        <Slice2CppTask
+            IceHome                           = "$(IceHome)"
+            IceToolsPath                      = "$(IceToolsPath)"
+            OutputDir                         = "$(SliceCompileOutputDir)"
+            HeaderOutputDir                   = "$(SliceCompileHeaderOutputDir)"
+            WorkingDirectory                  = "$(MSBuildProjectDirectory)"
+            IncludeDirectories                = "$(SliceCompileIncludeDirectories)"
+            AdditionalOptions                 = "$(SliceCompileAdditionalOptions)"
+            BaseDirectoryForGeneratedInclude  = "$(SliceCompileBaseDirectoryForGeneratedInclude)"
+            HeaderExt                         = "$(SliceCompileHeaderExt)"
+            SourceExt                         = "$(SliceCompileSourceExt)"
+            DependFile                        = "$(SliceCompileDependFile)"
+            Sources                           = "@(_SliceCompile)"
+            Condition                         = "'%(_SliceCompile.BuildRequired)' == 'True'">
+        </Slice2CppTask>
+
+        <!-- Update the dependencies -->
+        <Slice2CppTask
+            IceHome                           = "$(IceHome)"
+            IceToolsPath                      = "$(IceToolsPath)"
+            OutputDir                         = "$(SliceCompileOutputDir)"
+            HeaderOutputDir                   = "$(SliceCompileHeaderOutputDir)"
+            WorkingDirectory                  = "$(MSBuildProjectDirectory)"
+            IncludeDirectories                = "$(SliceCompileIncludeDirectories)"
+            AdditionalOptions                 = "$(SliceCompileAdditionalOptions)"
+            BaseDirectoryForGeneratedInclude  = "$(SliceCompileBaseDirectoryForGeneratedInclude)"
+            HeaderExt                         = "$(SliceCompileHeaderExt)"
+            SourceExt                         = "$(SliceCompileSourceExt)"
+            DependFile                        = "$(SliceCompileDependFile)"
+            Depend                            = "true"
+            Sources                           = "@(_SliceCompile)"
+            Condition                         = "'$(_SliceCompileUdateDepends)' == 'True'">
+            <Output
+                ItemName                      = "__SliceCompile"
+                TaskParameter                 = "ComputedSources"/>
+        </Slice2CppTask>
+
+        <!--
+            TLog files are used by Visual Studio up to date check to figure if a project file
+            need to be rebuild.
+        -->
+        <!-- Write TLog files -->
+        <WriteLinesToFile File                = "$(TLogLocation)\slice2cpp.write.1u.tlog"
+                          Encoding            = "Unicode"
+                          Lines               = "^%(__SliceCompile.FullPath);%(__SliceCompile.Outputs)"
+                          Condition           = "'$(_SliceCompileUdateDepends)' == 'True'"/>
+
+        <!-- Read TLog files -->
+        <WriteLinesToFile File                = "$(TLogLocation)\slice2cpp.read.1u.tlog"
+                          Encoding            = "Unicode"
+                          Lines               = "^%(__SliceCompile.FullPath);%(__SliceCompile.Inputs)"
+                          Condition           = "'$(_SliceCompileUdateDepends)' == 'True'"/>
+    </Target>
+
+    <Target Name="SliceCompileClean" BeforeTargets="Clean">
+        <Delete Files="$(SliceCompileOutputDir)\%(SliceCompile.FileName).$(SliceCompileSourceExt)"/>
+        <Delete Files="$(SliceCompileOutputDir)\%(SliceCompile.FileName).$(SliceCompileHeaderExt)"/>
+        <Delete Files="$(SliceCompileHeaderOutputDir)\%(SliceCompile.FileName).$(SliceCompileHeaderExt)"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.d"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.log"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.0.log"/>
+    </Target>
+</Project>

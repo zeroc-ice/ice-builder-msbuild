@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <!-- Nuget executable -->
+    <PropertyGroup>
+        <NuGetExe>$(MSBuildThisFileDirectory)NuGet.exe</NuGetExe>
+        <NuGetURL>https://dist.nuget.org/win-x86-commandline/v3.4.4/NuGet.exe</NuGetURL>
+        <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+        <PackageName>zeroc.icebuilder.msbuild</PackageName>
+    </PropertyGroup>
+
+    <!-- Download nuget.exe if not present -->
+    <Target Name="GetNuGet" Condition="!Exists('$(NuGetExe)')">
+        <Exec Command="powershell -ExecutionPolicy ByPass -Command &quot;(New-Object Net.WebClient).DownloadFile('$(NuGetURL)', '$(NuGetExe)')&quot;"/>
+    </Target>
+
+    <ItemGroup>
+        <Targets Include="zeroc.icebuilder.*.targets"/>
+        <Props Include="zeroc.icebuilder.*.props"/>
+        <Schemas Include="zeroc.icebuilder.*.xaml"/>
+    </ItemGroup>
+
+    <Target Name="Build">
+        <MSBuild Projects="..\icebuilder.msbuild.csproj"
+                 Properties="Platform=AnyCPU;Configuration=$(Configuration)"
+                 Targets="Build"/>
+    </Target>
+
+    <Target Name="NuGetPack" DependsOnTargets="Build;GetNuGet">
+        <RemoveDir Directories="$(PackageName)" />
+        <MSBuild Projects="ice.nuget.targets" Properties="PackageDirectory=$(PackageName);Configuration=$(Configuration)"/>
+
+        <Copy SourceFiles="$(PackageName).nuspec"
+              DestinationFolder="$(PackageName)" />
+
+        <Copy SourceFiles="@(Targets);@(Props);@(Schemas)"
+              DestinationFolder="$(PackageName)\build"/>
+
+        <Exec Command="$(NuGetExe) pack -NoPackageAnalysis -NonInteractive"
+              WorkingDirectory="$(PackageName)"/>
+    </Target>
+</Project>

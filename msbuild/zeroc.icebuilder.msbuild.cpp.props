@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <!-- Import our custom MSbuild tasks used to build Ice for C++ projects -->
+    <UsingTask TaskName="IceBuilder.MSBuild.Slice2CppTask"
+               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
+
+    <UsingTask TaskName="IceBuilder.MSBuild.Slice2CppDependTask"
+               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
+
+    <!-- Import common settings -->
+    <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.common.props"/>
+
+    <!--
+        If the build is not uisng NuGet packages we need to import build
+        settings from the Ice distribution
+    -->
+    <ImportGroup Condition="'$(IceNugetPackageVersion)' == ''">
+        <!-- With Ice 3.6 binary distribution settings are in the Ice Home config directory -->
+        <Import Project="$(IceHome)\config\Ice.Cpp.props"
+                Condition="Exists('$(IceHome)\config\Ice.Cpp.props')"/>
+
+        <!-- With Ice 3.6 source distribution settings are in the Ice Home cpp\config directory -->
+        <Import Project="$(IceHome)\cpp\config\Ice.Cpp.props"
+                Condition="Exists('$(IceHome)\cpp\config\Ice.Cpp.props')"/>
+
+        <!-- With Ice > 3.6 source distribution the settings are in the cpp msbuild directory -->
+        <Import Project="$(IceHome)\cpp\msbuild\icebuilder.cpp.props"
+                Condition="Exists('$(IceHome)\cpp\msbuild\icebuilder.cpp.props')"/>
+    </ImportGroup>
+
+  <!-- Default settings for SliceCompile task  -->
+  <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
+      <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(SliceCompileHeaderExt)' == ''">
+      <SliceCompileHeaderExt>h</SliceCompileHeaderExt>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(SliceCompileSourceExt)' == ''">
+      <SliceCompileSourceExt>cpp</SliceCompileSourceExt>
+  </PropertyGroup>
+
+  <PropertyGroup>
+      <SliceCompileIncludeDirectories>$(IceHome)\slice;%(SliceCompileIncludeDirectories)</SliceCompileIncludeDirectories>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup Condition="'$(SliceCompileHeaderOutputDir)' == '' And '$(SliceCompileBaseDirectoryForGeneratedInclude)' == ''">
+      <ClCompile>
+          <AdditionalIncludeDirectories>$(SliceCompileOutputDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition="'$(SliceCompileHeaderOutputDir)' != '' And '$(SliceCompileBaseDirectoryForGeneratedInclude)' == ''">
+      <ClCompile>
+          <AdditionalIncludeDirectories>$(SliceCompileHeaderOutputDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      </ClCompile>
+  </ItemDefinitionGroup>
+
+  <!-- Debugger environment settings -->
+  <PropertyGroup>
+      <LocalDebuggerEnvironment>PATH=$(Path);$(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IceIntVersion)' != '' And '$(IceIntVersion)' &lt; '30700'">
+      <IceToolsPath Condition="'$(IceToolsPath)' == '' And Exists('$(IceHome)\cpp\bin')">$(IceHome)\cpp\bin</IceToolsPath>
+      <IceToolsPath Condition="'$(IceToolsPath)' == '' And Exists('$(IceHome)\bin')">$(IceHome)\bin</IceToolsPath>
+      <IceToolsBin Condition="'$(IceToolsBin)' == ''">$(IceToolsPath)</IceToolsBin>
+  </PropertyGroup>
+</Project>
