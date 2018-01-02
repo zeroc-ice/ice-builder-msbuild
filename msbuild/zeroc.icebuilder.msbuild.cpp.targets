@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
     <!-- Import SliceCompile schema -->
     <ItemGroup>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml" >
@@ -12,15 +11,15 @@
 
     <Target Name="SliceCompile" BeforeTargets="CLCompile">
 
-        <Error Text="Ice Installation not detected. Please update Ice Home in 'Tools > Options > Projects and Solutions > Ice Builder'"
-               Condition="'$(IceHome)' == '' Or '$(IceVersion)' == '' Or '$(IceIntVersion)' == ''" />
+        <Error Text="Ice Installation not detected. Please update Ice Home settings'"
+               Condition="'$(IceHome)' == ''" />
 
         <Error Text="The selected C++ Runtime Library is not supported by Ice; Ice requires /MD or /MDd."
                Condition="'%(ClCompile.RuntimeLibrary)' != 'MultiThreadedDebugDLL' And
                           '%(ClCompile.RuntimeLibrary)' != 'MultiThreadedDLL' "/>
 
-        <Error Text="the Ice Builder requires Ice Version 3.6 or later but $(IceHome) is version $(IceVersion.Replace('.51', 'b'))"
-               Condition="'$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
+        <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
+               Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
 
         <!--
             Include all C++ generated source items that have not been manually include
@@ -87,7 +86,7 @@
             BaseDirectoryForGeneratedInclude  = "$(SliceCompileBaseDirectoryForGeneratedInclude)"
             HeaderExt                         = "$(SliceCompileHeaderExt)"
             SourceExt                         = "$(SliceCompileSourceExt)"
-            DependFile                        = "$(SliceCompileDependFile)"
+            DependFile                        = "$(SliceCompileOutputDir)\SliceCompile.d"
             Sources                           = "@(_SliceCompile)"
             Condition                         = "'%(_SliceCompile.BuildRequired)' == 'True'">
         </Slice2CppTask>
@@ -104,7 +103,7 @@
             BaseDirectoryForGeneratedInclude  = "$(SliceCompileBaseDirectoryForGeneratedInclude)"
             HeaderExt                         = "$(SliceCompileHeaderExt)"
             SourceExt                         = "$(SliceCompileSourceExt)"
-            DependFile                        = "$(SliceCompileDependFile)"
+            DependFile                        = "$(SliceCompileOutputDir)\SliceCompile.d"
             Depend                            = "true"
             Sources                           = "@(_SliceCompile)"
             Condition                         = "'$(_SliceCompileUdateDepends)' == 'True'">

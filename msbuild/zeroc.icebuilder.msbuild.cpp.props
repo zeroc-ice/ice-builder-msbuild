@@ -31,9 +31,6 @@
     </ImportGroup>
 
   <!-- Default settings for SliceCompile task  -->
-  <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
-      <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
-  </PropertyGroup>
 
   <PropertyGroup Condition="'$(SliceCompileHeaderExt)' == ''">
       <SliceCompileHeaderExt>h</SliceCompileHeaderExt>

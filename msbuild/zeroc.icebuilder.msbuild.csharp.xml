@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
+<ProjectSchemaDefinitions xmlns="clr-namespace:Microsoft.Build.Framework.XamlTypes;assembly=Microsoft.Build.Framework">
+    <Rule Name="SliceCompile" PageTemplate="tool" DisplayName="Ice Builder" Order="9" SwitchPrefix="">
+
+        <Rule.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="true" />
+        </Rule.DataSource>
+
+        <Rule.Categories>
+            <Category Name="General" DisplayName="General"/>
+        </Rule.Categories>
+
+        <StringProperty Name="SliceCompileOutputDir"
+                        DisplayName="Output Directory"
+                        Description="Directory where generated files are created."
+                        Subtype="folder"
+                        Category="General"
+                        Switch="--output-dir">
+            <StringProperty.DataSource>
+                <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+            </StringProperty.DataSource>
+        </StringProperty>
+
+        <!-- Parsing Options -->
+        <StringListProperty Name="SliceCompileIncludeDirectories"
+                            DisplayName="Include Directories"
+                            Description="Specifies one or more directories to add to the Slice include path; use semi-colons (;) as directory separators."
+                            Switch="-I"
+                            Subtype="folder"
+                            Category="General">
+            <StringListProperty.DataSource>
+                <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+            </StringListProperty.DataSource>
+        </StringListProperty>
+
+        <StringProperty DisplayName="Additional Options"
+                        Name="SliceCompileAdditionalOptions"
+                        Category="General"
+                        Subtype="AdditionalOptions"
+                        Description="Additional command line options to pass to slice2cpp.">
+            <StringProperty.DataSource>
+                <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+            </StringProperty.DataSource>
+        </StringProperty>
+    </Rule>
+
+    <ItemType Name="SliceCompile" DisplayName="Build Slice Files" />
+    <FileExtension Name="*.ice" ContentType="SliceCompile" />
+    <ContentType Name="SliceCompile" DisplayName="Build Slice Files" ItemType="SliceCompile" />
+</ProjectSchemaDefinitions>

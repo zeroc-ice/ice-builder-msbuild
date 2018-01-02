@@ -15,7 +15,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 #endregion
 
-namespace Ice.Builder.MSBuild
+namespace IceBuilder.MSBuild
 {
     public class TaskUtil
     {
@@ -252,7 +252,7 @@ namespace Ice.Builder.MSBuild
                     if(file.IndexOf(WorkingDirectory) != -1)
                     {
                         file = file.Substring(WorkingDirectory.Length)
-                                   .Trim(Path.DirectorySeparatorChar);
+                            .Trim(Path.DirectorySeparatorChar);
                     }
 
                     if(s.Length > i + 1)
@@ -363,12 +363,12 @@ namespace Ice.Builder.MSBuild
         protected ITaskItem[] GeneratedItems(ITaskItem source)
         {
             return new ITaskItem[]
-                {
-                    new TaskItem(GetGeneratedPath(source, OutputDir, SourceExt)),
-                    new TaskItem(GetGeneratedPath(source,
-                                                  string.IsNullOrEmpty(HeaderOutputDir) ? OutputDir : HeaderOutputDir,
-                                                  HeaderExt)),
-                };
+            {
+                new TaskItem(GetGeneratedPath(source, OutputDir, SourceExt)),
+                new TaskItem(GetGeneratedPath(source,
+                                              string.IsNullOrEmpty(HeaderOutputDir) ? OutputDir : HeaderOutputDir,
+                                              HeaderExt)),
+            };
         }
 
         protected override string GenerateCommandLineCommands()
@@ -401,12 +401,13 @@ namespace Ice.Builder.MSBuild
         {
             foreach(ITaskItem source in Sources)
             {
-                string message = string.Format("Compiling {0} Generating -> ", source.GetMetadata("Identity"));
-                message += TaskUtil.MakeRelative(WorkingDirectory, GetGeneratedPath(source, OutputDir, SourceExt));
-                message += " and ";
-                message += TaskUtil.MakeRelative(WorkingDirectory,
-                                                 GetGeneratedPath(source, string.IsNullOrEmpty(HeaderOutputDir) ? OutputDir : HeaderOutputDir, HeaderExt));
-                Log.LogMessage(MessageImportance.High, message);
+                Log.LogMessage(MessageImportance.High,
+                               string.Format("Compiling {0} Generating -> {1} and {2}",
+                                             source.GetMetadata("Identity"),
+                                             TaskUtil.MakeRelative(WorkingDirectory,
+                                                                   GetGeneratedPath(source, OutputDir, SourceExt)),
+                                             TaskUtil.MakeRelative(WorkingDirectory,
+                                                                   GetGeneratedPath(source, string.IsNullOrEmpty(HeaderOutputDir) ? OutputDir : HeaderOutputDir, HeaderExt))));
             }
         }
 
@@ -424,7 +425,8 @@ namespace Ice.Builder.MSBuild
                     foreach(ITaskItem source in Sources)
                     {
                         List<string> dependPaths = new List<string>();
-                        XmlNodeList depends = dependsDoc.DocumentElement.SelectNodes(string.Format("/dependencies/source[@name='{0}']/dependsOn", source.GetMetadata("Identity")));
+                        XmlNodeList depends = dependsDoc.DocumentElement.SelectNodes(
+                                                                                     string.Format("/dependencies/source[@name='{0}']/dependsOn", source.GetMetadata("Identity")));
                         if(depends != null)
                         {
                             foreach(XmlNode depend in depends)
@@ -568,214 +570,209 @@ namespace Ice.Builder.MSBuild
 
         protected virtual string GetGeneratedPath(ITaskItem item, string outputDir, string ext)
         {
-            return Path.Combine(
-                outputDir,
-                Path.GetFileName(Path.ChangeExtension(item.GetMetadata("Identity"), ext)));
+            return Path.Combine(outputDir,
+                                Path.GetFileName(Path.ChangeExtension(item.GetMetadata("Identity"), ext)));
         }
 
         public override bool Execute()
         {
-            try
+            List<ITaskItem> computed = new List<ITaskItem>();
+            UpdateDepends = false;
+
+            //
+            // Compare the command log files to detect changes in build options.
+            //
+            string log0 = string.Format(CommandLog);
+            string log1 = string.Format(Path.ChangeExtension(CommandLog, ".0.log"));
+            bool logChanged = false;
+            if(!File.Exists(log1))
             {
-                List<ITaskItem> computed = new List<ITaskItem>();
-                UpdateDepends = false;
+                logChanged = true;
+                Log.LogMessage(MessageImportance.Low,
+                               string.Format("Build required because command log file: {0} doesn't exists",
+                                             TaskUtil.MakeRelative(WorkingDirectory, log1)));
+            }
+            else if(!FileCompare(log0, log1))
+            {
+                logChanged = true;
+                Log.LogMessage(
+                               MessageImportance.Low, "Build required because builder options changed");
+            }
 
-                //
-                // Compare the command log files to detect changes in build options.
-                //
-                string log0 = string.Format(CommandLog);
-                string log1 = string.Format(Path.ChangeExtension(CommandLog, ".0.log"));
-                bool logChanged = false;
-                if(!File.Exists(log1))
+            if(File.Exists(log1))
+            {
+                File.Delete(log1);
+            }
+            File.Move(log0, log1);
+
+            FileInfo sliceCompiler = new FileInfo(SliceCompiler);
+
+            XmlDocument dependsDoc = new XmlDocument();
+            bool dependExists = File.Exists(DependFile);
+
+            //
+            // If command log file changed we don't need to compute dependencies as all
+            // files must be rebuild
+            //
+            if(!logChanged)
+            {
+                if(dependExists)
                 {
-                    logChanged = true;
-                    Log.LogMessage(MessageImportance.Low,
-                        string.Format("Build required because command log file: {0} doesn't exists",
-                                      TaskUtil.MakeRelative(WorkingDirectory, log1)));
-                }
-                else if(!FileCompare(log0, log1))
-                {
-                    logChanged = true;
-                    Log.LogMessage(
-                        MessageImportance.Low, "Build required because builder options changed");
-                }
-
-                if(File.Exists(log1))
-                {
-                    File.Delete(log1);
-                }
-                File.Move(log0, log1);
-
-                FileInfo sliceCompiler = new FileInfo(SliceCompiler);
-
-                XmlDocument dependsDoc = new XmlDocument();
-                bool dependExists = File.Exists(DependFile);
-
-                //
-                // If command log file changed we don't need to compute dependencies as all
-                // files must be rebuild
-                //
-                if(!logChanged)
-                {
-                    if(dependExists)
+                    try
+                    {
+                        dependsDoc.Load(DependFile);
+                    }
+                    catch(XmlException)
                     {
                         try
                         {
-                            dependsDoc.Load(DependFile);
+                            File.Delete(DependFile);
                         }
-                        catch(XmlException)
+                        catch(IOException)
                         {
-                            try
-                            {
-                                File.Delete(DependFile);
-                            }
-                            catch(IOException)
-                            {
-                            }
-                            Log.LogMessage(MessageImportance.Low,
-                                string.Format("Build required because depend file: {0} has some invalid data",
-                                    TaskUtil.MakeRelative(WorkingDirectory, DependFile)));
                         }
+                        Log.LogMessage(MessageImportance.Low,
+                                       string.Format("Build required because depend file: {0} has some invalid data",
+                                                     TaskUtil.MakeRelative(WorkingDirectory, DependFile)));
+                    }
+                }
+                else
+                {
+                    Log.LogMessage(MessageImportance.Low,
+                                   string.Format("Build required because depend file: {0} doesn't exists",
+                                                 TaskUtil.MakeRelative(WorkingDirectory, DependFile)));
+                }
+            }
+
+            foreach(ITaskItem source in Sources)
+            {
+                bool skip = !logChanged && dependExists;
+                Log.LogMessage(MessageImportance.Low,
+                               string.Format("Computing dependencies for {0}", source.GetMetadata("Identity")));
+
+                ITaskItem[] generatedItems = GeneratedItems(source);
+
+                FileInfo sourceInfo = new FileInfo(source.GetMetadata("FullPath"));
+                if(!sourceInfo.Exists)
+                {
+                    Log.LogMessage(MessageImportance.Low,
+                                   string.Format("Build required because source: {0} doesn't exists",
+                                                 source.GetMetadata("Identity")));
+                    skip = false;
+                }
+
+                FileInfo generatedInfo = null;
+                //
+                // Check if the Slice compiler is older than the source file
+                //
+                if(skip)
+                {
+                    foreach(ITaskItem item in generatedItems)
+                    {
+                        generatedInfo = new FileInfo(item.GetMetadata("FullPath"));
+
+                        if(generatedInfo.Exists &&
+                           sliceCompiler.LastWriteTime.ToFileTime() > generatedInfo.LastWriteTime.ToFileTime())
+                        {
+                            Log.LogMessage(MessageImportance.Low,
+                                           string.Format("Build required because target: {0} is older than Slice compiler: {1}",
+                                                         TaskUtil.MakeRelative(WorkingDirectory,
+                                                                               generatedInfo.FullName),
+                                                         Path.GetFileName(SliceCompiler)));
+                            skip = false;
+                            break;
+                        }
+                    }
+                }
+
+                if(skip)
+                {
+                    foreach(ITaskItem item in generatedItems)
+                    {
+                        generatedInfo = new FileInfo(item.GetMetadata("FullPath"));
+                        if(!generatedInfo.Exists)
+                        {
+                            Log.LogMessage(MessageImportance.Low,
+                                           string.Format("Build required because generated: {0} doesn't exists",
+                                                         TaskUtil.MakeRelative(WorkingDirectory,
+                                                                               generatedInfo.FullName)));
+                            skip = false;
+                            break;
+                        }
+                        else if(sourceInfo.LastWriteTime.ToFileTime() > generatedInfo.LastWriteTime.ToFileTime())
+                        {
+                            Log.LogMessage(MessageImportance.Low,
+                                           string.Format("Build required because source: {0} is older than target {1}",
+                                                         source.GetMetadata("Identity"),
+                                                         TaskUtil.MakeRelative(WorkingDirectory,
+                                                                               generatedInfo.FullName)));
+                            skip = false;
+                            break;
+                        }
+                    }
+                }
+
+                if(skip)
+                {
+                    XmlNodeList depends = dependsDoc.DocumentElement.SelectNodes(string.Format("/dependencies/source[@name='{0}']/dependsOn", source.GetMetadata("Identity")));
+
+                    if(depends != null)
+                    {
+                        foreach(XmlNode depend in depends)
+                        {
+                            string path = depend.Attributes["name"].Value;
+                            FileInfo dependencyInfo = new FileInfo(path);
+                            if(!dependencyInfo.Exists)
+                            {
+                                skip = false;
+                                Log.LogMessage(MessageImportance.Low,
+                                               string.Format("Build required because dependency: {0} doesn't exists",
+                                                             TaskUtil.MakeRelative(WorkingDirectory,
+                                                                                   dependencyInfo.FullName)));
+                                break;
+                            }
+                            else if(dependencyInfo.LastWriteTime > generatedInfo.LastWriteTime)
+                            {
+                                skip = false;
+                                Log.LogMessage(MessageImportance.Low,
+                                               string.Format("Build required because source: {0} is older than target: {1}",
+                                                             source.GetMetadata("Identity"),
+                                                             TaskUtil.MakeRelative(WorkingDirectory,
+                                                                                   dependencyInfo.FullName)));
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(skip)
+                {
+                    string message = string.Format("Skipping {0} -> ", source.GetMetadata("Identity"));
+                    message += generatedItems[0].GetMetadata("Identity");
+                    if(generatedItems.Length > 1)
+                    {
+                        message += " and ";
+                        message += generatedItems[1].GetMetadata("Identity");
+                        message += " are ";
                     }
                     else
                     {
-                        Log.LogMessage(MessageImportance.Low,
-                            string.Format("Build required because depend file: {0} doesn't exists",
-                                          TaskUtil.MakeRelative(WorkingDirectory, DependFile)));
+                        message += " is ";
                     }
+                    message += "up to date";
+
+                    Log.LogMessage(MessageImportance.Normal, message);
                 }
 
-                foreach(ITaskItem source in Sources)
-                {
-                    bool skip = !logChanged && dependExists;
-                    Log.LogMessage(MessageImportance.Low,
-                        string.Format("Computing dependencies for {0}", source.GetMetadata("Identity")));
+                ITaskItem computedSource = new TaskItem(source.ItemSpec);
+                source.CopyMetadataTo(computedSource);
+                computedSource.SetMetadata("BuildRequired", skip ? "False" : "True");
+                computed.Add(computedSource);
 
-                    ITaskItem[] generatedItems = GeneratedItems(source);
-
-                    FileInfo sourceInfo = new FileInfo(source.GetMetadata("FullPath"));
-                    if(!sourceInfo.Exists)
-                    {
-                        Log.LogMessage(MessageImportance.Low,
-                            string.Format("Build required because source: {0} doesn't exists",
-                                source.GetMetadata("Identity")));
-                        skip = false;
-                    }
-
-                    FileInfo generatedInfo = null;
-                    //
-                    // Check if the Slice compiler is older than the source file
-                    //
-                    if(skip)
-                    {
-                        foreach(ITaskItem item in generatedItems)
-                        {
-                            generatedInfo = new FileInfo(item.GetMetadata("FullPath"));
-
-                            if(generatedInfo.Exists &&
-                                sliceCompiler.LastWriteTime.ToFileTime() > generatedInfo.LastWriteTime.ToFileTime())
-                            {
-                                Log.LogMessage(MessageImportance.Low,
-                                        string.Format("Build required because target: {0} is older than Slice compiler: {1}",
-                                            TaskUtil.MakeRelative(WorkingDirectory, generatedInfo.FullName),
-                                            Path.GetFileName(SliceCompiler)));
-                                skip = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    if(skip)
-                    {
-                        foreach(ITaskItem item in generatedItems)
-                        {
-                            generatedInfo = new FileInfo(item.GetMetadata("FullPath"));
-                            if(!generatedInfo.Exists)
-                            {
-                                Log.LogMessage(MessageImportance.Low,
-                                    string.Format("Build required because generated: {0} doesn't exists",
-                                        TaskUtil.MakeRelative(WorkingDirectory, generatedInfo.FullName)));
-                                skip = false;
-                                break;
-                            }
-                            else if(sourceInfo.LastWriteTime.ToFileTime() > generatedInfo.LastWriteTime.ToFileTime())
-                            {
-                                Log.LogMessage(MessageImportance.Low,
-                                    string.Format("Build required because source: {0} is older than target {1}",
-                                        source.GetMetadata("Identity"),
-                                        TaskUtil.MakeRelative(WorkingDirectory, generatedInfo.FullName)));
-                                skip = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    if(skip)
-                    {
-                        XmlNodeList depends = dependsDoc.DocumentElement.SelectNodes(
-                                string.Format("/dependencies/source[@name='{0}']/dependsOn", source.GetMetadata("Identity")));
-
-                        if(depends != null)
-                        {
-                            foreach(XmlNode depend in depends)
-                            {
-                                string path = depend.Attributes["name"].Value;
-                                FileInfo dependencyInfo = new FileInfo(path);
-                                if(!dependencyInfo.Exists)
-                                {
-                                    skip = false;
-                                    Log.LogMessage(MessageImportance.Low,
-                                    string.Format("Build required because dependency: {0} doesn't exists",
-                                        TaskUtil.MakeRelative(WorkingDirectory, dependencyInfo.FullName)));
-                                    break;
-                                }
-                                else if(dependencyInfo.LastWriteTime > generatedInfo.LastWriteTime)
-                                {
-                                    skip = false;
-                                    Log.LogMessage(MessageImportance.Low,
-                                    string.Format("Build required because source: {0} is older than target: {1}",
-                                        source.GetMetadata("Identity"),
-                                        TaskUtil.MakeRelative(WorkingDirectory, dependencyInfo.FullName)));
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    if(skip)
-                    {
-                        string message = string.Format("Skipping {0} -> ", source.GetMetadata("Identity"));
-                        message += generatedItems[0].GetMetadata("Identity");
-                        if(generatedItems.Length > 1)
-                        {
-                            message += " and ";
-                            message += generatedItems[1].GetMetadata("Identity");
-                            message += " are ";
-                        }
-                        else
-                        {
-                            message += " is ";
-                        }
-                        message += "up to date";
-
-                        Log.LogMessage(MessageImportance.Normal, message);
-                    }
-
-                    ITaskItem computedSource = new TaskItem(source.ItemSpec);
-                    source.CopyMetadataTo(computedSource);
-                    computedSource.SetMetadata("BuildRequired", skip ? "False" : "True");
-                    computed.Add(computedSource);
-
-                    UpdateDepends = UpdateDepends || !skip;
-                }
-                ComputedSources = computed.ToArray();
-                return true;
+                UpdateDepends = UpdateDepends || !skip;
             }
-            catch(Exception ex)
-            {
-                Log.LogError(ex.ToString());
-                throw;
-            }
+            ComputedSources = computed.ToArray();
+            return true;
         }
 
         private bool FileCompare(string file1, string file2)
@@ -849,15 +846,14 @@ namespace Ice.Builder.MSBuild
 
         protected override ITaskItem[] GeneratedItems(ITaskItem source)
         {
-            string headerOutputDir = string.IsNullOrEmpty(_headerOutputDir) ? OutputDir : HeaderOutputDir;
             return new ITaskItem[]
-                {
-                    new TaskItem(GetGeneratedPath(source, OutputDir, SourceExt)),
-                    new TaskItem(GetGeneratedPath(source, headerOutputDir, HeaderExt)),
-                };
+            {
+                new TaskItem(GetGeneratedPath(source, OutputDir, SourceExt)),
+                new TaskItem(GetGeneratedPath(source,
+                                              string.IsNullOrEmpty(HeaderOutputDir) ? OutputDir : HeaderOutputDir,
+                                              HeaderExt))
+            };
         }
-
-        private string _headerOutputDir;
     }
     #endregion
 
@@ -867,9 +863,9 @@ namespace Ice.Builder.MSBuild
         protected override ITaskItem[] GeneratedItems(ITaskItem source)
         {
             return new ITaskItem[]
-                {
-                    new TaskItem(GetGeneratedPath(source, OutputDir, ".cs")),
-                };
+            {
+                new TaskItem(GetGeneratedPath(source, OutputDir, ".cs")),
+            };
         }
 
     }

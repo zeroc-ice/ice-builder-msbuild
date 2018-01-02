@@ -4,10 +4,10 @@
 
     <!-- Import our custom MSbuild tasks used to build Ice for CSharp projects -->
     <UsingTask TaskName="IceBuilder.MSBuild.Slice2CSharpTask"
-               AssemblyFile="$(MSBuildThisFileDirectory)..\lib\net45\zeroc.icebuilder.msbuild.dll"/>
+               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
 
     <UsingTask TaskName="IceBuilder.MSBuild.Slice2CSharpDependTask"
-               AssemblyFile="$(MSBuildThisFileDirectory)..\lib\net45\zeroc.icebuilder.msbuild.dll"/>
+               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
 
     <!-- Import IceBuilder common settings -->
     <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.common.props"/>
@@ -19,10 +19,6 @@
         <!-- With Ice source distribution > 3.6 the settings are in the csharp msbuild directory -->
         <Import Project="$(IceHome)\csharp\msbuild\icebuilder.csharp.props"
                 Condition="Exists('$(IceHome)\csharp\msbuild\icebuilder.csharp.props')"/>
-
-        <!-- With Ice binary distribution > 3.6 settings are in the Nuget package build directory -->
-        <Import Project="$(IceHome)\zeroc.ice.net\build\zeroc.ice.net.props"
-                Condition="Exists('$(IceHome)\zeroc.ice.net\build\zeroc.ice.net.props')"/>
     </ImportGroup>
 
     <PropertyGroup Condition="'$(IceAssembliesDir)' == '' And Exists('$(IceHome)\csharp\Assemblies')">
@@ -34,13 +30,12 @@
     </PropertyGroup>
 
     <!-- Default Ice Builder settings -->
-    <PropertyGroup Label="IceBuilder" Condition="'$(IceBuilderOutputDir)' == ''">
-        <IceBuilderOutputDir>$(MSBuildProjectDirectory)\generated</IceBuilderOutputDir>
+    <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
+        <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(IceIntVersion)' != '' And '$(IceIntVersion)' &lt; '30700'">
         <IceToolsPath Condition="'$(IceToolsPath)' == '' And Exists('$(IceHome)\cpp\bin')">$(IceHome)\cpp\bin</IceToolsPath>
         <IceToolsPath Condition="'$(IceToolsPath)' == '' And Exists('$(IceHome)\bin')">$(IceHome)\bin</IceToolsPath>
-        <IceToolsBin Condition="'$(IceToolsBin)' == ''">$(IceToolsPath)</IceToolsBin>
     </PropertyGroup>
 </Project>

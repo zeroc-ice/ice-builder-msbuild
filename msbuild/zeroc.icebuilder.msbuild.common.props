@@ -49,4 +49,9 @@
     <PropertyGroup Condition="Exists('$(IceHome)\cpp\src')">
         <IceSourceHome>$(IceHome)</IceSourceHome>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
+        <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
+    </PropertyGroup>
+
 </Project>

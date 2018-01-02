@@ -2,97 +2,91 @@
 <!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-    <Target Name="IceBuilder_Validate">
-        <Error Text="Ice Installation not detected. Please update Ice Home in 'Tools > Options > Projects and Solutions > Ice Builder'"
-               Condition="'$(IceHome)' == '' Or '$(IceVersion)' == '' Or '$(IceIntVersion)' == ''" />
+    <!-- Import SliceCompile schema -->
+    <ItemGroup>
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml" >
+            <Context>Project</Context>
+        </PropertyPageSchema>
+        <AvailableItemName Include="SliceCompile" />
+    </ItemGroup>
 
-        <Error Text="The selected Ice home directory does not exist or is not an Ice installation. Please update Ice Home in 'Tools > Options > Projects and Solutions > Ice Builder'"
-               Condition="!Exists('$(IceHome)')" />
+    <Target Name="SliceCompile" BeforeTargets="CoreCompile;XamlPreCompile">
 
-        <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) is version $(IceVersion.Replace('.51', 'b'))"
-               Condition="'$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" File=""/>
-    </Target>
+        <Error Text="Ice Installation not detected. Please update Ice Home settings'"
+               Condition="'$(IceHome)' == ''" />
 
-    <Target Name="IceBuilder_Prepare">
+        <Error Text="The selected C++ Runtime Library is not supported by Ice; Ice requires /MD or /MDd."
+               Condition="'%(ClCompile.RuntimeLibrary)' != 'MultiThreadedDebugDLL' And
+                          '%(ClCompile.RuntimeLibrary)' != 'MultiThreadedDLL' "/>
+
+        <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
+               Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
+
         <ItemGroup>
-            <IceBuilder Include="@(None)" Condition="'%(Extension)'=='.ice'"/>
+            <Compile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"
+                     Exclude="@(Compile)" />
         </ItemGroup>
-    </Target>
 
-    <Target Name="IceBuilder_Compile"
-            DependsOnTargets="IceBuilder_Validate;IceBuilder_Prepare"
-            BeforeTargets="CoreCompile;XamlPreCompile">
-
-        <CreateProperty Value="$(IceBuilderOutputDir)\IceBuilder.d" Condition="'$(IceBuilderDependFile)' == ''">
-            <Output TaskParameter="Value" PropertyName="IceBuilderDependFile" />
-        </CreateProperty>
-
-        <CreateProperty Value="$(IceBuilderOutputDir)\IceBuilder.command.log" Condition="'$(IceBuilderCommandLog)' == ''">
-            <Output TaskParameter="Value" PropertyName="IceBuilderCommandLog" />
-        </CreateProperty>
-
-        <MakeDir Directories="$(IceBuilderOutputDir)"/>
-        <MakeDir Directories="$([System.IO.Path]::GetDirectoryName('$(IceBuilderDependFile)'))"/>
-        <MakeDir Directories="$([System.IO.Path]::GetDirectoryName('$(IceBuilderCommandLog)'))"/>
+        <MakeDir Directories="$(SliceCompileOutputDir)"/>
 
         <WriteLinesToFile
-            File="$(IceBuilderCommandLog)"
+            File="$(SliceCompileOutputDir)\SliceCompile.command.log"
             Lines="Ice Home: $(IceHome);
                    Ice Tools Path: $(IceToolsPath);
-                   Output Dir: $(IceBuilderOutputDir);
-                   Include Directories: $(IceBuilderIncludeDirectories);
-                   Additional Options: $(IceBuilderAdditionalOptions)"
+                   Output Dir: $(SliceCompileOutputDir);
+                   Include Directories: $(SliceCompileIncludeDirectories);
+                   Additional Options: $(SliceCompileAdditionalOptions)"
             Overwrite="true"/>
 
         <!-- First we check dependencies and decide what must be rebuild -->
         <Slice2CSharpDependTask
-            OutputDir           = "$(IceBuilderOutputDir)"
-            WorkingDirectory    = "$(MSBuildProjectDirectory)"
-            SliceCompiler       = "$(IceToolsPath)/slice2cs.exe"
-            DependFile          = "$(IceBuilderDependFile)"
-            CommandLog          = "$(IceBuilderCommandLog)"
-            Sources             = "@(IceBuilder)">
+            OutputDir             = "$(SliceCompileOutputDir)"
+            WorkingDirectory      = "$(MSBuildProjectDirectory)"
+            SliceCompiler         = "$(IceToolsPath)/slice2cs.exe"
+            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
+            CommandLog            = "$(SliceCompileOutputDir)\SliceCompile.command.log"
+            Sources               = "@(SliceCompile)">
 
             <Output
-                ItemName          = "_IceBuilder"
+                ItemName          = "_SliceCompile"
                 TaskParameter     = "ComputedSources"/>
 
             <Output
-                PropertyName      = "_IceBuilderUdateDepends"
+                PropertyName      = "_SliceCompileUdateDepends"
                 TaskParameter     = "UpdateDepends"/>
 
         </Slice2CSharpDependTask>
 
         <!-- Compile the Slice files to produce the generated code -->
         <Slice2CSharpTask
-            IceHome             = "$(IceHome)"
-            IceToolsPath        = "$(IceToolsPath)"
-            OutputDir           = "$(IceBuilderOutputDir)"
-            WorkingDirectory    = "$(MSBuildProjectDirectory)"
-            IncludeDirectories  = "$(IceBuilderIncludeDirectories)"
-            AdditionalOptions   = "$(IceBuilderAdditionalOptions)"
-            DependFile          = "$(IceBuilderDependFile)"
-            Sources             = "@(_IceBuilder)"
-            Condition           = "'%(_IceBuilder.BuildRequired)' == 'True'"/>
+            IceHome               = "$(IceHome)"
+            IceToolsPath          = "$(IceToolsPath)"
+            OutputDir             = "$(SliceCompileOutputDir)"
+            WorkingDirectory      = "$(MSBuildProjectDirectory)"
+            IncludeDirectories    = "$(SliceCompileIncludeDirectories)"
+            AdditionalOptions     = "$(SliceCompileAdditionalOptions)"
+            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
+            Sources               = "@(_SliceCompile)"
+            Condition             = "'%(_SliceCompile.BuildRequired)' == 'True'"/>
 
         <!-- Update the dependencies -->
         <Slice2CSharpTask
-            IceHome             = "$(IceHome)"
-            IceToolsPath        = "$(IceToolsPath)"
-            OutputDir           = "$(IceBuilderOutputDir)"
-            WorkingDirectory    = "$(MSBuildProjectDirectory)"
-            IncludeDirectories  = "$(IceBuilderIncludeDirectories)"
-            AdditionalOptions   = "$(IceBuilderAdditionalOptions)"
-            DependFile          = "$(IceBuilderDependFile)"
-            Sources             = "@(_IceBuilder)"
-            Depend              = "true"
-            Condition           = "'$(_IceBuilderUdateDepends)' == 'True'"/>
+            IceHome               = "$(IceHome)"
+            IceToolsPath          = "$(IceToolsPath)"
+            OutputDir             = "$(SliceCompileOutputDir)"
+            WorkingDirectory      = "$(MSBuildProjectDirectory)"
+            IncludeDirectories    = "$(SliceCompileIncludeDirectories)"
+            AdditionalOptions     = "$(SliceCompileAdditionalOptions)"
+            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
+            Sources               = "@(_SliceCompile)"
+            Depend                = "true"
+            Condition             = "'$(_SliceCompileUdateDepends)' == 'True'"/>
     </Target>
 
-    <Target Name="IceBuilder_Clean" BeforeTargets="Clean" DependsOnTargets="IceBuilder_Prepare">
-        <Delete Files="$([System.IO.Path]::Combine($(IceBuilderOutputDir),%(IceBuilder.Filename).cs))"/>
-        <Delete Files="$(IceBuilderDependFile)"/>
-        <Delete Files="$(IceBuilderCommandLog)"/>
-        <Delete Files="$([System.IO.Path]::ChangeExtension('$(IceBuilderCommandLog)', '.0.log'))"/>
+    <Target Name="SliceCompileClean" BeforeTargets="Clean">
+        <Delete Files="$(SliceCompileOutputDir)\%(SliceCompile.FileName).cs"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.d"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.log"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.0.log"/>
     </Target>
 </Project>
