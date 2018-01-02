@@ -6,6 +6,6 @@
     </ImportGroup>
 
     <ImportGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
-        <Import Project="$(MSBuildThisFileDirectory)zeroc.icebuilder.msbuild.cpp.props"/>
+        <Import Project="$(MSBuildThisFileDirectory)zeroc.icebuilder.msbuild.csharp.props"/>
     </ImportGroup>
 </Project>
