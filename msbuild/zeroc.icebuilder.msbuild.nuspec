@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>zeroc.ice.builder.msbuild</id>
+        <id>zeroc.icebuilder.msbuild</id>
         <title>Ice Builder for MSBuild</title>
         <version>5.0.0</version>
         <authors>ZeroC</authors>
