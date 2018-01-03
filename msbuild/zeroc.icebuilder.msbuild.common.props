@@ -54,4 +54,8 @@
         <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
     </PropertyGroup>
 
+    <ItemGroup Condition="'$(EnableDefaultItems)' == 'true'">
+       <SliceCompile Condition="'$(EnableDefaultSliceCompileItems)' == 'true'" Include="**/*.ice"/>
+   </ItemGroup>
+
 </Project>
