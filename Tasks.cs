@@ -13,12 +13,18 @@ using System.Xml;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using System.Runtime.InteropServices;
 #endregion
 
 namespace IceBuilder.MSBuild
 {
     public class TaskUtil
     {
+#if NETSTANDARD2_0
+        public static readonly bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+#else
+        public static readonly bool isWindows = true;
+#endif
         public static string MakeRelative(string from, string to)
         {
             if(!Path.IsPathRooted(from))
@@ -483,7 +489,7 @@ namespace IceBuilder.MSBuild
         {
             get
             {
-                return "slice2cs.exe";
+                return TaskUtil.isWindows ? "slice2cs.exe" : "slice2cs";
             }
         }
 

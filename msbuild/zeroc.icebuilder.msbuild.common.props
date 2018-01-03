@@ -10,6 +10,10 @@
         <IceHome>$(ICE_HOME)</IceHome>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(EnableDefaultItems)' == 'true'">
+        <EnableDefaultSliceCompileItems Condition="'$(EnableDefaultSliceCompileItems)' == ''">true</EnableDefaultSliceCompileItems>
+    </PropertyGroup>
+
     <!--
         If IceVersion is not set import the version settings from the Ice
         distribution.
