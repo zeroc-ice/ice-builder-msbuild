@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Choose>
+        <When Condition="'$(MSBuildAssemblyVersion)' == '' or '$(MSBuildAssemblyVersion)' &lt; '15.0'">
+            <PropertyGroup>
+                <IceBuilderAssemblyDir>net45</IceBuilderAssemblyDir>
+            </PropertyGroup>
+        </When>
+        <Otherwise>
+            <PropertyGroup>
+                <IceBuilderAssemblyDir>netstandard2.0</IceBuilderAssemblyDir>
+            </PropertyGroup>
+        </Otherwise>
+    </Choose>
 
     <!-- Import our custom MSbuild tasks used to build Ice for CSharp projects -->
     <UsingTask TaskName="IceBuilder.MSBuild.Slice2CSharpTask"
-               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
+               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\$(IceBuilderAssemblyDir)\zeroc.icebuilder.msbuild.dll"/>
 
     <UsingTask TaskName="IceBuilder.MSBuild.Slice2CSharpDependTask"
-               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
+               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\$(IceBuilderAssemblyDir)\zeroc.icebuilder.msbuild.dll"/>
 
     <!-- Import IceBuilder common settings -->
     <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.common.props"/>

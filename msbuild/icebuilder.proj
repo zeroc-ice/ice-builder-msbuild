@@ -21,9 +21,12 @@
     </ItemGroup>
 
     <Target Name="Build">
-        <MSBuild Projects="..\icebuilder.msbuild.csproj"
+        <MSBuild Projects="net45\icebuilder.msbuild.net45.csproj"
                  Properties="Platform=AnyCPU;Configuration=$(Configuration)"
                  Targets="Build"/>
+        <MSBuild Projects="netstandard2.0\icebuilder.msbuild.netstandard2.0.csproj"
+                 Properties="Platform=AnyCPU;Configuration=$(Configuration)"
+                 Targets="Restore;Build"/>
     </Target>
 
     <Target Name="NuGetPack" DependsOnTargets="Build;GetNuGet">

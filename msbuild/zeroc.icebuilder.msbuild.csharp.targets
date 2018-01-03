@@ -15,10 +15,6 @@
         <Error Text="Ice Installation not detected. Please update Ice Home settings'"
                Condition="'$(IceHome)' == ''" />
 
-        <Error Text="The selected C++ Runtime Library is not supported by Ice; Ice requires /MD or /MDd."
-               Condition="'%(ClCompile.RuntimeLibrary)' != 'MultiThreadedDebugDLL' And
-                          '%(ClCompile.RuntimeLibrary)' != 'MultiThreadedDLL' "/>
-
         <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
                Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
 
