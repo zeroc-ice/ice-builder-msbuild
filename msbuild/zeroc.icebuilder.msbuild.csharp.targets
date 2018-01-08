@@ -2,12 +2,21 @@
 <!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-    <!-- Import SliceCompile schema -->
     <ItemGroup>
-        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml" >
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)ProjectItemsSchema.xaml" />
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.CSharp.xaml">
             <Context>Project</Context>
-        </PropertyPageSchema>
-        <AvailableItemName Include="SliceCompile" />
+         </PropertyPageSchema>
+         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.xaml">
+            <Context>BrowseObject</Context>
+         </PropertyPageSchema>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"
+                 Exclude="@(Compile)" />
+        <None Remove="$(SliceCompileOutputDir)\SliceCompile.d"/>
+        <None Remove="$(SliceCompileOutputDir)\SliceCompile.command.0.log"/>
     </ItemGroup>
 
     <Target Name="SliceCompile" BeforeTargets="CoreCompile;XamlPreCompile">
@@ -17,11 +26,6 @@
 
         <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
                Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
-
-        <ItemGroup>
-            <Compile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"
-                     Exclude="@(Compile)" />
-        </ItemGroup>
 
         <MakeDir Directories="$(SliceCompileOutputDir)"/>
 
@@ -80,7 +84,7 @@
     </Target>
 
     <Target Name="SliceCompileClean" BeforeTargets="Clean">
-        <Delete Files="$(SliceCompileOutputDir)\%(SliceCompile.FileName).cs"/>
+        <Delete Files="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"/>
         <Delete Files="$(SliceCompileOutputDir)\SliceCompile.d"/>
         <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.log"/>
         <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.0.log"/>

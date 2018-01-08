@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <!-- Import SliceCompile schema -->
     <ItemGroup>
-        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml" >
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)ProjectItemsSchema.xaml" />
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.Cpp.xaml">
             <Context>Project</Context>
         </PropertyPageSchema>
-        <AvailableItemName Include="SliceCompile" />
+        <AvailableItemName Include="SliceCompile"/>
     </ItemGroup>
 
     <Target Name="SliceCompile" BeforeTargets="CLCompile">
@@ -130,9 +130,8 @@
     </Target>
 
     <Target Name="SliceCompileClean" BeforeTargets="Clean">
-        <Delete Files="$(SliceCompileOutputDir)\%(SliceCompile.FileName).$(SliceCompileSourceExt)"/>
-        <Delete Files="$(SliceCompileOutputDir)\%(SliceCompile.FileName).$(SliceCompileHeaderExt)"/>
-        <Delete Files="$(SliceCompileHeaderOutputDir)\%(SliceCompile.FileName).$(SliceCompileHeaderExt)"/>
+        <Delete Files="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).$(SliceCompileSourceExt)')"/>
+        <Delete Files="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).$(SliceCompileHeaderExt)')"/>
         <Delete Files="$(SliceCompileOutputDir)\SliceCompile.d"/>
         <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.log"/>
         <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.0.log"/>

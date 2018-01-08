@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
+<Rule
+    Name="SliceCompile"
+    DisplayName="Slice"
+    PageTemplate="tool"
+    Description="Slice source file"
+    xmlns="http://schemas.microsoft.com/build/2009/properties">
+    <Rule.DataSource>
+        <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="SliceCompile" HasConfigurationCondition="false" />
+    </Rule.DataSource>
+
+    <DynamicEnumProperty
+        Name="{}{ItemType}" DisplayName="Item Type"
+        Description="Item type determines the build tool or the file"
+        EnumProvider="ItemTypes"
+        Category="Advanced" />
+
+    <StringProperty Name="Identity" DisplayName="File Name" ReadOnly="true" Category="Misc">
+        <StringProperty.DataSource>
+            <DataSource Persistence="Intrinsic" ItemType="SliceCompile" PersistedName="Identity" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty Name="FullPath" DisplayName="Full Path" ReadOnly="true" Category="Misc">
+        <StringProperty.DataSource>
+            <DataSource Persistence="Intrinsic" ItemType="SliceCompile" PersistedName="FullPath" />
+        </StringProperty.DataSource>
+    </StringProperty>
+</Rule>

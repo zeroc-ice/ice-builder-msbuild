@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
+<Rule
+    Name="SliceCompile"
+    DisplayName="Slice Compile"
+    PageTemplate="generic"
+    Description="Slice source file"
+    xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+    <Rule.DataSource>
+        <DataSource Persistence="ProjectFile"/>
+    </Rule.DataSource>
+
+    <StringProperty
+        Name="SliceCompileOutputDir"
+        DisplayName="Output Directory"
+        Description="Directory where generated files are created."
+        Subtype="folder"
+        Category="General"
+        Switch="--output-dir">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <!-- Parsing Options -->
+    <StringListProperty
+        Name="SliceCompileIncludeDirectories"
+        DisplayName="Include Directories"
+        Description="Specifies one or more directories to add to the Slice include path; use semi-colons (;) as directory separators."
+        Switch="-I"
+        Subtype="folder"
+        Category="General">
+        <StringListProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+        </StringListProperty.DataSource>
+    </StringListProperty>
+
+    <StringProperty
+        DisplayName="Additional Options"
+        Name="SliceCompileAdditionalOptions"
+        Category="General"
+        Subtype="AdditionalOptions"
+        Description="Additional command line options to pass to slice2cpp.">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <BoolProperty Name="Visible" Visible="false" />
+    <StringProperty Name="DependentUpon" Visible="false" />
+    <StringProperty Name="Link" Visible="false" />
+</Rule>
