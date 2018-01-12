@@ -1,13 +1,16 @@
 # Ice Builder for MSBuild
 
-The Ice Builder for MSBuild include MSBuild tasks to automate the compilation of
-Slice (`.ice`) files to C++ and C#. It compiles your Slice files with `slice2cpp`
-and `slice2cs`, and allows you to specify the parameters provided to these
-compilers.
+Ice Builder provides support for compiling Slice source files (`.ice` files) within
+C++ and C# MSBuild projects. It compiles these Slice files using the Slice to C++ 
+compiler (`slice2cpp`) or the Slice to C# compiler (`slice2cs`) provided by your Ice 
+installation.
 
-The Ice Builder for MSBuild is a collection of MSBuild Tasks compatible with
-MSBuild 4.0 and higher. An Ice installation with `slice2cpp` and `slice2cs`
-version 3.6.0 or higher is also required.
+Ice Builder compiles or recompiles a Slice file when the corresponding generated 
+files are missing or when they are out of date. Generated files are out of date
+when they are older than the corresponding Slice source file, or when they are older
+than any Slice file included directly or indirectly by this Slice source file.
+
+Ice Builder for MSBuild requires Ice 3.6.0 or higher, and MSBuild 4.0 or higher.
 
 ## Contents
 - [Installation](#installation)
@@ -18,26 +21,38 @@ version 3.6.0 or higher is also required.
 
 ## Installation
 
-The Ice Builder for MSBuild is available as a NuGet package `zeroc.icebuilder.msbuild`
-at nuget.org.
+To install Ice Builder, you just need to add the [`zeroc.icebuilder.msbuild`](1) NuGet package
+to your C++ or C# MSBuild project.
 
-Adding the `zeroc.icebuilder.msbuild` NuGet package to a C++ or C# project will add
-`SliceCompile` and `SliceClean` task that run before the default `Compile` and `Clean`
-tasks.1
+For C++ projects, `zeroc.icebuilder.msbuild` inserts its `SliceCompile` task before the
+default `Compile` task, and inserts its `SliceClean` task before the default `Clean` task.
+`SliceCompile` generates C++ code using `slice2cpp` and adds the generated C++ files to
+the `ClCompile` items.
 
-With a C# project the `SliceCompile` tasks use the `slice2cs` Slice compiler to compile
-Slice files, the generated C# files are add to the `Compile` items set to be compile.
-
-With a C++ project the `SliceCompile` tasks use the `slice2cpp` Slice compiler to compile
-Slice files, the generated C++ source files are add to the `ClCompile` items set to be
-compile.
+For C# projects, `zeroc.icebuilder.msbuild` inserts its `SliceCompile` task before the
+default `Compile` task, and inserts its `SliceClean` task before the default `Clean` task.
+`SliceCompile` generates C# code using `slice2cs` and adds the generated C# files to
+the C# `Compile` items.
 
 ## Ice Home Configuration
 
-If you are using ZeroC Ice NuGet packages with your project the builder will use the NuGet
-package Ice distribution otherwise if using an Ice source distribution or and Ice MSI binary
-distribution you must set `IceHome` MSBuild property to point to the Ice distribution you want
-to use.
+The `IceHome` MSBuild property corresponds to the home directory of your Ice installation.
+Ice Builder needs this information to locate the Slice to C++ or Slice to C# compiler you 
+want to use.
+
+The default value for `IceHome` is often sufficient so you don't need to set `IceHome`
+explicitly. This default value depends on your platform and the type of Ice installation 
+you're using:
+
+| Platform | Ice Installation                    | Default IceHome                 |
+| -------- | ----------------------------------- | ------------------------------- |
+| Windows  | NuGet package                       | NuGet installation              |
+| Windows  | Source build, Ice 3.6 installation  | Read from the Windows Registry* |
+| Linux    | Any                                 | `/usr`                          |
+| macOS    | Any                                 | `/usr/local`                    |
+
+* Reads `HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`, usually set by the [Ice Builder 
+for Visual Studio](2).
 
 ## C++ Usage
 
@@ -47,7 +62,7 @@ to use.
 
 ### Build Requirements
 
-You need Visual Studio 2017 and [Visual Studio 2017 SDK](https://docs.microsoft.com/en-us/visualstudio/extensibility/installing-the-visual-studio-sdk)
+You need Visual Studio 2017 and the [Visual Studio 2017 SDK](3).
 
 ### Build Instructions
 
@@ -60,3 +75,7 @@ MSBuild icebuilder.proj /t:NuGetPack
 You can sign the assembly with Authenticode by setting the environment variable `SIGN_CERTIFICATE` to
 the path of your PFX certificate store, and the `SIGN_PASSWORD` environment variable to the password
 used by your certificate store.
+
+[1]: https://www.nuget.org/packages/zeroc.icebuilder.msbuild
+[2]: https://github.com/zeroc-ice/ice-builder-visualstudio
+[3]: https://docs.microsoft.com/en-us/visualstudio/extensibility/installing-the-visual-studio-sdk
