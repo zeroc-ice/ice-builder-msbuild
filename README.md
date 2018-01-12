@@ -58,12 +58,13 @@ your platform:
 
 The default value for `IceToolsPath` is also usually correct:
 
-| Platform                  | Default IceToolsPath     |
-| --------------------------|  ----------------------- |
-| Windows with Ice NuGet    | The NuGet's tools folder |
-| Windows without Ice NuGet | `$(IceHome)\bin`         |
-| Linux                     | `/usr/bin`               |
-| macOS                     | `$(IceHome)/bin`         |
+| Installation                          | Default IceToolsPath                                              |
+| --------------------------------------|  ---------------------------------------------------------------- |
+| Ice NuGet on Windows                  | The NuGet's tools folder                                          |
+| Ice source build (Ice 3.7 or greater) | Set by an Ice source tree props file to its `cpp/bin` or similar  |
+| Other installation on Windows         | `$(IceHome)\cpp\bin` if it exists, otherwise `$(IceHome)\bin`     |
+| Standard binary installation on Linux | `/usr/bin`                                                        |
+| Homebrew installation on macOS        | `$(IceHome)/bin`                                                  |
 
 ## C++ Usage
 
