@@ -14,7 +14,7 @@ The Ice Builder for MSBuild requires Ice 3.6.0 or higher, and MSBuild 4.0 or hig
 
 ## Contents
 - [Installation](#installation)
-- [Ice Home Configuration](#ice-home-configuration)
+- [Selecting your Ice Installation](#selecting-your-ice-installation)
 - [C++ Usage](#c-usage)
 - [C# Usage](#c-usage-1)
 - [Building from Source](#building-from-source)
@@ -34,22 +34,36 @@ default `Compile` task, and inserts its `SliceClean` task before the default `Cl
 `SliceCompile` generates C# code using `slice2cs` and adds the generated C# files to
 the C# `Compile` items.
 
-## Ice Home Configuration
+## Selecting your Ice Installation 
 
-The `IceHome` MSBuild property corresponds to the home directory of your Ice installation.
-Ice Builder needs this information to locate the Slice to C++ or Slice to C# compiler you 
-want to use.
+The Ice Builder for MSBuild relies on the following MSBuild properties to locate
+and validate your Ice installation:
 
-The default value for `IceHome` is often correct, and then you don't need to set
-`IceHome` explicitly. This default value depends on your platform and the type of Ice 
-installation you're using:
+| Property      | Description                             | Used for                                                            |
+| --------------|-----------------------------------------|------------------=------------------------------------------------- |
+| IceHome       | Root directory of your Ice installation | $(IceHome)/slice, the Slice files of your Ice installation          |
+| IceToolsPath  | Directory of `slice2cpp` and `slice2cs` | Compiling Slice files into C++ or C#                                |
+| IceIntVersion | Ice version as an integer               | Making sure you are using a version of Ice supported by Ice Builder |
 
-| Platform | Ice Installation                    | Default IceHome                 |
-| -------- | ----------------------------------- | ------------------------------- |
-| Windows  | NuGet package                       | NuGet installation              |
-| Windows  | Source build, Ice 3.6 installation  | Read from the Windows Registry<br>`HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`<br>usually set by the [Ice Builder for Visual Studio](2) |
-| Linux    | Any                                 | `/usr`                          |
-| macOS    | Any                                 | `/usr/local`                    |
+The default value for `IceHome` is usually correct, in which case you don't need to set
+`IceHome` explicitly.  When Ice is provided by a NuGet package, `IceHome` always points
+to the NuGet package installation. Otherwise, the default value for `IceHome` depends on
+your platform:
+
+| Platform | Default IceHome (non NuGet installation)|
+| -------- |  -------------------------------------- |
+| Windows  | Read from the Windows Registry<br>`HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`<br>usually set by the [Ice Builder for Visual Studio](2) |
+| Linux    | `/usr/share/ice`                        |
+| macOS    | `/usr/local/opt/ice`                    |
+
+The default value for `IceToolsPath` is also usually correct:
+
+| Platform                  | Default IceToolsPath     |
+| --------------------------|  ----------------------- |
+| Windows with Ice NuGet    | The NuGet's tools folder |
+| Windows without Ice NuGet | $(IceHome)\bin           |
+| Linux                     | `/usr/bin`               |
+| macOS                     | `/usr/local/bin`         |
 
 ## C++ Usage
 
