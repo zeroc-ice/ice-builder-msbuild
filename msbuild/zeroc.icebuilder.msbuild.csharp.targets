@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
+<!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
     <ItemGroup>
@@ -17,17 +17,17 @@
                  Exclude="@(Compile)" />
     </ItemGroup>
 
-    <!-- These capavility is used to apply the Slice property page designer -->
+    <!-- This capability is used for the Slice property page designer -->
     <ItemGroup>
         <ProjectCapability Include="SliceCompile" />
     </ItemGroup>
 
     <Target Name="SliceCompile" BeforeTargets="CoreCompile;XamlPreCompile">
 
-        <Error Text="Ice Installation not detected. Please update Ice Home settings'"
+        <Error Text="The IceHome property is not set'"
                Condition="'$(IceHome)' == ''" />
 
-        <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
+        <Error Text="Ice Builder requires Ice 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
                Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
 
         <MakeDir Directories="$(SliceCompileOutputDir)"/>
@@ -41,7 +41,7 @@
                    Additional Options: $(SliceCompileAdditionalOptions)"
             Overwrite="true"/>
 
-        <!-- First we check dependencies and decide what must be rebuild -->
+        <!-- First we check dependencies and compute what we need to rebuild -->
         <Slice2CSharpDependTask
             OutputDir             = "$(SliceCompileOutputDir)"
             WorkingDirectory      = "$(MSBuildProjectDirectory)"
@@ -60,7 +60,7 @@
 
         </Slice2CSharpDependTask>
 
-        <!-- Compile the Slice files to produce the generated code -->
+        <!-- Compile the Slice files -->
         <Slice2CSharpTask
             IceHome               = "$(IceHome)"
             IceToolsPath          = "$(IceToolsPath)"
