@@ -63,7 +63,7 @@ The default value for `IceToolsPath` is also usually correct:
 | Windows with Ice NuGet    | The NuGet's tools folder |
 | Windows without Ice NuGet | `$(IceHome)\bin`         |
 | Linux                     | `/usr/bin`               |
-| macOS                     | `/usr/local/bin`         |
+| macOS                     | `$(IceHome)/bin`         |
 
 ## C++ Usage
 
