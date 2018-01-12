@@ -40,7 +40,7 @@ The Ice Builder for MSBuild relies on the following MSBuild properties to locate
 and validate your Ice installation:
 
 | Property      | Description                             | Used for                                                            |
-| --------------|-----------------------------------------|------------------=------------------------------------------------- |
+| --------------|-----------------------------------------|-------------------------------------------------------------------- |
 | IceHome       | Root directory of your Ice installation | $(IceHome)/slice, the Slice files of your Ice installation          |
 | IceToolsPath  | Directory of `slice2cpp` and `slice2cs` | Compiling Slice files into C++ or C#                                |
 | IceIntVersion | Ice version as an integer               | Making sure you are using a version of Ice supported by Ice Builder |
@@ -61,7 +61,7 @@ The default value for `IceToolsPath` is also usually correct:
 | Platform                  | Default IceToolsPath     |
 | --------------------------|  ----------------------- |
 | Windows with Ice NuGet    | The NuGet's tools folder |
-| Windows without Ice NuGet | $(IceHome)\bin           |
+| Windows without Ice NuGet | `$(IceHome)\bin`         |
 | Linux                     | `/usr/bin`               |
 | macOS                     | `/usr/local/bin`         |
 
