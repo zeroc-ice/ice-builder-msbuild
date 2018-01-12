@@ -47,12 +47,9 @@ you're using:
 | Platform | Ice Installation                    | Default IceHome                 |
 | -------- | ----------------------------------- | ------------------------------- |
 | Windows  | NuGet package                       | NuGet installation              |
-| Windows  | Source build, Ice 3.6 installation  | Read from the Windows Registry* |
+| Windows  | Source build, Ice 3.6 installation  | Read from the Windows Registry<br>`HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`<br>usually set by the [Ice Builder for Visual Studio](2) |
 | Linux    | Any                                 | `/usr`                          |
 | macOS    | Any                                 | `/usr/local`                    |
-
-* Reads `HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`, usually set by the [Ice Builder 
-for Visual Studio](2).
 
 ## C++ Usage
 
