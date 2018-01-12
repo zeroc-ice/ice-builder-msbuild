@@ -64,7 +64,7 @@ The default value for `IceToolsPath` is also usually correct:
 | Ice source build (Ice 3.7 or greater) | Set by an Ice source tree props file to its `cpp/bin` or similar  |
 | Other installation on Windows         | `$(IceHome)\cpp\bin` if it exists, otherwise `$(IceHome)\bin`     |
 | Standard binary installation on Linux | `/usr/bin`                                                        |
-| Homebrew installation on macOS        | `$(IceHome)/bin`                                                  |
+| Homebrew installation on macOS        | `/usr/local/bin`                                                  |
 
 ## C++ Usage
 
