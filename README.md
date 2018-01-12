@@ -1,16 +1,16 @@
 # Ice Builder for MSBuild
 
-Ice Builder provides support for compiling Slice source files (`.ice` files) within
-C++ and C# MSBuild projects. It compiles these Slice files using the Slice to C++ 
-compiler (`slice2cpp`) or the Slice to C# compiler (`slice2cs`) provided by your Ice 
-installation.
+The Ice Builder for MSBuild provides support for compiling Slice source files
+(`.ice` files) within C++ and C# MSBuild projects. It compiles these Slice files
+using the Slice to C++ compiler (`slice2cpp`) or the Slice to C# compiler (`slice2cs`)
+provided by your Ice  installation.
 
-Ice Builder compiles or recompiles a Slice file when the corresponding generated 
+Ice Builder compiles or recompiles a Slice file when the corresponding generated
 files are missing or when they are out of date. Generated files are out of date
 when they are older than the corresponding Slice source file, or when they are older
 than any Slice file included directly or indirectly by this Slice source file.
 
-Ice Builder for MSBuild requires Ice 3.6.0 or higher, and MSBuild 4.0 or higher.
+The Ice Builder for MSBuild requires Ice 3.6.0 or higher, and MSBuild 4.0 or higher.
 
 ## Contents
 - [Installation](#installation)
@@ -21,7 +21,7 @@ Ice Builder for MSBuild requires Ice 3.6.0 or higher, and MSBuild 4.0 or higher.
 
 ## Installation
 
-To install Ice Builder, you just need to add the [`zeroc.icebuilder.msbuild`](1) NuGet package
+To install Ice Builder, you just need to add the `zeroc.icebuilder.msbuild` [NuGet package](1)
 to your C++ or C# MSBuild project.
 
 For C++ projects, `zeroc.icebuilder.msbuild` inserts its `SliceCompile` task before the
@@ -40,9 +40,9 @@ The `IceHome` MSBuild property corresponds to the home directory of your Ice ins
 Ice Builder needs this information to locate the Slice to C++ or Slice to C# compiler you 
 want to use.
 
-The default value for `IceHome` is often sufficient so you don't need to set `IceHome`
-explicitly. This default value depends on your platform and the type of Ice installation 
-you're using:
+The default value for `IceHome` is often correct, and then you don't need to set
+`IceHome` explicitly. This default value depends on your platform and the type of Ice 
+installation you're using:
 
 | Platform | Ice Installation                    | Default IceHome                 |
 | -------- | ----------------------------------- | ------------------------------- |
