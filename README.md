@@ -41,7 +41,7 @@ and validate your Ice installation:
 
 | Property      | Description                             | Used for                                                            |
 | --------------|-----------------------------------------|-------------------------------------------------------------------- |
-| IceHome       | Root directory of your Ice installation | $(IceHome)/slice, the Slice files of your Ice installation          |
+| IceHome       | Root directory of your Ice installation | `$(IceHome)/slice`, the Slice files of your Ice installation        |
 | IceToolsPath  | Directory of `slice2cpp` and `slice2cs` | Compiling Slice files into C++ or C#                                |
 | IceIntVersion | Ice version as an integer               | Making sure you are using a version of Ice supported by Ice Builder |
 
