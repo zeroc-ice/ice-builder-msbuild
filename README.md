@@ -68,19 +68,19 @@ The default value for `IceToolsPath` is also usually correct:
 
 ## Adding Slice Files to your Project
 
-Ice Builder automatically adds to your project all Slice files (files with a `.ice` extension)
+Ice Builder automatically adds to your project all Slice files (files with an `.ice` extension)
 found in project's directory and any of its sub-directories and sub-sub directories, recursively.
 This automatic addition of Slice files is controlled by the property `EnableDefaultSliceCompileItems`,
 which is `true` by default. Set this property to `false` to disable this behavior.
 
-You can instead add Slice files explicitly to your project by setting the `SliceCompile`
+As an alternative, you can add Slice files explicitly to your project by setting the `SliceCompile`
 property, for example:
 ```
 TODO - example, add file in project's parent directory
 ```
 
-Setting `SliceCompile` as shown above overwrites any Slice files added to
-`SliceCompile` through `EnableDefaultSliceCompileItems`.
+Setting `SliceCompile` as shown above overwrites any Slice files added to `SliceCompile`
+through `EnableDefaultSliceCompileItems`.
 
 ## Customizing the Slice to C++ Compilation
 
