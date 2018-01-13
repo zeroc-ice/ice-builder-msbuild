@@ -21,7 +21,7 @@ The Ice Builder for MSBuild requires Ice 3.6.0 or higher, and MSBuild 4.0 or hig
 
 ## Installation
 
-To install Ice Builder, you just need to add the `zeroc.icebuilder.msbuild` [NuGet package](1)
+To install Ice Builder, you just need to add the `zeroc.icebuilder.msbuild` [NuGet package][1]
 to your C++ or C# MSBuild project.
 
 For C++ projects, `zeroc.icebuilder.msbuild` inserts its `SliceCompile` task before the
@@ -52,7 +52,7 @@ your platform:
 
 | Platform | Default IceHome (non NuGet installation)|
 | -------- |  -------------------------------------- |
-| Windows  | Read from the Windows Registry<br>`HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`<br>usually set by the [Ice Builder for Visual Studio](2) |
+| Windows  | Read from the Windows Registry<br>`HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`<br>usually set by the [Ice Builder for Visual Studio][2] |
 | Linux    | `/usr/share/ice`                        |
 | macOS    | `/usr/local/opt/ice`                    |
 
@@ -87,7 +87,7 @@ through `EnableDefaultSliceCompileItems`.
 You can customize the options passed by Ice Builder to `slice2cpp` with the
 following properties:
 
-| Property                                     | Default Value            | Corresponding `slice2cpp` [option](3)|
+| Property                                     | Default Value            | Corresponding `slice2cpp` [option][3]|
 | -------------------------------------------- | ------------------------ | ------------------------------------ |
 | SliceCompileOutputDir                        | $(ProjectDir)\generated  | `--output-dir`                       |
 | SliceCompileHeaderOutputDir                  | $(SliceCompileOutputDir) | (none)                               |
@@ -114,7 +114,7 @@ of your project (the `AdditionalIncludeDirectories` property).
 You can customize the options passed by Ice Builder to `slice2cs` with the
 following properties:
 
-| Property                       | Default Value           | Corresponding `slice2cs` [option](4)|
+| Property                       | Default Value           | Corresponding `slice2cs` [option][4]|
 | -------------------------------|------------------------ |-------------------------------------|
 | SliceCompileOutputDir          | $(ProjectDir)/generated | `--output-dir`                      |
 | SliceCompileIncludeDirectories |                         | `-I`                                |
@@ -128,7 +128,7 @@ a result, you never need to include `$(IceHome)/slice` in this list.
 
 ### Build Requirements
 
-You need Visual Studio 2017 and the [Visual Studio 2017 SDK](5).
+You need Visual Studio 2017 and the [Visual Studio 2017 SDK][5].
 
 ### Build Instructions
 
