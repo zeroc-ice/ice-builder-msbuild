@@ -45,26 +45,24 @@ and validate your Ice installation:
 | IceToolsPath  | Directory of `slice2cpp` and `slice2cs` | Compiling Slice files into C++ or C#                                |
 | IceIntVersion | Ice version as an integer               | Making sure you are using a version of Ice supported by Ice Builder |
 
-The default value for `IceHome` is usually correct, in which case you don't need to set
-`IceHome` explicitly.  When Ice is provided by a NuGet package, `IceHome` always points
-to the NuGet package installation. Otherwise, the default value for `IceHome` depends on
-your platform:
+If you added a Ice to your project as a NuGet package, the NuGet package
+sets `IceHome` automatically to the NuGet's root directory.
 
-| Platform | Default IceHome (non NuGet installation)|
-| -------- |  -------------------------------------- |
-| Windows  | Read from the Windows Registry<br>`HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`<br>usually set by the [Ice Builder for Visual Studio][2] |
-| Linux    | `/usr/share/ice`                        |
-| macOS    | `/usr/local/opt/ice`                    |
+Otherwise on Windows, Ice Builder reads the value for `IceHome` in the Windows
+registry, using the key `HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`.
+Use the [Ice Builder for Visual Studio][2] to set the value for this key.
 
-The default value for `IceToolsPath` is also usually correct:
+You typically need to set `IceHome` if you want to use a source build as your Ice installation.
 
-| Ice Installation                                     | Default IceToolsPath                                             |
+The default value for `IceToolsPath` is usually correct and does not need to be set explicitly:
+
+| Ice Installation (from `IceHome`)                    | Default IceToolsPath                                             |
 | ---------------------------------------------------- | ---------------------------------------------------------------- |
 | Ice source build (Ice 3.7 or greater)                | Set by an Ice source tree props file to its `cpp/bin` or similar |
 | Ice NuGet on Windows                                 | The NuGet's tools folder                                         |
 | Other installation on Windows                        | `$(IceHome)\cpp\bin` if it exists, otherwise `$(IceHome)\bin`    |
 | Ice NuGet plus standard binary installation on Linux | `/usr/bin`                                                       |
-| Ice NuGet plus homebrew installation on macOS       | `/usr/local/bin`                                                 |
+| Ice NuGet plus homebrew installation on macOS        | `/usr/local/bin`                                                 |
 
 ## Adding Slice Files to your Project
 
