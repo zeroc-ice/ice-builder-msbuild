@@ -45,12 +45,12 @@ and validate your Ice installation:
 | IceToolsPath  | Directory of `slice2cpp` and `slice2cs` | Compiling Slice files into C++ or C#                                |
 | IceIntVersion | Ice version as an integer               | Making sure you are using a version of Ice supported by Ice Builder |
 
-If you added a Ice to your project as a NuGet package, the NuGet package
-sets `IceHome` automatically to the NuGet's root directory.
+If you added a `zeroc.ice.` NuGet package to your project, the NuGet package sets `IceHome` 
+automatically to the NuGet's root directory.
 
-Otherwise on Windows, Ice Builder reads the value for `IceHome` in the Windows
-registry, using the key `HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`.
-Use the [Ice Builder for Visual Studio][2] to set the value for this key.
+Otherwise, on Windows, Ice Builder reads the value for `IceHome` from the Windows
+registry using the key `HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`. The value for 
+this key is set by the [Ice Builder for Visual Studio][2].
 
 You typically need to set `IceHome` if you want to use a source build as your Ice installation.
 
