@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
+<!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <ItemGroup>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)ProjectItemsSchema.xaml" />
@@ -69,7 +69,7 @@
                 TaskParameter                 = "ComputedSources"/>
 
             <Output
-                PropertyName                  = "_SliceCompileUdateDepends"
+                PropertyName                  = "_SliceCompileUpdateDepends"
                 TaskParameter                 = "UpdateDepends"/>
 
         </Slice2CppDependTask>
@@ -106,7 +106,7 @@
             DependFile                        = "$(SliceCompileOutputDir)\SliceCompile.d"
             Depend                            = "true"
             Sources                           = "@(_SliceCompile)"
-            Condition                         = "'$(_SliceCompileUdateDepends)' == 'True'">
+            Condition                         = "'$(_SliceCompileUpdateDepends)' == 'True'">
             <Output
                 ItemName                      = "__SliceCompile"
                 TaskParameter                 = "ComputedSources"/>
@@ -120,13 +120,13 @@
         <WriteLinesToFile File                = "$(TLogLocation)\slice2cpp.write.1u.tlog"
                           Encoding            = "Unicode"
                           Lines               = "^%(__SliceCompile.FullPath);%(__SliceCompile.Outputs)"
-                          Condition           = "'$(_SliceCompileUdateDepends)' == 'True'"/>
+                          Condition           = "'$(_SliceCompileUpdateDepends)' == 'True'"/>
 
         <!-- Read TLog files -->
         <WriteLinesToFile File                = "$(TLogLocation)\slice2cpp.read.1u.tlog"
                           Encoding            = "Unicode"
                           Lines               = "^%(__SliceCompile.FullPath);%(__SliceCompile.Inputs)"
-                          Condition           = "'$(_SliceCompileUdateDepends)' == 'True'"/>
+                          Condition           = "'$(_SliceCompileUpdateDepends)' == 'True'"/>
     </Target>
 
     <Target Name="SliceCompileClean" BeforeTargets="Clean">

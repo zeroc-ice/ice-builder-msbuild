@@ -1,6 +1,6 @@
 // **********************************************************************
 //
-// Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved.
+// Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved.
 //
 // **********************************************************************
 
@@ -531,7 +531,7 @@ namespace IceBuilder.MSBuild
         }
 
         [Required]
-        public string SliceCompiler
+        public string IceToolsPath
         {
             get;
             set;
@@ -570,6 +570,10 @@ namespace IceBuilder.MSBuild
         {
             get;
             private set;
+        }
+        protected abstract string ToolName
+        {
+            get;
         }
 
         abstract protected ITaskItem[] GeneratedItems(ITaskItem source);
@@ -611,7 +615,7 @@ namespace IceBuilder.MSBuild
             }
             File.Move(log0, log1);
 
-            FileInfo sliceCompiler = new FileInfo(SliceCompiler);
+            FileInfo sliceCompiler = new FileInfo(Path.Combine(IceToolsPath, ToolName));
 
             XmlDocument dependsDoc = new XmlDocument();
             bool dependExists = File.Exists(DependFile);
@@ -684,7 +688,7 @@ namespace IceBuilder.MSBuild
                                            string.Format("Build required because target: {0} is older than Slice compiler: {1}",
                                                          TaskUtil.MakeRelative(WorkingDirectory,
                                                                                generatedInfo.FullName),
-                                                         Path.GetFileName(SliceCompiler)));
+                                                         ToolName));
                             skip = false;
                             break;
                         }
@@ -850,6 +854,14 @@ namespace IceBuilder.MSBuild
             set;
         }
 
+        protected override string ToolName
+        {
+            get
+            {
+                return "slice2cpp.exe";
+            }
+        }
+
         protected override ITaskItem[] GeneratedItems(ITaskItem source)
         {
             return new ITaskItem[]
@@ -872,6 +884,14 @@ namespace IceBuilder.MSBuild
             {
                 new TaskItem(GetGeneratedPath(source, OutputDir, ".cs")),
             };
+        }
+
+        protected override string ToolName
+        {
+            get
+            {
+                return TaskUtil.isWindows ? "slice2cs.exe" : "slice2cs";
+            }
         }
 
     }

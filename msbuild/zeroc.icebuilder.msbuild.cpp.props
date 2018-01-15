@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
+<!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
     <!-- Import our custom MSbuild tasks used to build Ice for C++ projects -->
@@ -19,11 +19,11 @@
     <ImportGroup Condition="'$(IceNugetPackageVersion)' == ''">
         <!-- With Ice 3.6 binary distribution settings are in the Ice Home config directory -->
         <Import Project="$(IceHome)\config\Ice.Cpp.props"
-                Condition="Exists('$(IceHome)\config\Ice.Cpp.props')"/>
+                Condition="Exists('$(IceHome)\config\ice.cpp.props')"/>
 
         <!-- With Ice 3.6 source distribution settings are in the Ice Home cpp\config directory -->
-        <Import Project="$(IceHome)\cpp\config\Ice.Cpp.props"
-                Condition="Exists('$(IceHome)\cpp\config\Ice.Cpp.props')"/>
+        <Import Project="$(IceHome)\cpp\config\ice.cpp.props"
+                Condition="Exists('$(IceHome)\cpp\config\ice.cpp.props')"/>
 
         <!-- With Ice > 3.6 source distribution the settings are in the cpp msbuild directory -->
         <Import Project="$(IceHome)\cpp\msbuild\icebuilder.cpp.props"
@@ -38,10 +38,6 @@
 
   <PropertyGroup Condition="'$(SliceCompileSourceExt)' == ''">
       <SliceCompileSourceExt>cpp</SliceCompileSourceExt>
-  </PropertyGroup>
-
-  <PropertyGroup>
-      <SliceCompileIncludeDirectories>$(IceHome)\slice;%(SliceCompileIncludeDirectories)</SliceCompileIncludeDirectories>
   </PropertyGroup>
 
   <ItemDefinitionGroup Condition="'$(SliceCompileHeaderOutputDir)' == '' And '$(SliceCompileBaseDirectoryForGeneratedInclude)' == ''">

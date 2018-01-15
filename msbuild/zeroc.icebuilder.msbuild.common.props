@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
+<!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <!--
-        If ICE_HOME is set and IceHome is not set we set IceHome to ICE_HOME
-        this will be later used to load settings from the Ice distribution pointed
-        by IceHome.
-    -->
-    <PropertyGroup Label="IceHome" Condition="'$(IceHome)' == ''">
-        <IceHome>$(ICE_HOME)</IceHome>
-    </PropertyGroup>
-
     <!--
         If IceVersion is not set import the version settings from the Ice
         distribution.
@@ -18,13 +9,13 @@
         <!--
             With Ice 3.6.x binary distribution this settings are in config\Ice.props.
         -->
-        <Import Project="$(IceHome)\config\Ice.props"
-                Condition="Exists('$(IceHome)\config\Ice.props')"/>
+        <Import Project="$(IceHome)\config\ice.props"
+                Condition="Exists('$(IceHome)\config\ice.props')"/>
         <!--
             With Ice 3.6.x source distribution this settings are in cpp\config\Ice.props.
         -->
-        <Import Project="$(IceHome)\cpp\config\Ice.props"
-                Condition="Exists('$(IceHome)\cpp\config\Ice.props')"/>
+        <Import Project="$(IceHome)\cpp\config\ice.props"
+                Condition="Exists('$(IceHome)\cpp\config\ice.props')"/>
 
         <!--
             With Ice 3.7 the settings were move to config\icebuilder.props.
@@ -43,13 +34,6 @@
         <IceVersionMM>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceVersionMM)</IceVersionMM>
     </PropertyGroup>
 
-    <!--
-        Check if IceHome denotes a source distribution.
-    -->
-    <PropertyGroup Condition="Exists('$(IceHome)\cpp\src')">
-        <IceSourceHome>$(IceHome)</IceSourceHome>
-    </PropertyGroup>
-
     <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
         <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
     </PropertyGroup>
@@ -60,6 +44,7 @@
 
     <ItemGroup  Condition="'$(EnableDefaultItems)' == 'true'">
         <SliceCompile Condition="'$(EnableDefaultSliceCompileItems)' == 'true'" Include="**\*.ice"
-                      Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)"/>
+                      Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);@(SliceCompile)"/>
     </ItemGroup>
+
 </Project>

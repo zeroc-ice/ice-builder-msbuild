@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2009-2017 ZeroC, Inc. All rights reserved. -->
+<!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Rule
     Name="SliceCompile"
     DisplayName="File Properties"
@@ -40,8 +40,18 @@
         ReadOnly="true"
         Category="Misc"
         Description="Location of the file.">
-    <StringProperty.DataSource>
-        <DataSource Persistence="Intrinsic" ItemType="SliceCompile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
+        <StringProperty.DataSource>
+            <DataSource Persistence="Intrinsic" ItemType="SliceCompile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
     </StringProperty>
+
+    <StringProperty Name="Link" Visible="false">
+        <StringProperty.DataSource>
+            <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+        <StringProperty.Metadata>
+            <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+        </StringProperty.Metadata>
+    </StringProperty>
+
 </Rule>
