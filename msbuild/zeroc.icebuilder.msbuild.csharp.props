@@ -4,22 +4,22 @@
     <Choose>
         <When Condition="'$(MSBuildAssemblyVersion)' == '' or '$(MSBuildAssemblyVersion)' &lt; '15.0'">
             <PropertyGroup>
-                <SliceCompilerAssemblyDir>net45</SliceCompilerAssemblyDir>
+                <SliceCompileAssemblyDir>net45</SliceCompileAssemblyDir>
             </PropertyGroup>
         </When>
         <Otherwise>
             <PropertyGroup>
-                <SliceCompilerAssemblyDir>netstandard2.0</SliceCompilerAssemblyDir>
+                <SliceCompileAssemblyDir>netstandard2.0</SliceCompileAssemblyDir>
             </PropertyGroup>
         </Otherwise>
     </Choose>
 
     <!-- Import our custom MSbuild tasks used to build Ice for CSharp projects -->
     <UsingTask TaskName="IceBuilder.MSBuild.Slice2CSharpTask"
-               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\$(SliceCompilerAssemblyDir)\zeroc.icebuilder.msbuild.dll"/>
+               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\$(SliceCompileAssemblyDir)\zeroc.icebuilder.msbuild.dll"/>
 
     <UsingTask TaskName="IceBuilder.MSBuild.Slice2CSharpDependTask"
-               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\$(SliceCompilerAssemblyDir)\zeroc.icebuilder.msbuild.dll"/>
+               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\$(SliceCompileAssemblyDir)\zeroc.icebuilder.msbuild.dll"/>
 
     <!-- Import IceBuilder common settings -->
     <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.common.props"/>
