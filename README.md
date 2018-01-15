@@ -18,6 +18,7 @@ The Ice Builder for MSBuild requires Ice 3.6.0 or higher, and MSBuild 4.0 or hig
   * [Ice NuGet](#ice-nuget)
   * [Other Ice Installation on Windows](#other-ice-installation-on-windows)
 * [Adding Slice Files to your Project](#adding-slice-files-to-your-project)
+* [Compiling and Linking your Project with Ice](#compiling-and-linking-your-project-with-ice)
 * [Customizing the Slice to C++ Compilation](#customizing-the-slice-to-c-compilation)
 * [Customizing the Slice to C# Compilation](#customizing-the-slice-to-c-compilation-1)
 * [Building Ice Builder from Source](#building-ice-builder-from-source)
@@ -52,7 +53,7 @@ and validate your Ice installation:
 
 ### Ice NuGet
 
-If you added a `zeroc.ice.` NuGet package to your project, the NuGet package sets
+If you add a `zeroc.ice.` NuGet package to your project, the NuGet package sets
 all these properties:
 
 | Property      | Value with Ice NuGet                                                                |
@@ -85,6 +86,17 @@ property, for example:
 ```
 TODO - example, add file in project's parent directory
 ```
+
+## Compiling and Linking your Project with Ice
+
+If you add an Ice NuGet to your project, the NuGet configures your project to compile
+and link your code with Ice. For example, for C++ projects, it adds the correct include directory 
+to the `AdditionalIncludeDirectories` property.
+
+If you use an Ice 3.6 MSI or Web Install binary distribution, Ice Builder imports
+a property file from the binary distribution, and this property file performs the same setup.
+
+These properties are not set automatically for other Ice installations, such as source builds. 
 
 ## Customizing the Slice to C++ Compilation
 
