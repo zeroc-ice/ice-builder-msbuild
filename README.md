@@ -71,7 +71,7 @@ Windows registry key `HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceIntVersion`
 The value for these Windows registry keys are set by the [Ice Builder for Visual Studio][2].
 
 If you don't set `IceToolsPath` in your project file, Ice Builder sets `IceToolsPath` to 
-`$(IceHome)\cpp\bin` if this folder exists, and otherwise to `$(IceHome)\bin`.
+`$(IceHome)\bin`.
 
 ## Adding Slice Files to your Project
 
@@ -80,14 +80,11 @@ found in project's directory and any of its sub-directories and sub-sub director
 This automatic addition of Slice files is controlled by the property `EnableDefaultSliceCompileItems`,
 which is `true` by default. Set this property to `false` to disable this behavior.
 
-As an alternative, you can add Slice files explicitly to your project by setting the `SliceCompile`
+As an alternative, you can add Slice files explicitly to your project using the `SliceCompile`
 property, for example:
 ```
 TODO - example, add file in project's parent directory
 ```
-
-Setting `SliceCompile` as shown above overwrites any Slice files added to `SliceCompile`
-through `EnableDefaultSliceCompileItems`.
 
 ## Customizing the Slice to C++ Compilation
 
