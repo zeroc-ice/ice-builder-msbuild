@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <!--
-        If not using NuGet packages import the Ice distribution settings from
-        the distribution config directory, if IceHome has not been set read
-        the settings from the Windows registry.
-    -->
+   
+    <!-- If we're using an Ice NuGet package, the NuGet package sets IceHome, IceVersion etc.
+         otherwise: -->
     <Choose Condition="'$(IceNugetPackageVersion)' == ''">
+        <!-- IceHome set explicitly: load version properties from the config/ice.props file, if present -->
         <When Condition="'$(IceHome)' != ''">
             <ImportGroup>
                 <Import Project="$(IceHome)\config\ice.props"
@@ -14,6 +13,7 @@
             </ImportGroup>
         </When>
         <Otherwise>
+            <!-- Look up IceHome, IceVersion etc. in the Windows registry -->
             <PropertyGroup Label="IceHome" Condition="'$(IceHome)' == '' and '$(OS)' == 'Windows_NT'">
                 <IceHome>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceHome)</IceHome>
                 <IceVersion>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceVersion)</IceVersion>
@@ -37,14 +37,9 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <!--
-            IceToolsPath was introduced in 3.7.0 and is use by Slice tasks to locate the Slice compilers
-        -->
+        <!-- Slice tasks use IceToolsPath to locate the Slice compilers -->
         <IceToolsPath Condition="'$(IceToolsPath)' == '' And Exists('$(IceHome)\bin')">$(IceHome)\bin</IceToolsPath>
-        <!--
-            IceToolsBin is not longer supported as Ice 3.7.0 IceToolsPath must be used, keep it here for Ice < 3.7.0
-            for backwards compatibility.
-        -->
+        <!-- IceToolsBin is no longer used as of Ice 3.7, but IceBuilder sets it for projects that use Ice 3.6 -->
         <IceToolsBin Condition="'$(IceToolsBin)' == '' and '$(IceIntVersion)' != '' and '$(IceIntVersion)' &lt; '30700' ">$(IceToolsPath)</IceToolsBin>
     </PropertyGroup>
 </Project>
