@@ -20,29 +20,28 @@
     <ItemGroup>
          <Compile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"
                   Exclude="@(Compile)"/>
-
     </ItemGroup>
 
-    <ItemGroup Condition="'$(SetLinkMetadataAutomatically)' != 'false' and '$(MSBuildAssemblyVersion)' &lt; '15.0'">
-        <SliceCompile Update="@(SliceCompile)">
-            <LinkBase Condition="'%(LinkBase)' != ''">$([MSBuild]::EnsureTrailingSlash(%(LinkBase)))</LinkBase>
-            <Link Condition="'%(Link)' == '' And '%(DefiningProjectExtension)' != '.projitems' And !$([MSBuild]::ValueOrDefault('%(FullPath)', '').StartsWith($([MSBuild]::EnsureTrailingSlash($(MSBuildProjectDirectory)))))">%(LinkBase)%(RecursiveDir)%(Filename)%(Extension)</Link>
-        </SliceCompile>
-    </ItemGroup>
+    <!--
+        Settings that are only supported with MSBuild 15.0 and up, the item Update
+        attribute is not supported with older MSBuild versions and will fail to parse
+        the targets files in set directly here.
+    -->
+    <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.csharp.15.0.targets"
+            Condition="'$(MSBuildAssemblyVersion)' &gt; '14.0'"/>
 
     <Target Name="SliceCompile" BeforeTargets="CoreCompile;XamlPreCompile">
 
-        <Error Text="Ice Installation not detected. Please update Ice Home settings'"
+        <Error Text="Ice Installation not detected."
                Condition="'$(IceHome)' == ''" />
 
         <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
                Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
 
         <MakeDir Directories="$(SliceCompileOutputDir)"/>
-        <MakeDir Directories="$(IntermediateOutputPath)"/>
 
         <WriteLinesToFile
-            File="$(IntermediateOutputPath)\SliceCompile.command.log"
+            File="$(SliceCompileOutputDir)\SliceCompile.command.log"
             Lines="Ice Home: $(IceHome);
                    Ice Tools Path: $(IceToolsPath);
                    Output Dir: $(SliceCompileOutputDir);
@@ -55,8 +54,8 @@
             OutputDir             = "$(SliceCompileOutputDir)"
             WorkingDirectory      = "$(MSBuildProjectDirectory)"
             IceToolsPath          = "$(IceToolsPath)"
-            DependFile            = "$(IntermediateOutputPath)\SliceCompile.d"
-            CommandLog            = "$(IntermediateOutputPath)\SliceCompile.command.log"
+            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
+            CommandLog            = "$(SliceCompileOutputDir)\SliceCompile.command.log"
             Sources               = "@(SliceCompile)">
 
             <Output
@@ -77,7 +76,7 @@
             WorkingDirectory      = "$(MSBuildProjectDirectory)"
             IncludeDirectories    = "$(SliceCompileIncludeDirectories);$(IceHome)\slice"
             AdditionalOptions     = "$(SliceCompileAdditionalOptions)"
-            DependFile            = "$(IntermediateOutputPath)\SliceCompile.d"
+            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
             Sources               = "@(_SliceCompile)"
             Condition             = "'%(_SliceCompile.BuildRequired)' == 'True'"/>
 
@@ -89,7 +88,7 @@
             WorkingDirectory      = "$(MSBuildProjectDirectory)"
             IncludeDirectories    = "$(SliceCompileIncludeDirectories);$(IceHome)\slice"
             AdditionalOptions     = "$(SliceCompileAdditionalOptions)"
-            DependFile            = "$(IntermediateOutputPath)\SliceCompile.d"
+            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
             Sources               = "@(_SliceCompile)"
             Depend                = "true"
             Condition             = "'$(_SliceCompileUpdateDepends)' == 'True'"/>
@@ -97,8 +96,8 @@
 
     <Target Name="SliceCompileClean" BeforeTargets="Clean">
         <Delete Files="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"/>
-        <Delete Files="$(IntermediateOutputPath)\SliceCompile.d"/>
-        <Delete Files="$(IntermediateOutputPath)\SliceCompile.command.log"/>
-        <Delete Files="$(IntermediateOutputPath)\SliceCompile.command.0.log"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.d"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.log"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.0.log"/>
     </Target>
 </Project>

@@ -13,25 +13,13 @@
     <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.common.props"/>
 
     <!--
-        If the build is not uisng NuGet packages we need to import build
-        settings from the Ice distribution
+        If we are not uisng NuGet packages we need to import the C++ build settings from
+        the Ice distribution
     -->
-    <ImportGroup Condition="'$(IceNugetPackageVersion)' == ''">
-        <!-- With Ice 3.6 binary distribution settings are in the Ice Home config directory -->
-        <Import Project="$(IceHome)\config\Ice.Cpp.props"
-                Condition="Exists('$(IceHome)\config\ice.cpp.props')"/>
-
-        <!-- With Ice 3.6 source distribution settings are in the Ice Home cpp\config directory -->
-        <Import Project="$(IceHome)\cpp\config\ice.cpp.props"
-                Condition="Exists('$(IceHome)\cpp\config\ice.cpp.props')"/>
-
-        <!-- With Ice > 3.6 source distribution the settings are in the cpp msbuild directory -->
-        <Import Project="$(IceHome)\cpp\msbuild\icebuilder.cpp.props"
-                Condition="Exists('$(IceHome)\cpp\msbuild\icebuilder.cpp.props')"/>
-    </ImportGroup>
+    <Import Project="$(IceHome)\config\Ice.Cpp.props"
+            Condition="'$(IceNugetPackageVersion)' == '' and Exists('$(IceHome)\config\ice.cpp.props')"/>
 
   <!-- Default settings for SliceCompile task  -->
-
   <PropertyGroup Condition="'$(SliceCompileHeaderExt)' == ''">
       <SliceCompileHeaderExt>h</SliceCompileHeaderExt>
   </PropertyGroup>
@@ -55,11 +43,5 @@
   <!-- Debugger environment settings -->
   <PropertyGroup>
       <LocalDebuggerEnvironment>PATH=$(Path);$(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(IceIntVersion)' != '' And '$(IceIntVersion)' &lt; '30700'">
-      <IceToolsPath Condition="'$(IceToolsPath)' == '' And Exists('$(IceHome)\cpp\bin')">$(IceHome)\cpp\bin</IceToolsPath>
-      <IceToolsPath Condition="'$(IceToolsPath)' == '' And Exists('$(IceHome)\bin')">$(IceHome)\bin</IceToolsPath>
-      <IceToolsBin Condition="'$(IceToolsBin)' == ''">$(IceToolsPath)</IceToolsBin>
   </PropertyGroup>
 </Project>

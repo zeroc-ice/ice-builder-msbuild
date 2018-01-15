@@ -40,7 +40,7 @@ default `Compile` task, and inserts its `SliceClean` task before the default `Cl
 `SliceCompile` generates C# code using `slice2cs` and adds the generated C# files to
 the C# `Compile` items.
 
-## Selecting your Ice Installation 
+## Selecting your Ice Installation
 
 The Ice Builder for MSBuild relies on the following MSBuild properties to locate
 and validate your Ice installation:
@@ -65,13 +65,13 @@ all these properties:
 ### Other Ice Installation on Windows
 
 If you don't install Ice as a NuGet package and you don't set `IceHome` in your project file,
-Ice Builder reads the value for `IceHome` from the Windows registry using the key 
+Ice Builder reads the value for `IceHome` from the Windows registry using the key
 `HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`. It also reads `IceIntVersion` from the
 Windows registry key `HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceIntVersion`.
 
 The value for these Windows registry keys are set by the [Ice Builder for Visual Studio][2].
 
-If you don't set `IceToolsPath` in your project file, Ice Builder sets `IceToolsPath` to 
+If you don't set `IceToolsPath` in your project file, Ice Builder sets `IceToolsPath` to
 `$(IceHome)\bin`.
 
 ## Adding Slice Files to your Project
@@ -82,9 +82,11 @@ This automatic addition of Slice files is controlled by the property `EnableDefa
 which is `true` by default. Set this property to `false` to disable this behavior.
 
 As an alternative, you can add Slice files explicitly to your project using the `SliceCompile`
-property, for example:
+item type, for example:
 ```
-TODO - example, add file in project's parent directory
+<ItemGroup>
+    <SliceCompile Include="../Hello.ice"/>
+</ItemGroup>
 ```
 
 ## Compiling and Linking your Project with Ice
@@ -121,7 +123,7 @@ the directories specified by this property, followed by `-I $(IceHome)/slice`. A
 a result, you never need to include `$(IceHome)/slice` in this list.
 
 `SliceCompileBaseDirectoryForGeneratedInclude`: if you leave this property unset,
-Ice Builder automatically adds `SliceCompileHeaderOutputDir` (when set) or 
+Ice Builder automatically adds `SliceCompileHeaderOutputDir` (when set) or
 `SliceCompileOutputDir` to the include directories used during the C++ compilation
 of your project (the `AdditionalIncludeDirectories` property).
 

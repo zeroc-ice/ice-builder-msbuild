@@ -23,31 +23,4 @@
 
     <!-- Import IceBuilder common settings -->
     <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.common.props"/>
-
-    <!-- Import settings from the Ice distribution, If the project is usig Ice nuget packages
-         those are already imported and we avoid to import the settings twice -->
-    <ImportGroup Condition="'$(IceNugetPackageVersion)' == ''">
-
-        <!-- With Ice source distribution > 3.6 the settings are in the csharp msbuild directory -->
-        <Import Project="$(IceHome)\csharp\msbuild\icebuilder.csharp.props"
-                Condition="Exists('$(IceHome)\csharp\msbuild\icebuilder.csharp.props')"/>
-    </ImportGroup>
-
-    <PropertyGroup Condition="'$(IceAssembliesDir)' == '' And Exists('$(IceHome)\csharp\Assemblies')">
-        <IceAssembliesDir>$(IceHome)\csharp\Assemblies</IceAssembliesDir>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(IceAssembliesDir)' == '' And Exists('$(IceHome)\Assemblies')">
-        <IceAssembliesDir>$(IceHome)\Assemblies</IceAssembliesDir>
-    </PropertyGroup>
-
-    <!-- Default Ice Builder settings -->
-    <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
-        <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(IceIntVersion)' != '' And '$(IceIntVersion)' &lt; '30700'">
-        <IceToolsPath Condition="'$(IceToolsPath)' == '' And Exists('$(IceHome)\cpp\bin')">$(IceHome)\cpp\bin</IceToolsPath>
-        <IceToolsPath Condition="'$(IceToolsPath)' == '' And Exists('$(IceHome)\bin')">$(IceHome)\bin</IceToolsPath>
-    </PropertyGroup>
 </Project>
