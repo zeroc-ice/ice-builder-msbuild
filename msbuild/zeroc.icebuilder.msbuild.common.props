@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-   
-    <!-- If we're using an Ice NuGet package, the NuGet package sets IceHome, IceVersion etc.
-         otherwise: -->
-    <Choose Condition="'$(IceNugetPackageVersion)' == ''">
-        <!-- IceHome set explicitly: load version properties from the config/ice.props file, if present -->
-        <When Condition="'$(IceHome)' != ''">
-            <ImportGroup>
-                <Import Project="$(IceHome)\config\ice.props"
-                        Condition="Exists('$(IceHome)\config\ice.props')"/>
-            </ImportGroup>
-        </When>
-        <Otherwise>
-            <!-- Look up IceHome, IceVersion etc. in the Windows registry -->
-            <PropertyGroup Label="IceHome" Condition="'$(IceHome)' == '' and '$(OS)' == 'Windows_NT'">
-                <IceHome>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceHome)</IceHome>
-                <IceVersion>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceVersion)</IceVersion>
-                <IceIntVersion>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceIntVersion)</IceIntVersion>
-                <IceVersionMM>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceVersionMM)</IceVersionMM>
-            </PropertyGroup>
-        </Otherwise>
-    </Choose>
+    <!-- IceHome set explicitly: load version properties from the config/ice.props file, if present -->
+    <ImportGroup Condition="'$(IceNugetPackageVersion)' == '' and '$(IceHome)' != ''">
+        <Import Project="$(IceHome)\config\ice.props"
+                Condition="Exists('$(IceHome)\config\ice.props')"/>
+    </ImportGroup>
+
+    <!-- Look up IceHome, in the Windows registry -->
+    <PropertyGroup Condition="'$(IceNugetPackageVersion)' == '' and '$(IceHome)' == '' and '$(OS)' == 'Windows_NT'">
+        <IceHome>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceHome)</IceHome>
+        <IceVersion>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceVersion)</IceVersion>
+        <IceIntVersion>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceIntVersion)</IceIntVersion>
+        <IceVersionMM>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceVersionMM)</IceVersionMM>
+    </PropertyGroup>
 
     <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
         <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
@@ -36,10 +28,11 @@
                       Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);@(SliceCompile)"/>
     </ItemGroup>
 
-    <PropertyGroup>
+    <!-- Ice MSBuild properties not provided by Ice versions older than 3.7.0 -->
+    <PropertyGroup Condition="'$(IceIntVersion)' != '' and '$(IceIntVersion)' &lt; '30700'">
         <!-- Slice tasks use IceToolsPath to locate the Slice compilers -->
         <IceToolsPath Condition="'$(IceToolsPath)' == '' And Exists('$(IceHome)\bin')">$(IceHome)\bin</IceToolsPath>
         <!-- IceToolsBin is no longer used as of Ice 3.7, but IceBuilder sets it for projects that use Ice 3.6 -->
-        <IceToolsBin Condition="'$(IceToolsBin)' == '' and '$(IceIntVersion)' != '' and '$(IceIntVersion)' &lt; '30700' ">$(IceToolsPath)</IceToolsBin>
+        <IceToolsBin Condition="'$(IceToolsBin)' == '' and  ">$(IceToolsPath)</IceToolsBin>
     </PropertyGroup>
 </Project>

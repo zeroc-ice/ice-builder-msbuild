@@ -12,7 +12,7 @@
         </PropertyPageSchema>
     </ItemGroup>
 
-    <!-- These capavility is used to apply the Slice property page designer -->
+    <!-- These capability is used to apply the Slice property page designer -->
     <ItemGroup>
         <ProjectCapability Include="SliceCompile" />
     </ItemGroup>
@@ -24,8 +24,8 @@
 
     <!--
         Settings that are only supported with MSBuild 15.0 and up, the item Update
-        attribute is not supported with older MSBuild versions and will fail to parse
-        the targets files in set directly here.
+        attribute is not supported with older MSBuild versions, and will fail to parse
+        the targets files if directly set here.
     -->
     <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.csharp.15.0.targets"
             Condition="'$(MSBuildAssemblyVersion)' &gt; '14.0'"/>
