@@ -93,7 +93,7 @@ item type, for example:
 
 If you add an Ice NuGet to your project, the NuGet configures your project to compile
 and link your code with Ice. For example, for C++ projects, it adds the correct include directory 
-to the `AdditionalIncludeDirectories` property.
+to the `AdditionalIncludeDirectories` property, and more.
 
 If you use an Ice 3.6 MSI or Web Install binary distribution, Ice Builder imports
 a property file from the binary distribution, and this property file performs the same setup.
