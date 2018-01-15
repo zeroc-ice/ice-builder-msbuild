@@ -2,22 +2,19 @@
 <!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-    <!-- Import our custom MSbuild tasks used to build Ice for C++ projects -->
-    <UsingTask TaskName="IceBuilder.MSBuild.Slice2CppTask"
-               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
+  <!-- Import our custom MSbuild tasks used to build Ice for C++ projects -->
+  <UsingTask TaskName="IceBuilder.MSBuild.Slice2CppTask"
+             AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
 
-    <UsingTask TaskName="IceBuilder.MSBuild.Slice2CppDependTask"
-               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
+  <UsingTask TaskName="IceBuilder.MSBuild.Slice2CppDependTask"
+             AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
 
-    <!-- Import common settings -->
-    <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.common.props"/>
+  <!-- Import common settings -->
+  <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.common.props"/>
 
-    <!--
-        If we are not uisng NuGet packages we need to import the C++ build settings from
-        the Ice distribution
-    -->
-    <Import Project="$(IceHome)\config\Ice.Cpp.props"
-            Condition="'$(IceNugetPackageVersion)' == '' and Exists('$(IceHome)\config\ice.cpp.props')"/>
+  <!-- Import Ice.cpp.props file provided by Ice 3.6 binary distribution -->
+  <Import Project="$(IceHome)\config\Ice.Cpp.props"
+          Condition="'$(IceNugetPackageVersion)' == '' and Exists('$(IceHome)\config\Ice.Cpp.props')"/>
 
   <!-- Default settings for SliceCompile task  -->
   <PropertyGroup Condition="'$(SliceCompileHeaderExt)' == ''">
