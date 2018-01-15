@@ -13,11 +13,16 @@ than any Slice file included directly or indirectly by this Slice source file.
 The Ice Builder for MSBuild requires Ice 3.6.0 or higher, and MSBuild 4.0 or higher.
 
 ## Contents
-- [Installation](#installation)
-- [Selecting your Ice Installation](#selecting-your-ice-installation)
-- [C++ Usage](#c-usage)
-- [C# Usage](#c-usage-1)
-- [Building from Source](#building-from-source)
+* [Installation](#installation)
+* [Selecting your Ice Installation](#selecting-your-ice-installation)
+  * [Ice NuGet](#ice-nuget)
+  * [Other Ice Installation on Windows](#other-ice-installation-on-windows)
+* [Adding Slice Files to your Project](#adding-slice-files-to-your-project)
+* [Customizing the Slice to C++ Compilation](#customizing-the-slice-to-c-compilation)
+* [Customizing the Slice to C# Compilation](#customizing-the-slice-to-c-compilation-1)
+* [Building Ice Builder from Source](#building-ice-builder-from-source)
+  * [Build Requirements](#build-requirements)
+  * [Build Instructions](#build-instructions)
 
 ## Installation
 
