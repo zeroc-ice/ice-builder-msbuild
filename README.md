@@ -50,11 +50,11 @@ and validate your Ice installation:
 If you added a `zeroc.ice.` NuGet package to your project, the NuGet package sets
 all these properties:
 
-| Property      | Value with Ice NuGet                                                               |
-| --------------|------------------------------------------------------------------------------------|
-| IceHome       | The Ice NuGet's root installation folder                                           |
-| IceToolsPath  | Th NuGet's tools folder on Windows, `/usr/bin` on Linux, `/usr/local/bin` on macOS |
-| IceIntVersion | The version of Ice installed by this NuGet package                                 |
+| Property      | Value with Ice NuGet                                                                |
+| --------------|-------------------------------------------------------------------------------------|
+| IceHome       | The Ice NuGet's root installation folder                                            |
+| IceToolsPath  | The NuGet's tools folder on Windows, `/usr/bin` on Linux, `/usr/local/bin` on macOS |
+| IceIntVersion | The version of Ice installed by this NuGet package                                  |
 
 ### Other Ice Installation on Windows
 
