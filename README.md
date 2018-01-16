@@ -11,6 +11,8 @@ when they are older than the corresponding Slice source file, or when they are o
 than any Slice file included directly or indirectly by this Slice source file.
 
 Ice Builder for MSBuild requires Ice 3.6 or higher, and MSBuild 4.0 or higher.
+You can configure Ice Builder directly as described below, or within the Visual
+Studio IDE using the [Ice Builder for Visual Studio][1] extension.
 
 ## Contents
 * [Installation](#installation)
@@ -27,7 +29,7 @@ Ice Builder for MSBuild requires Ice 3.6 or higher, and MSBuild 4.0 or higher.
 
 ## Installation
 
-To install Ice Builder, you just need to add the `zeroc.icebuilder.msbuild` [NuGet package][1]
+To install Ice Builder, you just need to add the `zeroc.icebuilder.msbuild` [NuGet package][2]
 to your C++ or C# MSBuild project.
 
 For C++ projects, `zeroc.icebuilder.msbuild` inserts its `SliceCompile` task before the
@@ -71,7 +73,7 @@ Ice Builder reads the value for `IceHome` from the Windows registry using the ke
 `HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceHome`. It also reads `IceIntVersion` from the
 Windows registry key `HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceIntVersion`.
 
-The value for these Windows registry keys are set by the [Ice Builder for Visual Studio][2].
+The value for these Windows registry keys are set by the [Ice Builder for Visual Studio][3].
 
 If you don't set `IceToolsPath` in your project file, Ice Builder sets `IceToolsPath` to
 `$(IceHome)\bin`.
@@ -112,7 +114,7 @@ These properties are not set automatically for other Ice installations, such as 
 You can customize the options passed by Ice Builder to `slice2cpp` with the
 following properties:
 
-| Property                                     | Default Value            | Corresponding `slice2cpp` [option][3]|
+| Property                                     | Default Value            | Corresponding `slice2cpp` [option][4]|
 | -------------------------------------------- | ------------------------ | ------------------------------------ |
 | SliceCompileOutputDir                        | $(ProjectDir)\generated  | `--output-dir`                       |
 | SliceCompileHeaderOutputDir                  | $(SliceCompileOutputDir) | (none)                               |
@@ -139,7 +141,7 @@ of your project (the `AdditionalIncludeDirectories` property).
 You can customize the options passed by Ice Builder to `slice2cs` with the
 following properties:
 
-| Property                       | Default Value           | Corresponding `slice2cs` [option][4]|
+| Property                       | Default Value           | Corresponding `slice2cs` [option][5]|
 | -------------------------------|------------------------ |-------------------------------------|
 | SliceCompileOutputDir          | $(ProjectDir)/generated | `--output-dir`                      |
 | SliceCompileIncludeDirectories |                         | `-I`                                |
@@ -153,7 +155,7 @@ a result, you never need to include `$(IceHome)/slice` in this list.
 
 ### Build Requirements
 
-You need Visual Studio 2017 and the [Visual Studio 2017 SDK][5].
+You need Visual Studio 2017 and the [Visual Studio 2017 SDK][6].
 
 ### Build Instructions
 
@@ -167,8 +169,9 @@ You can sign the assembly with Authenticode by setting the environment variable 
 the path of your PFX certificate store, and the `SIGN_PASSWORD` environment variable to the password
 used by your certificate store.
 
-[1]: https://www.nuget.org/packages/zeroc.icebuilder.msbuild
-[2]: https://github.com/zeroc-ice/ice-builder-visualstudio
-[3]: https://doc.zeroc.com/pages/viewpage.action?pageId=18255322
-[4]: https://doc.zeroc.com/display/Ice37/slice2cs+Command-Line+Options
-[5]: https://docs.microsoft.com/en-us/visualstudio/extensibility/installing-the-visual-studio-sdk
+[1]: https://github.com/zeroc-ice/ice-builder-visualstudio
+[2]: https://www.nuget.org/packages/zeroc.icebuilder.msbuild
+[3]: https://github.com/zeroc-ice/ice-builder-visualstudio
+[4]: https://doc.zeroc.com/pages/viewpage.action?pageId=18255322
+[5]: https://doc.zeroc.com/display/Ice37/slice2cs+Command-Line+Options
+[6]: https://docs.microsoft.com/en-us/visualstudio/extensibility/installing-the-visual-studio-sdk
