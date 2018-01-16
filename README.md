@@ -85,7 +85,7 @@ You can add all Slice files found in in your project's home directory and any of
 sub-directories (and sub-sub directories, recursively) to your project by setting both
 `EnableDefaultItems` and `EnableDefaultSliceCompileItems` to true. The default value for 
 `EnableDefaultSliceCompileItems` is true while the default value for `EnableDefaultItems` 
-depends on the projects' type. The default value of `EnabledDefaultItems` is true for 
+depends on the project's type. The default value of `EnabledDefaultItems` is true for 
 .NET Core projects, and it's unset (or false) for C++ and .NET Framework projects.
 
 As an alternative, you can add Slice files explicitly to your project using the `SliceCompile`
