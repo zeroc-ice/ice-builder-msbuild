@@ -33,12 +33,14 @@ to your C++ or C# MSBuild project.
 For C++ projects, `zeroc.icebuilder.msbuild` inserts its `SliceCompile` task before the
 default `Compile` task, and inserts its `SliceClean` task before the default `Clean` task.
 `SliceCompile` generates C++ code using `slice2cpp` and adds the generated C++ files to
-the `ClCompile` items.
+the `ClCompile` items. All the Slice files in a given project are compiled through a single 
+`slice2cpp` invocation.
 
 For C# projects, `zeroc.icebuilder.msbuild` inserts its `SliceCompile` task before the
 default `Compile` task, and inserts its `SliceClean` task before the default `Clean` task.
 `SliceCompile` generates C# code using `slice2cs` and adds the generated C# files to
-the C# `Compile` items.
+the C# `Compile` items. All the Slice files in a given project are compiled through a 
+single `slice2cs` invocation.
 
 ## Selecting your Ice Installation
 
@@ -76,10 +78,15 @@ If you don't set `IceToolsPath` in your project file, Ice Builder sets `IceTools
 
 ## Adding Slice Files to your Project
 
-Ice Builder automatically adds to your project all Slice files (files with an `.ice` extension)
-found in project's directory and any of its sub-directories and sub-sub directories, recursively.
-This automatic addition of Slice files is controlled by the property `EnableDefaultSliceCompileItems`,
-which is `true` by default. Set this property to `false` to disable this behavior.
+You need to tell Ice Builder which Slice files (files with a `.ice` extension) to compile,
+by adding these files to your project.
+
+You can add all Slice files found in in your project's home directory and any of its 
+sub-directories (and sub-sub directories, recursively) to your project by setting both
+`EnableDefaultItems` and `EnableDefaultSliceCompileItems` to true. The default value for 
+`EnableDefaultSliceCompileItems` is true while the default value for `EnableDefaultItems` 
+depends on the projects' type. The default value of `EnabledDefaultItems` is true for 
+.NET Core projects, and it's unset (or false) for C++ and .NET Framework projects.
 
 As an alternative, you can add Slice files explicitly to your project using the `SliceCompile`
 item type, for example:
