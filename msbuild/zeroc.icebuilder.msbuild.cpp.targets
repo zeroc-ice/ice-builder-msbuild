@@ -113,6 +113,7 @@
             need to be rebuild.
         -->
         <!-- Write TLog files -->
+        <MakeDir Directories="$(TLogLocation)" />
         <WriteLinesToFile File                = "$(TLogLocation)\slice2cpp.write.1u.tlog"
                           Encoding            = "Unicode"
                           Lines               = "^%(__SliceCompile.FullPath);%(__SliceCompile.Outputs)"
