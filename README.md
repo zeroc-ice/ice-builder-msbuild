@@ -1,16 +1,16 @@
 # Ice Builder for MSBuild
 
-The Ice Builder for MSBuild provides support for compiling Slice source files
+Ice Builder for MSBuild provides support for compiling Slice source files
 (`.ice` files) within C++ and C# MSBuild projects. It compiles these Slice files
 using the Slice to C++ compiler (`slice2cpp`) or the Slice to C# compiler (`slice2cs`)
-provided by your Ice  installation.
+provided by your Ice installation.
 
 Ice Builder compiles or recompiles a Slice file when the corresponding generated
 files are missing or when they are out of date. Generated files are out of date
 when they are older than the corresponding Slice source file, or when they are older
 than any Slice file included directly or indirectly by this Slice source file.
 
-The Ice Builder for MSBuild requires Ice 3.6.0 or higher, and MSBuild 4.0 or higher.
+Ice Builder for MSBuild requires Ice 3.6 or higher, and MSBuild 4.0 or higher.
 
 ## Contents
 * [Installation](#installation)
@@ -44,7 +44,7 @@ single `slice2cs` invocation.
 
 ## Selecting your Ice Installation
 
-The Ice Builder for MSBuild relies on the following MSBuild properties to locate
+Ice Builder for MSBuild relies on the following MSBuild properties to locate
 and validate your Ice installation:
 
 | Property      | Description                             | Used for                                                            |
