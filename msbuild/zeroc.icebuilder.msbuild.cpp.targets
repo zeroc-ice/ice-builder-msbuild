@@ -55,7 +55,7 @@
             WorkingDirectory                  = "$(MSBuildProjectDirectory)"
             SourceExt                         = "$(SliceCompileSourceExt)"
             HeaderExt                         = "$(SliceCompileHeaderExt)"
-            SliceCompiler                     = "$(IceToolsPath)\slice2cpp.exe"
+            IceToolsPath                      = "$(IceToolsPath)"
             DependFile                        = "$(SliceCompileOutputDir)\SliceCompile.d"
             CommandLog                        = "$(SliceCompileOutputDir)\SliceCompile.command.log"
             Sources                           = "@(SliceCompile)">
