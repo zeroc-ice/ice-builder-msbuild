@@ -141,11 +141,11 @@ of your project (the `AdditionalIncludeDirectories` property).
 You can customize the options passed by Ice Builder to `slice2cs` with the
 following properties:
 
-| Property                       | Default Value                         | Corresponding `slice2cs` [option][5]|
-| -------------------------------|-------------------------------------- |-------------------------------------|
-| SliceCompileOutputDir          | $((MSBuildProjectDirectory)/generated | `--output-dir`                      |
-| SliceCompileIncludeDirectories |                                       | `-I`                                |
-| SliceCompileAdditionalOptions  |                                       | (any)                               |
+| Property                       | Default Value                        | Corresponding `slice2cs` [option][5]|
+| -------------------------------|------------------------------------- |-------------------------------------|
+| SliceCompileOutputDir          | $(MSBuildProjectDirectory)/generated | `--output-dir`                      |
+| SliceCompileIncludeDirectories |                                      | `-I`                                |
+| SliceCompileAdditionalOptions  |                                      | (any)                               |
 
 `SliceCompileIncludeDirectories`: Ice Builder invokes `slice2cs` with `-I` for all
 the directories specified by this property, followed by `-I $(IceHome)/slice`. As
