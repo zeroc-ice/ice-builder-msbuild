@@ -23,4 +23,8 @@
 
     <!-- Import IceBuilder common settings -->
     <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.common.props"/>
+
+    <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
+        <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
+    </PropertyGroup>
 </Project>

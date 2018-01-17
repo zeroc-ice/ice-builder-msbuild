@@ -15,10 +15,6 @@
         <IceVersionMM>$(Registry:HKEY_CURRENT_USER\Software\ZeroC\IceBuilder@IceVersionMM)</IceVersionMM>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
-        <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
-    </PropertyGroup>
-
     <PropertyGroup>
         <EnableDefaultSliceCompileItems Condition="'$(EnableDefaultSliceCompileItems)' == ''">true</EnableDefaultSliceCompileItems>
     </PropertyGroup>

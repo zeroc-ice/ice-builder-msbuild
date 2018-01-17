@@ -12,6 +12,10 @@
   <!-- Import common settings -->
   <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.common.props"/>
 
+  <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
+      <SliceCompileOutputDir>$(IntDir)</SliceCompileOutputDir>
+  </PropertyGroup>
+
   <!-- Import Ice.cpp.props file provided by Ice 3.6 binary distribution -->
   <Import Project="$(IceHome)\config\Ice.Cpp.props"
           Condition="'$(IceNugetPackageVersion)' == '' and Exists('$(IceHome)\config\Ice.Cpp.props')"/>
