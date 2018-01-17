@@ -155,14 +155,14 @@ a result, you never need to include `$(IceHome)/slice` in this list.
 
 ### Build Requirements
 
-You need Visual Studio 2017 and the [Visual Studio 2017 SDK][6].
+You need Visual Studio 2017 with the .NET Core cross-development toolset.
 
 ### Build Instructions
 
-Open Visual Studio Command prompt and run the following command:
+Open a Visual Studio Command prompt and run the following command:
 
 ```
-MSBuild icebuilder.proj /t:NuGetPack
+MSBuild msbuild\icebuilder.proj /t:NuGetPack
 ```
 
 You can sign the assembly with Authenticode by setting the environment variable `SIGN_CERTIFICATE` to
@@ -174,4 +174,3 @@ used by your certificate store.
 [3]: https://github.com/zeroc-ice/ice-builder-visualstudio
 [4]: https://doc.zeroc.com/pages/viewpage.action?pageId=18255322
 [5]: https://doc.zeroc.com/display/Ice37/slice2cs+Command-Line+Options
-[6]: https://docs.microsoft.com/en-us/visualstudio/extensibility/installing-the-visual-studio-sdk
