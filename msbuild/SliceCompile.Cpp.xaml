@@ -2,9 +2,9 @@
 <!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Rule
     Name="SliceCompile"
-    DisplayName="Slice Compile"
+    DisplayName="Ice Builder"
     PageTemplate="generic"
-    Description="Slice source file"
+    Description="Ice Builder project settings"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.DataSource>
