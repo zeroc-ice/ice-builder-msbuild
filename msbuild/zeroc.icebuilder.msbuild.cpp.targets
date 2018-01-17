@@ -9,6 +9,14 @@
         <AvailableItemName Include="SliceCompile"/>
     </ItemGroup>
 
+    <!--
+        Include all C++ generated source items that have not been manually include
+    -->
+    <ItemGroup>
+        <ClCompile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).$(SliceCompileSourceExt)')"
+                   Exclude="@(ClCompile)" />
+    </ItemGroup>
+
     <Target Name="SliceCompile" BeforeTargets="CLCompile">
 
         <Error Text="Ice Installation not detected.'"
@@ -16,14 +24,6 @@
 
         <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
                Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
-
-        <!--
-            Include all C++ generated source items that have not been manually include
-        -->
-        <ItemGroup>
-            <ClCompile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).$(SliceCompileSourceExt)')"
-                       Exclude="@(ClCompile)" />
-        </ItemGroup>
 
         <!--
             Create the output directory

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
     <ItemGroup>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)ProjectItemsSchema.xaml" />
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.xaml">
@@ -19,7 +18,7 @@
 
     <ItemGroup>
          <Compile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"
-                  Exclude="@(Compile)"/>
+                  Exclude="@(Compile->'$(SliceCompileOutputDir)\%(Filename).cs')"/>
     </ItemGroup>
 
     <!--
