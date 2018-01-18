@@ -27,8 +27,8 @@
     <!-- Ice MSBuild properties not provided by Ice versions older than 3.7.0 -->
     <PropertyGroup Condition="'$(IceIntVersion)' != '' and '$(IceIntVersion)' &lt; '30700'">
         <!-- Slice tasks use IceToolsPath to locate the Slice compilers -->
-        <IceToolsPath Condition="'$(IceToolsPath)' == '' And Exists('$(IceHome)\bin')">$(IceHome)\bin</IceToolsPath>
+        <IceToolsPath Condition="'$(IceToolsPath)' == '' and Exists('$(IceHome)\bin')">$(IceHome)\bin</IceToolsPath>
         <!-- IceToolsBin is no longer used as of Ice 3.7, but IceBuilder sets it for projects that use Ice 3.6 -->
-        <IceToolsBin Condition="'$(IceToolsBin)' == '' and  ">$(IceToolsPath)</IceToolsBin>
+        <IceToolsBin Condition="'$(IceToolsBin)' == ''">$(IceToolsPath)</IceToolsBin>
     </PropertyGroup>
 </Project>
