@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <!-- Import our custom MSbuild tasks used to build Ice for C++ projects -->
+    <UsingTask TaskName="IceBuilder.MSBuild.Slice2CppTask"
+               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
+
+    <UsingTask TaskName="IceBuilder.MSBuild.Slice2CppDependTask"
+               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
+
+    <!-- Import common settings -->
+    <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.common.props"/>
+
+    <!-- Import Ice.cpp.props file provided by Ice 3.6 binary distribution -->
+    <Import Project="$(IceHome)\config\Ice.Cpp.props"
+            Condition="'$(IceNugetPackageVersion)' == '' and Exists('$(IceHome)\config\Ice.Cpp.props')"/>
+
     <ItemGroup>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)ProjectItemsSchema.xaml" />
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.Cpp.xaml">
@@ -16,6 +31,23 @@
         <ClCompile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).$(SliceCompileSourceExt)')"
                    Exclude="@(ClCompile)" />
     </ItemGroup>
+
+    <ItemDefinitionGroup Condition="'$(SliceCompileHeaderOutputDir)' == '' And '$(SliceCompileBaseDirectoryForGeneratedInclude)' == ''">
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(SliceCompileOutputDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+    </ItemDefinitionGroup>
+
+    <ItemDefinitionGroup Condition="'$(SliceCompileHeaderOutputDir)' != '' And '$(SliceCompileBaseDirectoryForGeneratedInclude)' == ''">
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(SliceCompileHeaderOutputDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+    </ItemDefinitionGroup>
+
+    <!-- Debugger environment settings -->
+    <PropertyGroup>
+        <LocalDebuggerEnvironment>PATH=$(Path);$(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
+    </PropertyGroup>
 
     <Target Name="SliceCompile" BeforeTargets="CLCompile">
 
