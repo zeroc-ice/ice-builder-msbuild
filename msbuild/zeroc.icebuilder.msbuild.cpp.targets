@@ -2,6 +2,18 @@
 <!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+    <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
+        <SliceCompileOutputDir>$(IntDir)</SliceCompileOutputDir>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(SliceCompileHeaderExt)' == ''">
+        <SliceCompileHeaderExt>h</SliceCompileHeaderExt>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(SliceCompileSourceExt)' == ''">
+        <SliceCompileSourceExt>cpp</SliceCompileSourceExt>
+    </PropertyGroup>
+
     <!-- Import our custom MSbuild tasks used to build Ice for C++ projects -->
     <UsingTask TaskName="IceBuilder.MSBuild.Slice2CppTask"
                AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
@@ -49,7 +61,8 @@
         <LocalDebuggerEnvironment>PATH=$(Path);$(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     </PropertyGroup>
 
-    <Target Name="SliceCompile" BeforeTargets="CLCompile">
+    <Target Name="SliceCompile" BeforeTargets="CLCompile"
+            Condition="@(SliceCompile) != ''">
 
         <Error Text="Ice Installation not detected.'"
                Condition="'$(IceHome)' == ''" />

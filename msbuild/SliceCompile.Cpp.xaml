@@ -23,7 +23,7 @@
         Category="General"
         Switch="--output-dir">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext"/>
         </StringProperty.DataSource>
     </StringProperty>
 
@@ -34,7 +34,7 @@
         Subtype="folder"
         Category="General">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false"/>
         </StringProperty.DataSource>
     </StringProperty>
 
@@ -47,7 +47,7 @@
         Subtype="folder"
         Category="General">
         <StringListProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false"/>
         </StringListProperty.DataSource>
     </StringListProperty>
 
@@ -59,7 +59,7 @@
         Switch="--include-dir"
         Description="Base directory for #include in generated C++ files.">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false"/>
         </StringProperty.DataSource>
     </StringProperty>
 
@@ -74,7 +74,7 @@
         <EnumValue Name="hh" DisplayName=".hh" Description=".hh"/>
         <EnumValue Name="hxx" DisplayName=".hxx" Description=".hxx"/>
         <EnumProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext"/>
         </EnumProperty.DataSource>
     </EnumProperty>
 
@@ -88,7 +88,7 @@
         <EnumValue Name="cc" DisplayName=".cc" Description=".cc"/>
         <EnumValue Name="cxx" DisplayName=".cxx" Description=".cxx"/>
         <EnumProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext"/>
         </EnumProperty.DataSource>
     </EnumProperty>
 
@@ -99,7 +99,7 @@
         Subtype="AdditionalOptions"
         Description="Additional command line options to pass to slice2cpp.">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" />
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false"/>
         </StringProperty.DataSource>
     </StringProperty>
 

@@ -18,6 +18,9 @@
         Subtype="folder"
         Category="General"
         Switch="--output-dir">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext"/>
+        </StringProperty.DataSource>
     </StringProperty>
 
     <!-- Parsing Options -->
