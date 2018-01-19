@@ -2,16 +2,9 @@
 <!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+    <!-- fix SliceCompileOutputDir default value, IntDir is not available in the props. -->
     <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
         <SliceCompileOutputDir>$(IntDir)</SliceCompileOutputDir>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(SliceCompileHeaderExt)' == ''">
-        <SliceCompileHeaderExt>h</SliceCompileHeaderExt>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(SliceCompileSourceExt)' == ''">
-        <SliceCompileSourceExt>cpp</SliceCompileSourceExt>
     </PropertyGroup>
 
     <!-- Import our custom MSbuild tasks used to build Ice for C++ projects -->

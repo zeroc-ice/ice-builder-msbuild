@@ -23,7 +23,7 @@
         Category="General"
         Switch="--output-dir">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext"/>
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false"/>
         </StringProperty.DataSource>
     </StringProperty>
 
@@ -74,7 +74,7 @@
         <EnumValue Name="hh" DisplayName=".hh" Description=".hh"/>
         <EnumValue Name="hxx" DisplayName=".hxx" Description=".hxx"/>
         <EnumProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext"/>
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false"/>
         </EnumProperty.DataSource>
     </EnumProperty>
 
@@ -88,7 +88,7 @@
         <EnumValue Name="cc" DisplayName=".cc" Description=".cc"/>
         <EnumValue Name="cxx" DisplayName=".cxx" Description=".cxx"/>
         <EnumProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext"/>
+            <DataSource Persistence="ProjectFile" ItemType="" Label="SliceCompile" HasConfigurationCondition="false"/>
         </EnumProperty.DataSource>
     </EnumProperty>
 
