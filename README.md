@@ -116,7 +116,7 @@ following properties:
 
 | Property                                     | Default Value                         | Corresponding `slice2cpp` [option][4]|
 | -------------------------------------------- | ------------------------------------- | ------------------------------------ |
-| SliceCompileOutputDir                        | $(MSBuildProjectDirectory)\generated  | `--output-dir`                       |
+| SliceCompileOutputDir                        | $(IntDir)                             | `--output-dir`                       |
 | SliceCompileHeaderOutputDir                  | $(SliceCompileOutputDir)              | (none)                               |
 | SliceCompileIncludeDirectories               |                                       | `-I`                                 |
 | SliceCompileBaseDirectoryForGeneratedInclude |                                       | `--include-dir`                      |
