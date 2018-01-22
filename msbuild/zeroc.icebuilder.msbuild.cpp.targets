@@ -168,15 +168,18 @@
             need to be rebuild.
         -->
         <!-- Write TLog files -->
-        <MakeDir Directories="$(TLogLocation)" />
+        <MakeDir Directories="$(TLogLocation)" Condition="!Exists('$(TLogLocation)')"/>
+
         <WriteLinesToFile File                = "$(TLogLocation)\slice2cpp.write.1u.tlog"
                           Encoding            = "Unicode"
+                          Overwrite           = "True"
                           Lines               = "^%(__SliceCompile.FullPath);%(__SliceCompile.Outputs)"
                           Condition           = "'$(_SliceCompileUpdateDepends)' == 'True'"/>
 
         <!-- Read TLog files -->
         <WriteLinesToFile File                = "$(TLogLocation)\slice2cpp.read.1u.tlog"
                           Encoding            = "Unicode"
+                          Overwrite           = "True"
                           Lines               = "^%(__SliceCompile.FullPath);%(__SliceCompile.Inputs)"
                           Condition           = "'$(_SliceCompileUpdateDepends)' == 'True'"/>
     </Target>
