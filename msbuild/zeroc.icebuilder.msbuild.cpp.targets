@@ -21,6 +21,11 @@
     <Import Project="$(IceHome)\config\Ice.Cpp.props"
             Condition="'$(IceNugetPackageVersion)' == '' and Exists('$(IceHome)\config\Ice.Cpp.props')"/>
 
+    <!-- With Ice 3.6.0 the C++ props were not part of the Ice distribution, they are included with
+         msbuild builder for backwards compatibility -->
+    <Import Project="$(MSBuildThisFileDirectory)\Ice.3.6.0.Cpp.props"
+            Condition="'$(IceVersion)' == '3.6.0' and Exists('$(MSBuildThisFileDirectory)\Ice.3.6.0.Cpp.props')"/>
+
     <ItemGroup>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)ProjectItemsSchema.xaml" />
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.Cpp.xaml">
