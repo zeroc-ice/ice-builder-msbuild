@@ -5,6 +5,15 @@
         <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <!--
+            We do that to ensure that when we dynamically add the generated items to the Compile
+            item set we correctly exclude the Compile items having and extra back slash '\'
+            will break the exclude.
+        -->
+        <SliceCompileOutputDir>$(SliceCompileOutputDir.TrimEnd('\'))</SliceCompileOutputDir>
+    </PropertyGroup>
+
     <Choose>
         <When Condition="'$(MSBuildAssemblyVersion)' == '' or '$(MSBuildAssemblyVersion)' &lt; '15.0'">
             <PropertyGroup>
@@ -43,11 +52,6 @@
         <ProjectCapability Include="SliceCompile" />
     </ItemGroup>
 
-    <ItemGroup>
-         <Compile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"
-                  Exclude="@(Compile->'$(SliceCompileOutputDir)\%(Filename).cs')"/>
-    </ItemGroup>
-
     <!--
         Settings that are only supported with MSBuild 15.0 and up, the item Update
         attribute is not supported with older MSBuild versions, and will fail to parse
@@ -64,6 +68,17 @@
 
         <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
                Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
+
+        <!--
+            Include all C# generated source items that have not been manually include, we want to delay this until we are
+            running SliceCompile target so that the Visual Studio extension has a chance to add the items to the project in
+            a persintent way and if the extension is not enabled or we are building from the command line we just add the
+            missing items in a trasient way.
+        -->
+        <ItemGroup>
+            <ClCompile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"
+                       Exclude="@(Compile)" />
+        </ItemGroup>
 
         <MakeDir Directories="$(SliceCompileOutputDir)"/>
 

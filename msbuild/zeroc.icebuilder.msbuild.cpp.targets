@@ -7,6 +7,15 @@
         <SliceCompileOutputDir>$(IntDir)</SliceCompileOutputDir>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <!--
+            We do that to ensure that when we dynamically add the generated items to ClCompile
+            item set we correctly exclude the ClCompile items having and extra back slash '\'
+            will break the exclude.
+        -->
+        <SliceCompileOutputDir>$(SliceCompileOutputDir.TrimEnd('\'))</SliceCompileOutputDir>
+    </PropertyGroup>
+
     <!-- Import our custom MSbuild tasks used to build Ice for C++ projects -->
     <UsingTask TaskName="IceBuilder.MSBuild.Slice2CppTask"
                AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net45\zeroc.icebuilder.msbuild.dll"/>
@@ -34,14 +43,6 @@
         <AvailableItemName Include="SliceCompile"/>
     </ItemGroup>
 
-    <!--
-        Include all C++ generated source items that have not been manually include
-    -->
-    <ItemGroup>
-        <ClCompile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).$(SliceCompileSourceExt)')"
-                   Exclude="@(ClCompile)" />
-    </ItemGroup>
-
     <ItemDefinitionGroup Condition="'$(SliceCompileHeaderOutputDir)' == '' And '$(SliceCompileBaseDirectoryForGeneratedInclude)' == ''">
         <ClCompile>
             <AdditionalIncludeDirectories>$(SliceCompileOutputDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -67,6 +68,17 @@
 
         <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
                Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
+
+        <!--
+            Include all C++ generated source items that have not been manually include, we want to delay this until we are
+            running SliceCompile target so that the Visual Studio extension has a chance to add the items to the project in
+            a persintent way and if the extension is not enabled or we are building from the command line we just add the
+            missing items in a trasient way.
+        -->
+        <ItemGroup>
+            <ClCompile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).$(SliceCompileSourceExt)')"
+                       Exclude="@(ClCompile)" />
+        </ItemGroup>
 
         <!--
             Create the output directory
