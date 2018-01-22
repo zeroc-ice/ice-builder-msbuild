@@ -440,6 +440,7 @@ namespace IceBuilder.MSBuild
                                 dependPaths.Add(Path.GetFullPath(depend.Attributes["name"].Value).ToUpper());
                             }
                         }
+                        dependPaths.Add(source.GetMetadata("FullPath").ToUpper());
                         dependPaths.Add(Path.GetFullPath(pathToTool).ToUpper());
 
                         ITaskItem computedSource = new TaskItem(source.ItemSpec);
