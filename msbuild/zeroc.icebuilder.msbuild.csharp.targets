@@ -60,7 +60,7 @@
     <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.csharp.15.0.targets"
             Condition="'$(MSBuildAssemblyVersion)' &gt; '14.0'"/>
 
-    <Target Name="SliceCompile" BeforeTargets="CoreCompile;XamlPreCompile"
+    <Target Name="SliceCompile" BeforeTargets="BeforeBuild"
             Condition="@(SliceCompile) != ''">
 
         <Error Text="Ice Installation not detected."
