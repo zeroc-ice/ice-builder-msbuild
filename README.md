@@ -35,13 +35,13 @@ to your C++ or C# MSBuild project.
 For C++ projects, `zeroc.icebuilder.msbuild` inserts its `SliceCompile` task before the
 default `Compile` task, and inserts its `SliceClean` task before the default `Clean` task.
 `SliceCompile` generates C++ code using `slice2cpp` and adds the generated C++ files to
-the `ClCompile` items. All the Slice files in a given project are compiled through a single 
+the `ClCompile` items. All the Slice files in a given project are compiled through a single
 `slice2cpp` invocation.
 
 For C# projects, `zeroc.icebuilder.msbuild` inserts its `SliceCompile` task before the
 default `Compile` task, and inserts its `SliceClean` task before the default `Clean` task.
 `SliceCompile` generates C# code using `slice2cs` and adds the generated C# files to
-the C# `Compile` items. All the Slice files in a given project are compiled through a 
+the C# `Compile` items. All the Slice files in a given project are compiled through a
 single `slice2cs` invocation.
 
 ## Selecting your Ice Installation
@@ -75,19 +75,16 @@ Windows registry key `HKEY_CURRENT_USER\Software\ZeroC\IceBuilder\IceIntVersion`
 
 The value for these Windows registry keys are set by the [Ice Builder for Visual Studio][3].
 
-If you don't set `IceToolsPath` in your project file, Ice Builder sets `IceToolsPath` to
-`$(IceHome)\bin`.
-
 ## Adding Slice Files to your Project
 
 You need to tell Ice Builder which Slice files (files with a `.ice` extension) to compile,
 by adding these files to your project.
 
-You can add all Slice files found in in your project's home directory and any of its 
+You can add all Slice files found in in your project's home directory and any of its
 sub-directories (and sub-sub directories, recursively) to your project by setting both
-`EnableDefaultItems` and `EnableDefaultSliceCompileItems` to true. The default value for 
-`EnableDefaultSliceCompileItems` is true while the default value for `EnableDefaultItems` 
-depends on the project's type. The default value of `EnabledDefaultItems` is true for 
+`EnableDefaultItems` and `EnableDefaultSliceCompileItems` to true. The default value for
+`EnableDefaultSliceCompileItems` is true while the default value for `EnableDefaultItems`
+depends on the project's type. The default value of `EnabledDefaultItems` is true for
 .NET Core projects, and it's unset (or false) for C++ and .NET Framework projects.
 
 As an alternative, you can add Slice files explicitly to your project using the `SliceCompile`
@@ -101,13 +98,13 @@ item type, for example:
 ## Compiling and Linking your Project with Ice
 
 If you add an Ice NuGet to your project, the NuGet configures your project to compile
-and link your code with Ice. For example, for C++ projects, it adds the correct include directory 
+and link your code with Ice. For example, for C++ projects, it adds the correct include directory
 to the `AdditionalIncludeDirectories` property, and more.
 
 If you use an Ice 3.6 MSI or Web Install binary distribution, Ice Builder imports
 a property file from the binary distribution, and this property file performs the same setup.
 
-These properties are not set automatically for other Ice installations, such as source builds. 
+These properties are not set automatically for other Ice installations, such as source builds.
 
 ## Customizing the Slice to C++ Compilation
 
@@ -117,7 +114,7 @@ following properties:
 | Property                                     | Default Value                         | Corresponding `slice2cpp` [option][4]|
 | -------------------------------------------- | ------------------------------------- | ------------------------------------ |
 | SliceCompileOutputDir                        | $(IntDir)                             | `--output-dir`                       |
-| SliceCompileHeaderOutputDir                  | $(SliceCompileOutputDir)              | (none)                               |
+| SliceCompileHeaderOutputDir                  |                                       | (none)                               |
 | SliceCompileIncludeDirectories               |                                       | `-I`                                 |
 | SliceCompileBaseDirectoryForGeneratedInclude |                                       | `--include-dir`                      |
 | SliceCompileHeaderExt                        | .h                                    | `--header-ext`                       |
