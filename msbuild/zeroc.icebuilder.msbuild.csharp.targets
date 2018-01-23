@@ -11,7 +11,7 @@
             item set we correctly exclude the Compile items having and extra back slash '\'
             will break the exclude.
         -->
-        <SliceCompileOutputDir>$(SliceCompileOutputDir.TrimEnd('\'))</SliceCompileOutputDir>
+        <_SliceCompileOutputDir>$(SliceCompileOutputDir.TrimEnd('\'))</_SliceCompileOutputDir>
     </PropertyGroup>
 
     <Choose>
@@ -76,28 +76,28 @@
             missing items in a trasient way.
         -->
         <ItemGroup>
-            <ClCompile Include="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"
+            <ClCompile Include="@(SliceCompile->'$(_SliceCompileOutputDir)\%(Filename).cs')"
                        Exclude="@(Compile)" />
         </ItemGroup>
 
-        <MakeDir Directories="$(SliceCompileOutputDir)"/>
+        <MakeDir Directories="$(_SliceCompileOutputDir)"/>
 
         <WriteLinesToFile
-            File="$(SliceCompileOutputDir)\SliceCompile.command.log"
+            File="$(_SliceCompileOutputDir)\SliceCompile.command.log"
             Lines="Ice Home: $(IceHome);
                    Ice Tools Path: $(IceToolsPath);
-                   Output Dir: $(SliceCompileOutputDir);
+                   Output Dir: $(_SliceCompileOutputDir);
                    Include Directories: $(SliceCompileIncludeDirectories);
                    Additional Options: $(SliceCompileAdditionalOptions)"
             Overwrite="true"/>
 
         <!-- First we check dependencies and decide what must be rebuild -->
         <Slice2CSharpDependTask
-            OutputDir             = "$(SliceCompileOutputDir)"
+            OutputDir             = "$(_SliceCompileOutputDir)"
             WorkingDirectory      = "$(MSBuildProjectDirectory)"
             IceToolsPath          = "$(IceToolsPath)"
-            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
-            CommandLog            = "$(SliceCompileOutputDir)\SliceCompile.command.log"
+            DependFile            = "$(_SliceCompileOutputDir)\SliceCompile.d"
+            CommandLog            = "$(_SliceCompileOutputDir)\SliceCompile.command.log"
             Sources               = "@(SliceCompile)">
 
             <Output
@@ -114,11 +114,11 @@
         <Slice2CSharpTask
             IceHome               = "$(IceHome)"
             IceToolsPath          = "$(IceToolsPath)"
-            OutputDir             = "$(SliceCompileOutputDir)"
+            OutputDir             = "$(_SliceCompileOutputDir)"
             WorkingDirectory      = "$(MSBuildProjectDirectory)"
             IncludeDirectories    = "$(SliceCompileIncludeDirectories);$(IceHome)\slice"
             AdditionalOptions     = "$(SliceCompileAdditionalOptions)"
-            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
+            DependFile            = "$(_SliceCompileOutputDir)\SliceCompile.d"
             Sources               = "@(_SliceCompile)"
             Condition             = "'%(_SliceCompile.BuildRequired)' == 'True'"/>
 
@@ -126,20 +126,20 @@
         <Slice2CSharpTask
             IceHome               = "$(IceHome)"
             IceToolsPath          = "$(IceToolsPath)"
-            OutputDir             = "$(SliceCompileOutputDir)"
+            OutputDir             = "$(_SliceCompileOutputDir)"
             WorkingDirectory      = "$(MSBuildProjectDirectory)"
             IncludeDirectories    = "$(SliceCompileIncludeDirectories);$(IceHome)\slice"
             AdditionalOptions     = "$(SliceCompileAdditionalOptions)"
-            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
+            DependFile            = "$(_SliceCompileOutputDir)\SliceCompile.d"
             Sources               = "@(_SliceCompile)"
             Depend                = "true"
             Condition             = "'$(_SliceCompileUpdateDepends)' == 'True'"/>
     </Target>
 
     <Target Name="SliceCompileClean" BeforeTargets="Clean">
-        <Delete Files="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"/>
-        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.d"/>
-        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.log"/>
-        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.0.log"/>
+        <Delete Files="@(SliceCompile->'$(_SliceCompileOutputDir)\%(Filename).cs')"/>
+        <Delete Files="$(_SliceCompileOutputDir)\SliceCompile.d"/>
+        <Delete Files="$(_SliceCompileOutputDir)\SliceCompile.command.log"/>
+        <Delete Files="$(_SliceCompileOutputDir)\SliceCompile.command.0.log"/>
     </Target>
 </Project>
