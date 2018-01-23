@@ -3,3 +3,4 @@
 obj
 lib
 msbuild/zeroc.icebuilder.msbuild
+*.exe
