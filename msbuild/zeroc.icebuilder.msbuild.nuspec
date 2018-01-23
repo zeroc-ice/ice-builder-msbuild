@@ -5,12 +5,12 @@
         <title>Ice Builder for MSBuild</title>
         <version>5.0.0</version>
         <authors>ZeroC</authors>
-        <licenseUrl>https://raw.githubusercontent.com/zeroc-ice/ice.msbuild.tasks/master/ICE_LICENSE</licenseUrl>
-        <projectUrl>https://github.com/zeroc-ice/ice.msbuild.tasks</projectUrl>
+        <licenseUrl>https://raw.githubusercontent.com/zeroc-ice/ice-builder-msbuild/master/LICENSE.txt</licenseUrl>
+        <projectUrl>https://github.com/zeroc-ice/ice-builder-msbuild</projectUrl>
         <iconUrl>https://zeroc.com/images/logos/zeroc/zeroc_logo-64x64.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Ice Builder for MSBuild add targets to build Slice files with C++ and C# projects using Slice compiler</description>
-        <releaseNotes>TBD</releaseNotes>
+        <description>Ice Builder for MSBuild provides support for compiling Slice source files (.ice files) within C++ and C# MSBuild projects.</description>
+        <releaseNotes>Initial release, was previously part of Ice Builder for Visual Studio (in ice-builder-visualstudio repo)</releaseNotes>
         <tags>ice,msbuild</tags>
     </metadata>
 </package>
