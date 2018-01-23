@@ -5,6 +5,8 @@
       <Version>5.0.0.0</Version>
       <OutputPath>../../lib</OutputPath>
       <TargetFrameworks>netstandard2.0</TargetFrameworks>
+      <TimeStampServer Condition="'$(SIGN_TIMESTAMPSERVER)' == ''">http://timestamp.verisign.com/scripts/timstamp.dll</TimeStampServer>
+      <SignCommand Condition="Exists('$(SIGN_CERTIFICATE)')">signtool sign /f "$(SIGN_CERTIFICATE)" /p $(SIGN_PASSWORD) /t $(TimeStampServer)</SignCommand>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="../../Tasks.cs" />
@@ -13,4 +15,7 @@
       <PackageReference Include="Microsoft.Build.Framework" Version="15.5.180" />
       <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.5.180" />
     </ItemGroup>
+    <Target Name="Sign" AfterTargets="CopyFilesToOutputDirectory" Condition="Exists('$(SIGN_CERTIFICATE)')">
+        <Exec Command="$(SignCommand) $(OutputPath)$(AssemblyName).dll" />
+    </Target>
 </Project>
