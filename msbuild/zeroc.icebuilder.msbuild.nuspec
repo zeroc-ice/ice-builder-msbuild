@@ -2,15 +2,15 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>zeroc.icebuilder.msbuild</id>
-        <title>Ice Builder for MSBuild</title>
+        <title>ZeroC Ice Builder for MSBuild</title>
         <version>5.0.0</version>
         <authors>ZeroC</authors>
         <licenseUrl>https://raw.githubusercontent.com/zeroc-ice/ice-builder-msbuild/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/zeroc-ice/ice-builder-msbuild</projectUrl>
         <iconUrl>https://zeroc.com/images/logos/zeroc/zeroc_logo-64x64.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Ice Builder for MSBuild provides support for compiling Slice source files (.ice files) within C++ and C# MSBuild projects.</description>
+        <description>Provides support for compiling Slice source files (.ice files) in MSBuild projects</description>
         <releaseNotes>Initial release, was previously part of Ice Builder for Visual Studio (in ice-builder-visualstudio repo)</releaseNotes>
-        <tags>ice,msbuild</tags>
+        <tags>zeroc ice msbuild</tags>
     </metadata>
 </package>
