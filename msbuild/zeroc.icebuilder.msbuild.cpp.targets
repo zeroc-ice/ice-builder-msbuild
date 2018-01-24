@@ -34,18 +34,9 @@
         <AvailableItemName Include="SliceCompile"/>
     </ItemGroup>
 
-    <PropertyGroup>
-        <!--
-            We do that to ensure that when we dynamically add the generated items to ClCompile
-            item set we correctly exclude the ClCompile items having and extra back slash '\'
-            will break the exclude.
-        -->
-        <_SliceCompileOutputDir>$(SliceCompileOutputDir.TrimEnd('\'))</_SliceCompileOutputDir>
-    </PropertyGroup>
-
     <ItemDefinitionGroup Condition="'$(SliceCompileHeaderOutputDir)' == '' And '$(SliceCompileBaseDirectoryForGeneratedInclude)' == ''">
         <ClCompile>
-            <AdditionalIncludeDirectories>$(_SliceCompileOutputDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories>$(SliceCompileOutputDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
         </ClCompile>
     </ItemDefinitionGroup>
 
@@ -68,6 +59,15 @@
 
         <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
                Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
+
+        <PropertyGroup>
+            <!--
+                We do that to ensure that when we dynamically add the generated items to ClCompile
+                item set we correctly exclude the ClCompile items, having and extra back slash '\'
+                will break the exclude bellow.
+            -->
+            <_SliceCompileOutputDir>$(SliceCompileOutputDir.TrimEnd('\'))</_SliceCompileOutputDir>
+        </PropertyGroup>
         <!--
             Include all C++ generated source items that have not been manually include, we want to delay this until we are
             running SliceCompile target so that the Visual Studio extension has a chance to add the items to the project in
@@ -82,7 +82,7 @@
         <!--
             Create the output directory
         -->
-        <MakeDir Directories="$(_SliceCompileOutputDir)"/>
+        <MakeDir Directories="$(SliceCompileOutputDir)"/>
 
         <!--
             Write build settings to SliceCompile.command.log it will be compared to
@@ -90,10 +90,10 @@
             will trigger a rebuild of Slice files if the settings changed.
         -->
         <WriteLinesToFile
-            File="$(_SliceCompileOutputDir)\SliceCompile.command.log"
+            File="$(SliceCompileOutputDir)\SliceCompile.command.log"
             Lines="Ice Home: $(IceHome);
                    Slice Compiler: $(IceToolsPath)\slice2cpp.exe;
-                   Output Dir: $(_SliceCompileOutputDir);
+                   Output Dir: $(SliceCompileOutputDir);
                    Header Output Dir: $(SliceCompileHeaderOutputDir);
                    Include Directories: $(SliceCompileIncludeDirectories);
                    Additional Options: $(SliceCompileAdditionalOptions);
@@ -104,14 +104,14 @@
 
         <!-- First we check dependencies and decide what must be rebuild -->
         <Slice2CppDependTask
-            OutputDir                         = "$(_SliceCompileOutputDir)"
+            OutputDir                         = "$(SliceCompileOutputDir)"
             HeaderOutputDir                   = "$(SliceCompileHeaderOutputDir)"
             WorkingDirectory                  = "$(MSBuildProjectDirectory)"
             SourceExt                         = "$(SliceCompileSourceExt)"
             HeaderExt                         = "$(SliceCompileHeaderExt)"
             IceToolsPath                      = "$(IceToolsPath)"
-            DependFile                        = "$(_SliceCompileOutputDir)\SliceCompile.d"
-            CommandLog                        = "$(_SliceCompileOutputDir)\SliceCompile.command.log"
+            DependFile                        = "$(SliceCompileOutputDir)\SliceCompile.d"
+            CommandLog                        = "$(SliceCompileOutputDir)\SliceCompile.command.log"
             Sources                           = "@(SliceCompile)">
 
             <Output
@@ -128,7 +128,7 @@
         <Slice2CppTask
             IceHome                           = "$(IceHome)"
             IceToolsPath                      = "$(IceToolsPath)"
-            OutputDir                         = "$(_SliceCompileOutputDir)"
+            OutputDir                         = "$(SliceCompileOutputDir)"
             HeaderOutputDir                   = "$(SliceCompileHeaderOutputDir)"
             WorkingDirectory                  = "$(MSBuildProjectDirectory)"
             IncludeDirectories                = "$(SliceCompileIncludeDirectories);$(IceHome)\slice"
@@ -136,7 +136,7 @@
             BaseDirectoryForGeneratedInclude  = "$(SliceCompileBaseDirectoryForGeneratedInclude)"
             HeaderExt                         = "$(SliceCompileHeaderExt)"
             SourceExt                         = "$(SliceCompileSourceExt)"
-            DependFile                        = "$(_SliceCompileOutputDir)\SliceCompile.d"
+            DependFile                        = "$(SliceCompileOutputDir)\SliceCompile.d"
             Sources                           = "@(_SliceCompile)"
             Condition                         = "'%(_SliceCompile.BuildRequired)' == 'True'">
         </Slice2CppTask>
@@ -145,7 +145,7 @@
         <Slice2CppTask
             IceHome                           = "$(IceHome)"
             IceToolsPath                      = "$(IceToolsPath)"
-            OutputDir                         = "$(_SliceCompileOutputDir)"
+            OutputDir                         = "$(SliceCompileOutputDir)"
             HeaderOutputDir                   = "$(SliceCompileHeaderOutputDir)"
             WorkingDirectory                  = "$(MSBuildProjectDirectory)"
             IncludeDirectories                = "$(SliceCompileIncludeDirectories);$(IceHome)\slice"
@@ -153,7 +153,7 @@
             BaseDirectoryForGeneratedInclude  = "$(SliceCompileBaseDirectoryForGeneratedInclude)"
             HeaderExt                         = "$(SliceCompileHeaderExt)"
             SourceExt                         = "$(SliceCompileSourceExt)"
-            DependFile                        = "$(_SliceCompileOutputDir)\SliceCompile.d"
+            DependFile                        = "$(SliceCompileOutputDir)\SliceCompile.d"
             Depend                            = "true"
             Sources                           = "@(_SliceCompile)"
             Condition                         = "'$(_SliceCompileUpdateDepends)' == 'True'">
@@ -184,10 +184,10 @@
     </Target>
 
     <Target Name="SliceCompileClean" BeforeTargets="Clean">
-        <Delete Files="@(SliceCompile->'$(_SliceCompileOutputDir)\%(Filename).$(SliceCompileSourceExt)')"/>
-        <Delete Files="@(SliceCompile->'$(_SliceCompileOutputDir)\%(Filename).$(SliceCompileHeaderExt)')"/>
-        <Delete Files="$(_SliceCompileOutputDir)\SliceCompile.d"/>
-        <Delete Files="$(_SliceCompileOutputDir)\SliceCompile.command.log"/>
-        <Delete Files="$(_SliceCompileOutputDir)\SliceCompile.command.0.log"/>
+        <Delete Files="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).$(SliceCompileSourceExt)')"/>
+        <Delete Files="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).$(SliceCompileHeaderExt)')"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.d"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.log"/>
+        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.0.log"/>
     </Target>
 </Project>
