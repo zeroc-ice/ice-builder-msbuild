@@ -8,33 +8,46 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" HasConfigurationCondition="false" Label="" ItemType=""/>
+        <DataSource Persistence="ProjectFile" HasConfigurationCondition="false" Label="IceBuilder" ItemType="SliceCompile"/>
     </Rule.DataSource>
 
     <StringProperty
-        Name="SliceCompileOutputDir"
+        Name="OutputDir"
         DisplayName="Output Directory"
         Description="Directory where generated files are created."
         Subtype="folder"
-        Category="General"
-        Switch="--output-dir">
+        Category="General">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
+        </StringProperty.DataSource>
     </StringProperty>
 
     <!-- Parsing Options -->
     <StringListProperty
-        Name="SliceCompileIncludeDirectories"
+        Name="IncludeDirectories"
         DisplayName="Include Directories"
         Description="Specifies one or more directories to add to the Slice include path; use semi-colons (;) as directory separators."
-        Switch="-I"
-        Subtype="folder"
         Category="General">
+        <StringListProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
+        </StringListProperty.DataSource>
     </StringListProperty>
 
     <StringProperty
         DisplayName="Additional Options"
-        Name="SliceCompileAdditionalOptions"
+        Name="AdditionalOptions"
         Category="General"
-        Subtype="AdditionalOptions"
         Description="Additional command line options to pass to slice2cs.">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty
+        Name="Dummy"
+        Visible="False">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="true"/>
+        </StringProperty.DataSource>
     </StringProperty>
 </Rule>

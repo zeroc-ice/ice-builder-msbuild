@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
-        <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
-    </PropertyGroup>
-
     <Choose>
         <When Condition="'$(MSBuildAssemblyVersion)' == '' or '$(MSBuildAssemblyVersion)' &lt; '15.0'">
             <PropertyGroup>
@@ -31,11 +27,9 @@
     <ItemGroup>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)ProjectItemsSchema.xaml" />
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.xaml">
-            <Context>File;BrowseObject</Context>
+            <Context>BrowseObject</Context>
         </PropertyPageSchema>
-        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.CSharpProject.xaml">
-            <Context>Project</Context>
-        </PropertyPageSchema>
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.CSharpProject.xaml"/>
     </ItemGroup>
 
     <!-- These capability is used to apply the Slice property page designer -->
@@ -60,14 +54,31 @@
         <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
                Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
 
-        <!--
-            We do that to ensure that when we dynamically add the generated items to the Compile
-            item set we correctly exclude the Compile items, having and extra back slash '\'
-            will break the exclude bellow.
-        -->
-        <PropertyGroup>
-            <_SliceCompileOutputDir>$(SliceCompileOutputDir.TrimEnd('\'))</_SliceCompileOutputDir>
-        </PropertyGroup>
+        <MakeDir Directories="%(SliceCompile.OutputDir)"/>
+
+        <!-- First we check dependencies and decide what must be rebuild -->
+        <Slice2CSharpDependTask
+            WorkingDirectory      = "$(MSBuildProjectDirectory)"
+            IceHome               = "$(IceHome)"
+            IceToolsPath          = "$(IceToolsPath)"
+            Sources               = "@(SliceCompile)">
+
+            <Output
+                ItemName          = "_SliceCompile"
+                TaskParameter     = "ComputedSources"/>
+
+        </Slice2CSharpDependTask>
+
+        <!-- Compile the Slice files -->
+        <Slice2CSharpTask
+            WorkingDirectory      = "$(MSBuildProjectDirectory)"
+            IceHome               = "$(IceHome)"
+            IceToolsPath          = "$(IceToolsPath)"
+            OutputDir             = "%(_SliceCompile.OutputDir)"
+            IncludeDirectories    = "%(_SliceCompile.IncludeDirectories)"
+            AdditionalOptions     = "%(_SliceCompile.AdditionalOptions)"
+            Sources               = "@(_SliceCompile)"
+            Condition             = "'%(_SliceCompile.BuildRequired)' == 'True'"/>
 
         <!--
             Include all C# generated source items that have not been manually include, we want to delay this until we are
@@ -76,70 +87,13 @@
             missing items in a trasient way.
         -->
         <ItemGroup>
-            <ClCompile Include="@(SliceCompile->'$(_SliceCompileOutputDir)\%(Filename).cs')"
+            <ClCompile Include="@(_SliceCompile->'%(OutputDir)\%(Filename).cs')"
                        Exclude="@(Compile)" />
         </ItemGroup>
-
-        <MakeDir Directories="$(SliceCompileOutputDir)"/>
-
-        <WriteLinesToFile
-            File="$(SliceCompileOutputDir)\SliceCompile.command.log"
-            Lines="Ice Home: $(IceHome);
-                   Ice Tools Path: $(IceToolsPath);
-                   Output Dir: $(SliceCompileOutputDir);
-                   Include Directories: $(SliceCompileIncludeDirectories);
-                   Additional Options: $(SliceCompileAdditionalOptions)"
-            Overwrite="true"/>
-
-        <!-- First we check dependencies and decide what must be rebuild -->
-        <Slice2CSharpDependTask
-            OutputDir             = "$(SliceCompileOutputDir)"
-            WorkingDirectory      = "$(MSBuildProjectDirectory)"
-            IceToolsPath          = "$(IceToolsPath)"
-            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
-            CommandLog            = "$(SliceCompileOutputDir)\SliceCompile.command.log"
-            Sources               = "@(SliceCompile)">
-
-            <Output
-                ItemName          = "_SliceCompile"
-                TaskParameter     = "ComputedSources"/>
-
-            <Output
-                PropertyName      = "_SliceCompileUpdateDepends"
-                TaskParameter     = "UpdateDepends"/>
-
-        </Slice2CSharpDependTask>
-
-        <!-- Compile the Slice files to produce the generated code -->
-        <Slice2CSharpTask
-            IceHome               = "$(IceHome)"
-            IceToolsPath          = "$(IceToolsPath)"
-            OutputDir             = "$(SliceCompileOutputDir)"
-            WorkingDirectory      = "$(MSBuildProjectDirectory)"
-            IncludeDirectories    = "$(SliceCompileIncludeDirectories);$(IceHome)\slice"
-            AdditionalOptions     = "$(SliceCompileAdditionalOptions)"
-            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
-            Sources               = "@(_SliceCompile)"
-            Condition             = "'%(_SliceCompile.BuildRequired)' == 'True'"/>
-
-        <!-- Update the dependencies -->
-        <Slice2CSharpTask
-            IceHome               = "$(IceHome)"
-            IceToolsPath          = "$(IceToolsPath)"
-            OutputDir             = "$(SliceCompileOutputDir)"
-            WorkingDirectory      = "$(MSBuildProjectDirectory)"
-            IncludeDirectories    = "$(SliceCompileIncludeDirectories);$(IceHome)\slice"
-            AdditionalOptions     = "$(SliceCompileAdditionalOptions)"
-            DependFile            = "$(SliceCompileOutputDir)\SliceCompile.d"
-            Sources               = "@(_SliceCompile)"
-            Depend                = "true"
-            Condition             = "'$(_SliceCompileUpdateDepends)' == 'True'"/>
     </Target>
 
     <Target Name="SliceCompileClean" BeforeTargets="Clean">
-        <Delete Files="@(SliceCompile->'$(SliceCompileOutputDir)\%(Filename).cs')"/>
-        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.d"/>
-        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.log"/>
-        <Delete Files="$(SliceCompileOutputDir)\SliceCompile.command.0.log"/>
+        <Delete Files="@(SliceCompile->'%(OutputDir)\%(Filename).cs')"/>
+        <Delete Files="@(SliceCompile->'%(OutputDir)\SliceCompile.%(Filename).d"/>
     </Target>
 </Project>

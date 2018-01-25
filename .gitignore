@@ -4,3 +4,5 @@ obj
 lib
 msbuild/zeroc.icebuilder.msbuild
 *.exe
+*.user
+launchSettings.json

@@ -8,7 +8,7 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile"/>
+        <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
     </Rule.DataSource>
 
     <Rule.Categories>
@@ -16,55 +16,55 @@
     </Rule.Categories>
 
     <StringProperty
-        Name="SliceCompileOutputDir"
+        Name="OutputDir"
         DisplayName="Output Directory"
         Description="Directory where generated files are created."
         Subtype="folder"
         Category="General"
         Switch="--output-dir">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" HasConfigurationCondition="false"/>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
         </StringProperty.DataSource>
     </StringProperty>
 
     <StringProperty
-        Name="SliceCompileHeaderOutputDir"
+        Name="HeaderOutputDir"
         DisplayName="Header Output Directory"
         Description="Directory where generated headers will be moved after build."
         Subtype="folder"
         Category="General">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" HasConfigurationCondition="false"/>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" HasConfigurationCondition="false"/>
         </StringProperty.DataSource>
     </StringProperty>
 
     <!-- Parsing Options -->
     <StringListProperty
-        Name="SliceCompileIncludeDirectories"
+        Name="IncludeDirectories"
         DisplayName="Include Directories"
         Description="Specifies one or more directories to add to the Slice include path; use semi-colons (;) as directory separators."
         Switch="-I"
         Subtype="folder"
         Category="General">
         <StringListProperty.DataSource>
-            <DataSource Persistence="ProjectFile" HasConfigurationCondition="false"/>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" HasConfigurationCondition="false"/>
         </StringListProperty.DataSource>
     </StringListProperty>
 
     <!-- Output Options -->
     <StringProperty
-        Name="SliceCompileBaseDirectoryForGeneratedInclude"
+        Name="BaseDirectoryForGeneratedInclude"
         DisplayName="Base Directory For Generated #include"
         Category="General"
         Switch="--include-dir"
         Description="Base directory for #include in generated C++ files.">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" HasConfigurationCondition="false"/>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" HasConfigurationCondition="false"/>
         </StringProperty.DataSource>
     </StringProperty>
 
     <EnumProperty
-        Name="SliceCompileHeaderExt"
+        Name="HeaderExt"
         DisplayName="Generated Header Extension"
         Description="Use extension instead of default `h' header extension."
         Category="General"
@@ -74,12 +74,12 @@
         <EnumValue Name="hh" DisplayName=".hh" Description=".hh"/>
         <EnumValue Name="hxx" DisplayName=".hxx" Description=".hxx"/>
         <EnumProperty.DataSource>
-            <DataSource Persistence="ProjectFile" HasConfigurationCondition="false"/>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
         </EnumProperty.DataSource>
     </EnumProperty>
 
     <EnumProperty
-        Name="SliceCompileSourceExt"
+        Name="SourceExt"
         DisplayName="Generated Source Extension"
         Description="Use extension instead of default `cpp' source extension."
         Category="General"
@@ -88,21 +88,24 @@
         <EnumValue Name="cc" DisplayName=".cc" Description=".cc"/>
         <EnumValue Name="cxx" DisplayName=".cxx" Description=".cxx"/>
         <EnumProperty.DataSource>
-            <DataSource Persistence="ProjectFile" HasConfigurationCondition="false"/>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
         </EnumProperty.DataSource>
     </EnumProperty>
 
     <StringProperty
         DisplayName="Additional Options"
-        Name="SliceCompileAdditionalOptions"
-        Category="General"
-        Subtype="AdditionalOptions"
+        Name="AdditionalOptions"
         Description="Additional command line options to pass to slice2cpp.">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" HasConfigurationCondition="false"/>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
         </StringProperty.DataSource>
     </StringProperty>
 
-    <StringProperty Name="Dummy" Visible="false" />
-
+    <StringProperty
+        Name="Dummy"
+        Visible="False">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="true"/>
+        </StringProperty.DataSource>
+    </StringProperty>
 </Rule>

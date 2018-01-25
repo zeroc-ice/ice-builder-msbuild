@@ -2,7 +2,9 @@
 <!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <!-- default values -->
-    <PropertyGroup Condition="'$(SliceCompileOutputDir)' == ''">
-        <SliceCompileOutputDir>$(MSBuildProjectDirectory)\generated</SliceCompileOutputDir>
-    </PropertyGroup>
+    <ItemDefinitionGroup>
+        <SliceCompile>
+            <OutputDir>$(MSBuildProjectDirectory)\generated</OutputDir>
+        </SliceCompile>
+    </ItemDefinitionGroup>
 </Project>
