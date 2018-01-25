@@ -118,9 +118,10 @@ header files are generated in `$(IntDir)` and you would add:
 ```
 <ItemDefinitionGroup>
     <ClCompile>
-        <!-- C++ header files produced by slice2cpp are in $(IntDir) ->
+        <!-- SliceCompile for C++ puts generated header files in $(IntDir) -->
         <AdditionalIncludeDirectories>
-            $(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            $(IntDir);%(AdditionalIncludeDirectories)
+        </AdditionalIncludeDirectories>
     </ClCompile>
 </ItemDefinitionGroup>
 ```
