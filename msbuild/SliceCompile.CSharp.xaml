@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved. -->
 <Rule
-    Name="SliceCompileCSharpProjectProperties"
+    Name="SliceCompileCSharpProperties"
     DisplayName="Ice Builder"
     PageTemplate="generic"
     Description="Ice Builder Properties"
@@ -24,14 +24,14 @@
         Name="IncludeDirectories"
         DisplayName="Include Directories"
         Description="Specifies one or more directories to add to the Slice include path; use semi-colons (;) as directory separators."
+        Subtype="folder"
         Category="General">
     </StringListProperty>
 
-    <StringProperty
+    <StringListProperty
         DisplayName="Additional Options"
         Name="AdditionalOptions"
         Category="General"
         Description="Additional command line options to pass to slice2cs.">
-    </StringProperty>
-
+    </StringListProperty>
 </Rule>

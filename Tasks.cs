@@ -196,7 +196,7 @@ namespace IceBuilder.MSBuild
             set;
         }
 
-        public string AdditionalOptions
+        public string[] AdditionalOptions
         {
             get;
             set;
@@ -235,9 +235,9 @@ namespace IceBuilder.MSBuild
             {
                 options["IncludeDirectories"] = string.Join(";", IncludeDirectories);
             }
-            if(!string.IsNullOrEmpty(AdditionalOptions))
+            if(AdditionalOptions != null)
             {
-                options["AdditionalOptions"] = AdditionalOptions;
+                options["AdditionalOptions"] = string.Join(";", AdditionalOptions);
             }
             return options;
         }
@@ -264,10 +264,13 @@ namespace IceBuilder.MSBuild
                 builder.AppendSwitchIfNotNull("-I", Path.Combine(IceHome, "slice"));
             }
 
-            if(!string.IsNullOrEmpty(AdditionalOptions))
+            if(AdditionalOptions != null)
             {
-                builder.AppendTextUnquoted(" ");
-                builder.AppendTextUnquoted(AdditionalOptions);
+                foreach(var option in AdditionalOptions)
+                {
+                    builder.AppendTextUnquoted(" ");
+                    builder.AppendTextUnquoted(option);
+                }
             }
 
             builder.AppendFileNamesIfNotNull(Sources, " ");
