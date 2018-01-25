@@ -130,7 +130,7 @@ header files are generated in `$(IntDir)` and you would add:
 You can customize the options passed by Ice Builder to `slice2cpp` by setting the
 following SliceCompile item metadata:
 
-| Item Metadata                    | Default Value | Corresponding `slice2cpp` [option][4]|
+| Item Metadata                    | Default Value | Corresponding `slice2cpp` [Option][4]|
 | -------------------------------- | ------------- | ------------------------------------ |
 | OutputDir                        | $(IntDir)     | `--output-dir`                       |
 | HeaderOutputDir                  |               | (none)                               |
@@ -166,7 +166,7 @@ For example, you can set `HeaderOutputDir` as follows:
 You can customize the options passed by Ice Builder to `slice2cs` by setting the
 following SliceCompile item metadata:
 
-| Item Metadata      | Default Value                        | Corresponding `slice2cs` [option][5]|
+| Item Metadata      | Default Value                        | Corresponding `slice2cs` [Option][5]|
 | -------------------|------------------------------------- |-------------------------------------|
 | OutputDir          | $(MSBuildProjectDirectory)/generated | `--output-dir`                      |
 | IncludeDirectories |                                      | `-I`                                |
