@@ -101,6 +101,8 @@
         </StringProperty.DataSource>
     </StringProperty>
 
+    <!-- BUGFIX: With Visual Studio 2017 we need to have at least on property with a configuration condition otherwise our
+         property page will not show up -->
     <StringProperty
         Name="Dummy"
         Visible="False">
