@@ -16,8 +16,8 @@
     <Import Project="$(IceHome)\config\Ice.Cpp.props"
             Condition="'$(IceNugetPackageVersion)' == '' and Exists('$(IceHome)\config\Ice.Cpp.props')"/>
 
-    <!-- With Ice 3.6.0 the C++ props were not part of the Ice distribution, they are included with
-         msbuild builder for backwards compatibility -->
+    <!-- With Ice 3.6.0 the C++ props were not part of the Ice distribution. They are included with
+         Ice Builder for MSBuild for backwards compatibility -->
     <Import Project="$(MSBuildThisFileDirectory)\Ice.3.6.0.Cpp.props"
             Condition="'$(IceVersion)' == '3.6.0' and Exists('$(MSBuildThisFileDirectory)\Ice.3.6.0.Cpp.props')"/>
 
@@ -42,7 +42,7 @@
         <MakeDir Directories="%(SliceCompile.OutputDir)" Condition="!Exists('%(SliceCompile.OutputDir)')"/>
         <MakeDir Directories="%(SliceCompile.HeaderOutputDir)" Condition="!Exists('%(SliceCompile.HeaderOutputDir)')"/>
 
-        <!-- First we check dependencies and decide what Slice files need to be rebuild -->
+        <!-- First we check dependencies to compute which Slice files need to be recompiled -->
         <Slice2CppDependTask
             IceHome                           = "$(IceHome)"
             IceToolsPath                      = "$(IceToolsPath)"
@@ -75,10 +75,10 @@
         </Slice2CppTask>
 
         <!--
-            Include all C++ generated source items that have not been manually include, we want to delay this until we are
-            running SliceCompile target so that the Visual Studio extension has a chance to add the items to the project in
-            a persintent way and if the extension is not enabled or we are building from the command line we just add the
-            missing items in a trasient way.
+            Include all C++ generated source items that have not been manually included. We want to delay this until we are
+            running the SliceCompile target so that the Visual Studio extension has a chance to add the items to the project in
+            a persistent way. If the extension is not enabled or we are building from the command line we just add the
+            missing items in a transient way.
         -->
         <ItemGroup>
             <ClCompile Include="@(_SliceCompile->'%(OutputDir)\%(Filename).%(SourceExt)')"
@@ -86,8 +86,8 @@
         </ItemGroup>
 
         <!--
-            TLog files are used by Visual Studio up to date check to figure if a project file
-            need to be rebuild.
+            TLog files are used by Visual Studio's up to date check to figure out if a project file
+            needs to be rebuilt.
         -->
         <!-- Write TLog files -->
         <MakeDir Directories="$(TLogLocation)" Condition="!Exists('$(TLogLocation)')"/>
