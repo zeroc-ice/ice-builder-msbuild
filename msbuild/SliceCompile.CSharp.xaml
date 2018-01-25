@@ -17,9 +17,6 @@
         Description="Directory where generated files are created."
         Subtype="folder"
         Category="General">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
-        </StringProperty.DataSource>
     </StringProperty>
 
     <!-- Parsing Options -->
@@ -28,9 +25,6 @@
         DisplayName="Include Directories"
         Description="Specifies one or more directories to add to the Slice include path; use semi-colons (;) as directory separators."
         Category="General">
-        <StringListProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
-        </StringListProperty.DataSource>
     </StringListProperty>
 
     <StringProperty
@@ -38,16 +32,6 @@
         Name="AdditionalOptions"
         Category="General"
         Description="Additional command line options to pass to slice2cs.">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
-        </StringProperty.DataSource>
     </StringProperty>
 
-    <StringProperty
-        Name="Dummy"
-        Visible="False">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="true"/>
-        </StringProperty.DataSource>
-    </StringProperty>
 </Rule>

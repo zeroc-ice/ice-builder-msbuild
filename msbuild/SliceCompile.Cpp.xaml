@@ -11,10 +11,6 @@
         <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
     </Rule.DataSource>
 
-    <Rule.Categories>
-        <Category Name="General" DisplayName="General"/>
-    </Rule.Categories>
-
     <StringProperty
         Name="OutputDir"
         DisplayName="Output Directory"
@@ -22,9 +18,6 @@
         Subtype="folder"
         Category="General"
         Switch="--output-dir">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
-        </StringProperty.DataSource>
     </StringProperty>
 
     <StringProperty
@@ -33,9 +26,6 @@
         Description="Directory where generated headers will be moved after build."
         Subtype="folder"
         Category="General">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" HasConfigurationCondition="false"/>
-        </StringProperty.DataSource>
     </StringProperty>
 
     <!-- Parsing Options -->
@@ -46,9 +36,6 @@
         Switch="-I"
         Subtype="folder"
         Category="General">
-        <StringListProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" HasConfigurationCondition="false"/>
-        </StringListProperty.DataSource>
     </StringListProperty>
 
     <!-- Output Options -->
@@ -58,9 +45,6 @@
         Category="General"
         Switch="--include-dir"
         Description="Base directory for #include in generated C++ files.">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" HasConfigurationCondition="false"/>
-        </StringProperty.DataSource>
     </StringProperty>
 
     <EnumProperty
@@ -73,9 +57,6 @@
         <EnumValue Name="hpp" DisplayName=".hpp" Description=".hpp"/>
         <EnumValue Name="hh" DisplayName=".hh" Description=".hh"/>
         <EnumValue Name="hxx" DisplayName=".hxx" Description=".hxx"/>
-        <EnumProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
-        </EnumProperty.DataSource>
     </EnumProperty>
 
     <EnumProperty
@@ -87,18 +68,12 @@
         <EnumValue Name="cpp" DisplayName=".cpp" Description=".cpp"/>
         <EnumValue Name="cc" DisplayName=".cc" Description=".cc"/>
         <EnumValue Name="cxx" DisplayName=".cxx" Description=".cxx"/>
-        <EnumProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
-        </EnumProperty.DataSource>
     </EnumProperty>
 
     <StringProperty
         DisplayName="Additional Options"
         Name="AdditionalOptions"
         Description="Additional command line options to pass to slice2cpp.">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="SliceCompile" Label="IceBuilder" HasConfigurationCondition="false"/>
-        </StringProperty.DataSource>
     </StringProperty>
 
     <!-- BUGFIX: With Visual Studio 2017 we need to have at least on property with a configuration condition otherwise our
