@@ -11,6 +11,6 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Provides support for compiling Slice source files (.ice files) in MSBuild projects</description>
         <releaseNotes>Initial release, was previously part of Ice Builder for Visual Studio (in ice-builder-visualstudio repo)</releaseNotes>
-        <tags>zeroc ice msbuild</tags>
+        <tags>ice msbuild slice zeroc</tags>
     </metadata>
 </package>
