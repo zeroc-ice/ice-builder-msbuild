@@ -32,13 +32,13 @@
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.CSharpProject.xaml"/>
     </ItemGroup>
 
-    <!-- These capability is used to apply the Slice property page designer -->
+    <!-- This capability is used to apply the Slice property page designer -->
     <ItemGroup>
         <ProjectCapability Include="SliceCompile" />
     </ItemGroup>
 
     <!--
-        Settings that are only supported with MSBuild 15.0 and up, the item Update
+        Settings that are only supported with MSBuild 15.0 and up. The item Update
         attribute is not supported with older MSBuild versions, and will fail to parse
         the targets files if directly set here.
     -->
@@ -56,7 +56,7 @@
 
         <MakeDir Directories="%(SliceCompile.OutputDir)"/>
 
-        <!-- First we check dependencies and decide what must be rebuild -->
+        <!-- First we check dependencies and compute which Slice files need to be recompiled -->
         <Slice2CSharpDependTask
             WorkingDirectory      = "$(MSBuildProjectDirectory)"
             IceHome               = "$(IceHome)"
@@ -81,10 +81,10 @@
             Condition             = "'%(_SliceCompile.BuildRequired)' == 'True'"/>
 
         <!--
-            Include all C# generated source items that have not been manually include, we want to delay this until we are
-            running SliceCompile target so that the Visual Studio extension has a chance to add the items to the project in
-            a persintent way and if the extension is not enabled or we are building from the command line we just add the
-            missing items in a trasient way.
+            Include all C# generated source items that have not been manually included. We want to delay this until we are
+            running the SliceCompile target so that the Visual Studio extension has a chance to add these items to the project in
+            a persistent way. If the extension is not enabled or we are building from the command line we just add the
+            missing items in a transient way.
         -->
         <ItemGroup>
             <ClCompile Include="@(_SliceCompile->'%(OutputDir)\%(Filename).cs')"
