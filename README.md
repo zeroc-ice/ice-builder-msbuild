@@ -150,7 +150,7 @@ C++ code will not compile. For example:
     <ClCompile>
         <AdditionalIncludeDirectories>
             $(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      </ClCompile>
+    </ClCompile>
 </ItemDefinitionGroup>
 ```
 
