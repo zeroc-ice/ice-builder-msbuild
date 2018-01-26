@@ -93,6 +93,6 @@
 
     <Target Name="SliceCompileClean" BeforeTargets="Clean">
         <Delete Files="@(SliceCompile->'%(OutputDir)\%(Filename).cs')"/>
-        <Delete Files="@(SliceCompile->'%(OutputDir)\SliceCompile.%(Filename).d"/>
+        <Delete Files="@(SliceCompile->'%(OutputDir)\SliceCompile.%(Filename).d')"/>
     </Target>
 </Project>
