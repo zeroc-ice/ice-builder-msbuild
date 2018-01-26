@@ -261,8 +261,8 @@ namespace IceBuilder.MSBuild
                 {
                     builder.AppendSwitchIfNotNull("-I", path);
                 }
-                builder.AppendSwitchIfNotNull("-I", Path.Combine(IceHome, "slice"));
             }
+            builder.AppendSwitchIfNotNull("-I", Path.Combine(IceHome, "slice"));
 
             if(AdditionalOptions != null)
             {
