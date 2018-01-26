@@ -82,7 +82,7 @@ The value for these Windows registry keys are set by the [Ice Builder for Visual
 You need to tell Ice Builder which Slice files (files with a `.ice` extension) to compile,
 by adding these files to your project.
 
-You can add all Slice files found in in your project's home directory and any of its
+You can add all Slice files found in your project's home directory and any of its
 sub-directories (and sub-sub directories, recursively) to your project by setting both
 `EnableDefaultItems` and `EnableDefaultSliceCompileItems` to true. The default value for
 `EnableDefaultSliceCompileItems` is true while the default value for `EnableDefaultItems`
