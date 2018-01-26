@@ -324,7 +324,7 @@ namespace IceBuilder.MSBuild
                             new XDeclaration("1.0", "utf-8", "yes"),
                             new XElement("dependencies",
                                 new XElement("source", new XAttribute("name", source.GetMetadata("Identity")),
-                                    inputs.Select(path => new XElement(path)),
+                                    inputs.Select(path => new XElement("dependsOn", new XAttribute("name", path))),
                                     new XElement("options",
                                         GetOptions().Select(e => new XElement(e.Key, e.Value))))));
 
