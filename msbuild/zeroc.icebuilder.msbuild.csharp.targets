@@ -39,10 +39,9 @@
 
     <!--
         Settings that are only supported with MSBuild 15.0 and up. The item Update
-        attribute is not supported with older MSBuild versions, and will fail to parse
-        the targets files if directly set here.
+        attribute is not supported with older MSBuild versions.
     -->
-    <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.csharp.15.0.targets"
+    <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.csharp.15.0.targets"
             Condition="'$(MSBuildAssemblyVersion)' &gt; '14.0'"/>
 
     <Target Name="SliceCompile" BeforeTargets="BeforeBuild"
