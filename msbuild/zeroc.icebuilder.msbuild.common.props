@@ -24,8 +24,9 @@
                       Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);@(SliceCompile)"/>
     </ItemGroup>
 
-    <!-- Ice MSBuild properties not provided by Ice versions older than 3.7.0 -->
-    <PropertyGroup Condition="'$(IceIntVersion)' != '' and '$(IceIntVersion)' &lt; '30700'">
+    <!-- Ice MSBuild properties not provided by Ice versions older than 3.7.0, IceIntVersion was not correctly set with
+         3.6.0 and we need to alos check '$(IceVersion) == '3.6.0' -->
+    <PropertyGroup Condition="'$(IceIntVersion)' != '' and ('$(IceIntVersion)' &lt; '30700' or '$(IceVersion)' == '3.6.0')">
         <!-- Slice tasks use IceToolsPath to locate the Slice compilers -->
         <IceToolsPath Condition="'$(IceToolsPath)' == '' and Exists('$(IceHome)\bin')">$(IceHome)\bin</IceToolsPath>
         <!-- IceToolsBin is no longer used as of Ice 3.7, but IceBuilder sets it for projects that use Ice 3.6 -->
