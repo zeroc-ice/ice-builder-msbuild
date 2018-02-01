@@ -30,6 +30,7 @@
             <Context>BrowseObject</Context>
         </PropertyPageSchema>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.CSharp.xaml"/>
+        <AvailableItemName Include="SliceCompile"/>
     </ItemGroup>
 
     <!-- This capability is used to apply the Slice property page designer -->
