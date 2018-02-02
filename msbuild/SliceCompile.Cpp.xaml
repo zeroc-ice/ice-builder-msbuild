@@ -76,6 +76,16 @@
         Description="Additional command-line options to pass to slice2cpp.">
     </StringListProperty>
 
+    <BoolProperty
+        DisplayName="Enable C++11 mapping"
+        Name="IceCpp11Mapping"
+        Description="When yes, define ICE_CPP11_MAPPING when compiling C++ code (applies only to Ice 3.7 and Visual Stutio 2015 or later)."
+        Category="C++ Preprocessor">
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="" Label="IceBuilder" HasConfigurationCondition="false"/>
+        </BoolProperty.DataSource>
+    </BoolProperty>
+
     <!-- BUGFIX: With Visual Studio 2017 we need to have at least one property with a configuration condition otherwise our
          property page will not show up -->
     <StringProperty

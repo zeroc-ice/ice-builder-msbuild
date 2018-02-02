@@ -9,4 +9,7 @@
             <SourceExt>cpp</SourceExt>
         </SliceCompile>
     </ItemDefinitionGroup>
+    <PropertyGroup>
+        <IceCpp11Mapping>yes</IceCpp11Mapping>
+    </PropertyGroup>
 </Project>
