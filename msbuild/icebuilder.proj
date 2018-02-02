@@ -17,7 +17,7 @@
     <ItemGroup>
         <Targets Include="zeroc.icebuilder.*.targets"/>
         <Props Include="zeroc.icebuilder.*.props;Ice.3.6.0.Cpp.props"/>
-        <Schemas Include="SliceCompile.xaml;SliceCompile.*.xaml;ProjectItemsSchema.xaml"/>
+        <Schemas Include="SliceCompile.*.xaml;ProjectItemsSchema.xaml"/>
     </ItemGroup>
 
     <Target Name="Build">
