@@ -26,10 +26,9 @@
 
     <ItemGroup>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)ProjectItemsSchema.xaml" />
-        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.xaml">
-            <Context>BrowseObject</Context>
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.CSharp.xaml">
+            <Context>BrowseObject;File</Context>
         </PropertyPageSchema>
-        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.CSharp.xaml"/>
         <AvailableItemName Include="SliceCompile"/>
     </ItemGroup>
 
