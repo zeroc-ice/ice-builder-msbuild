@@ -9,7 +9,16 @@
             <SourceExt>cpp</SourceExt>
         </SliceCompile>
     </ItemDefinitionGroup>
-    <PropertyGroup>
-        <IceCppMapping>cpp11</IceCppMapping>
-    </PropertyGroup>
+    <Choose>
+        <When Condition="'$(VisualStudioVersion)' &gt;= '14.0'">
+            <PropertyGroup>
+                <IceCppMapping>cpp11</IceCppMapping>
+            </PropertyGroup>
+        </When>
+        <Otherwise>
+            <PropertyGroup>
+                <IceCppMapping>cpp98</IceCppMapping>
+            </PropertyGroup>
+        </Otherwise>
+    </Choose>
 </Project>
