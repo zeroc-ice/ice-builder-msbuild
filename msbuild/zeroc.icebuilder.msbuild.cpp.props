@@ -10,6 +10,6 @@
         </SliceCompile>
     </ItemDefinitionGroup>
     <PropertyGroup>
-        <IceCpp11Mapping>yes</IceCpp11Mapping>
+        <IceCppMapping>cpp11</IceCppMapping>
     </PropertyGroup>
 </Project>

@@ -76,15 +76,17 @@
         Description="Additional command-line options to pass to slice2cpp.">
     </StringListProperty>
 
-    <BoolProperty
-        DisplayName="Enable C++11 mapping"
-        Name="IceCpp11Mapping"
-        Description="When yes, define ICE_CPP11_MAPPING when compiling C++ code (applies only to Ice 3.7 and Visual Stutio 2015 or later)."
+    <EnumProperty
+        DisplayName="C++ Mapping"
+        Name="IceCppMapping"
+        Description="Select C++11 to define ICE_CPP11_MAPPING when compiling C++ code (applies only to Ice 3.7 and Visual Studio 2015 or later)"
         Category="C++ Preprocessor">
-        <BoolProperty.DataSource>
+                <EnumValue Name="cpp11" DisplayName="C++11" Description="C++11"/>
+                <EnumValue Name="cpp98" DisplayName="C++98" Description="C++98"/>
+        <EnumProperty.DataSource>
             <DataSource Persistence="ProjectFile" ItemType="" Label="IceBuilder" HasConfigurationCondition="false"/>
-        </BoolProperty.DataSource>
-    </BoolProperty>
+        </EnumProperty.DataSource>
+    </EnumProperty>
 
     <!-- BUGFIX: With Visual Studio 2017 we need to have at least one property with a configuration condition otherwise our
          property page will not show up -->
