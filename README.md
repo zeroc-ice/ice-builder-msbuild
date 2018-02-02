@@ -23,6 +23,7 @@ directly as described below, or within the Visual Studio IDE using the
   * [Other Ice Installation on Windows](#other-ice-installation-on-windows)
 * [Adding Slice Files to your Project](#adding-slice-files-to-your-project)
 * [Compiling and Linking your Project with Ice](#compiling-and-linking-your-project-with-ice)
+* [Selecting the Slice to C++ Mapping](#selecting-the-slice-to-c-mapping)
 * [Customizing the Slice to C++ Compilation](#customizing-the-slice-to-c-compilation)
 * [Customizing the Slice to C# Compilation](#customizing-the-slice-to-c-compilation-1)
 * [Building Ice Builder from Source](#building-ice-builder-from-source)
@@ -129,12 +130,34 @@ add this directory to `ClCompile`'s `AdditionalIncludeDirectories`:
 </ItemDefinitionGroup>
 ```
 
+## Selecting the Slice to C++ Mapping
+
+As of Ice 3.7, `slice2cpp` generates C++ code for two mappings, the [Slice to C++11 mapping][4]
+and the [Slice to C++98 mapping][5]. You select the C++ mapping used by your C++ code by
+defining or not defining `ICE_CPP11_MAPPING` during C++ compilation. 
+
+Ice Builder selects C++11 as the default mapping when using Visual Studio 2015 or greater, 
+and C++98 as the default mapping with older versions of Visual Studio. You can overwrite 
+this default by setting the property `IceCppMapping` to `cpp11` (for the C++11 mapping) or 
+to `cpp98` (for the C++98 mapping). For example:
+```
+<PropertyGroup>
+    <IceCppMapping>cpp98</IceCppMapping>
+</PropertyGroup>
+```
+Setting `IceCppMapping` to `cpp11` is equivalent to adding `ICE_CPP11_MAPPING` to the 
+`PreprocessorDefinitions` item metadata of `ClCompile` for all configurations and platforms.
+This setting is ignored unless you are using Ice 3.7 with Visual Studio 2015 or greater.
+
+Setting `IceCppMapping` to `cpp98` has currently no effect other than overwriting the 
+default value with Visual Studio 2015 or greater.
+
 ## Customizing the Slice to C++ Compilation
 
 You can customize the options passed by Ice Builder to `slice2cpp` by setting the
 following SliceCompile item metadata:
 
-| Item Metadata                    | Default Value | Corresponding `slice2cpp` [Option][4]|
+| Item Metadata                    | Default Value | Corresponding `slice2cpp` [Option][6]|
 | -------------------------------- | ------------- | ------------------------------------ |
 | OutputDir                        | $(IntDir)     | `--output-dir`                       |
 | HeaderOutputDir                  |               | (none)                               |
@@ -181,7 +204,7 @@ and then add this directory to `ClCompile`'s `AdditionalIncludeDirectories`:
 You can customize the options passed by Ice Builder to `slice2cs` by setting the
 following SliceCompile item metadata:
 
-| Item Metadata      | Default Value                        | Corresponding `slice2cs` [Option][5]|
+| Item Metadata      | Default Value                        | Corresponding `slice2cs` [Option][7]|
 | -------------------|------------------------------------- |-------------------------------------|
 | OutputDir          | $(MSBuildProjectDirectory)/generated | `--output-dir`                      |
 | IncludeDirectories |                                      | `-I`                                |
@@ -221,5 +244,7 @@ used by your certificate store.
 [1]: https://github.com/zeroc-ice/ice-builder-visualstudio
 [2]: https://www.nuget.org/packages/zeroc.icebuilder.msbuild
 [3]: https://github.com/zeroc-ice/ice-builder-visualstudio
-[4]: https://doc.zeroc.com/pages/viewpage.action?pageId=18255322
-[5]: https://doc.zeroc.com/display/Ice37/slice2cs+Command-Line+Options
+[4]: https://doc.zeroc.com/pages/viewpage.action?pageId=18255283
+[5]: https://doc.zeroc.com/pages/viewpage.action?pageId=18255332
+[6]: https://doc.zeroc.com/pages/viewpage.action?pageId=18255322
+[7]: https://doc.zeroc.com/display/Ice37/slice2cs+Command-Line+Options
