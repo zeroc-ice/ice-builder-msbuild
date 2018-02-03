@@ -123,9 +123,7 @@ add this directory to `ClCompile`'s `AdditionalIncludeDirectories`:
 <ItemDefinitionGroup>
     <ClCompile>
         <!-- SliceCompile for C++ puts generated header files in $(IntDir) -->
-        <AdditionalIncludeDirectories>
-            $(IntDir);%(AdditionalIncludeDirectories)
-        </AdditionalIncludeDirectories>
+        <AdditionalIncludeDirectories>$(IntDir)</AdditionalIncludeDirectories>
     </ClCompile>
 </ItemDefinitionGroup>
 ```
@@ -194,7 +192,7 @@ and then add this directory to `ClCompile`'s `AdditionalIncludeDirectories`:
 <ItemDefinitionGroup>
     <ClCompile>
         <AdditionalIncludeDirectories>
-            ..\include\generated\$(IntDir);%(AdditionalIncludeDirectories)
+            ..\include\generated\$(IntDir)
         </AdditionalIncludeDirectories>
     </ClCompile>
 </ItemDefinitionGroup>
