@@ -23,7 +23,12 @@
 
     <ItemGroup>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)ProjectItemsSchema.xaml" />
-        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.Cpp.xaml"/>
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.Cpp.xaml">
+            <Context>Project</Context>
+        </PropertyPageSchema>
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.Cpp.File.xaml">
+            <Context>File</Context>
+        </PropertyPageSchema>
         <AvailableItemName Include="SliceCompile"/>
     </ItemGroup>
 
