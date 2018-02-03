@@ -4,7 +4,7 @@
     Name="SliceCompileFile"
     DisplayName="Ice Builder"
     PageTemplate="generic"
-    Description="Ice Builder project settings"
+    Description="Ice Builder file settings"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.DataSource>
