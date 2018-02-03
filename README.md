@@ -184,7 +184,7 @@ For example, you can set `HeaderOutputDir` as follows:
 ```
 <ItemDefinitionGroup>
     <SliceCompile>
-       <HeaderOutputDir>..\include\generated\$(Platform)\$(Configuration)</HeaderOutputDir>
+       <HeaderOutputDir>..\include\generated\$(IntDir)</HeaderOutputDir>
     </SliceCompile>
 </ItemDefinitionGroup>
 ```
@@ -194,7 +194,7 @@ and then add this directory to `ClCompile`'s `AdditionalIncludeDirectories`:
 <ItemDefinitionGroup>
     <ClCompile>
         <AdditionalIncludeDirectories>
-            ..\include\generated\$(Platform)\$(Configuration);%(AdditionalIncludeDirectories)
+            ..\include\generated\$(IntDir);%(AdditionalIncludeDirectories)
         </AdditionalIncludeDirectories>
     </ClCompile>
 </ItemDefinitionGroup>
@@ -218,7 +218,7 @@ For example, you can set `IncludeDirectories` as follows:
 ```
 <ItemDefinitionGroup>
     <SliceCompile>
-       <IncludeDirectories>../shared/slice</IncludeDirectories>
+       <IncludeDirectories>../shared/slice;.</IncludeDirectories>
     </SliceCompile>
 </ItemDefinitionGroup>
 ```
