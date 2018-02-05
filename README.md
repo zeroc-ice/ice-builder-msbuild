@@ -230,6 +230,7 @@ You need Visual Studio 2017 with the .NET Core cross-development toolset.
 Open a Visual Studio Command prompt and run the following command:
 
 ```
+MSBuild msbuild\icebuilder.proj /t:Restore
 MSBuild msbuild\icebuilder.proj /t:NuGetPack
 ```
 
