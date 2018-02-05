@@ -47,8 +47,11 @@
     <Target Name="SliceCompile" BeforeTargets="BeforeBuild"
             Condition="@(SliceCompile) != ''">
 
-        <Error Text="Ice Installation not detected."
-               Condition="'$(IceHome)' == ''" />
+        <Error Text="Ice Installation invalid or not detected. Invalid IceHome setting `$(IceHome)'"
+               Condition="!Exists('$(IceHome)')" />
+
+        <Error Text="Ice Installation invalid or not detected. Invalid IceToolsPath setting `$(IceToolsPath)'"
+               Condition="'!Exists('$(IceToolsPath)')" />
 
         <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
                Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
