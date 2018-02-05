@@ -191,9 +191,7 @@ and then add this directory to `ClCompile`'s `AdditionalIncludeDirectories`:
 ```
 <ItemDefinitionGroup>
     <ClCompile>
-        <AdditionalIncludeDirectories>
-            ..\include\generated\$(IntDir)
-        </AdditionalIncludeDirectories>
+        <AdditionalIncludeDirectories>..\include\generated\$(IntDir)</AdditionalIncludeDirectories>
     </ClCompile>
 </ItemDefinitionGroup>
 ```
@@ -216,7 +214,7 @@ For example, you can set `IncludeDirectories` as follows:
 ```
 <ItemDefinitionGroup>
     <SliceCompile>
-       <IncludeDirectories>../shared/slice;.</IncludeDirectories>
+        <IncludeDirectories>../shared/slice;.</IncludeDirectories>
     </SliceCompile>
 </ItemDefinitionGroup>
 ```
@@ -235,7 +233,7 @@ Open a Visual Studio Command prompt and run the following command:
 MSBuild msbuild\icebuilder.proj /t:NuGetPack
 ```
 
-You can sign the assembly with Authenticode by setting the environment variable `SIGN_CERTIFICATE` to
+You can sign the assemblies with Authenticode by setting the environment variable `SIGN_CERTIFICATE` to
 the path of your PFX certificate store, and the `SIGN_PASSWORD` environment variable to the password
 used by your certificate store.
 
