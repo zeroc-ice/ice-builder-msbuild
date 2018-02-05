@@ -695,12 +695,20 @@ namespace IceBuilder.MSBuild
             var value = item.GetMetadata("IncludeDirectories");
             if(!string.IsNullOrEmpty(value))
             {
-                options["IncludeDirectories"] = value;
+                value = value.Trim(';');
+                if(!string.IsNullOrEmpty(value))
+                {
+                    options["IncludeDirectories"] = value;
+                }
             }
             value = item.GetMetadata("AdditionalOptions");
             if(!string.IsNullOrEmpty(value))
             {
-                options["AdditionalOptions"] = value;
+                value = value.Trim(';');
+                if(!string.IsNullOrEmpty(value))
+                {
+                    options["AdditionalOptions"] = value;
+                }
             }
             return options;
         }
