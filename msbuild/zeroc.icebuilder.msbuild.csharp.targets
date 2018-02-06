@@ -89,8 +89,8 @@
             missing items in a transient way.
         -->
         <ItemGroup>
-            <ClCompile Include="@(_SliceCompile->'%(OutputDir)\%(Filename).cs')"
-                       Exclude="@(Compile)" />
+            <Compile Include="@(_SliceCompile->'%(OutputDir)\%(Filename).cs')"
+                     Exclude="@(Compile)" />
         </ItemGroup>
     </Target>
 
