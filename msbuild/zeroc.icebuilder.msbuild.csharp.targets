@@ -90,7 +90,7 @@
         -->
         <ItemGroup>
             <Compile Include="@(_SliceCompile->'%(OutputDir)\%(Filename).cs')"
-                     Exclude="@(Compile)" />
+                     Exclude="@(Compile->'%(FullPath)');@(Compile->'%(Identity)')" />
         </ItemGroup>
     </Target>
 

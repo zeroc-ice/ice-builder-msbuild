@@ -98,7 +98,7 @@
         -->
         <ItemGroup>
             <ClCompile Include="@(_SliceCompile->'%(OutputDir)\%(Filename).%(SourceExt)')"
-                       Exclude="@(ClCompile)" />
+                       Exclude="@(ClCompile->'%(FullPath)');@(ClCompile->'%(Identity)')" />
         </ItemGroup>
 
         <!--
