@@ -7,4 +7,10 @@
             <Link Condition="'%(Link)' == '' And '%(DefiningProjectExtension)' != '.projitems' And !$([MSBuild]::ValueOrDefault('%(FullPath)', '').StartsWith($([MSBuild]::EnsureTrailingSlash($(MSBuildProjectDirectory)))))">%(LinkBase)%(RecursiveDir)%(Filename)%(Extension)</Link>
         </SliceCompile>
     </ItemGroup>
+
+    <!-- When enable default items is true, *.ice and *.d files are included as None items we remove them here -->
+    <ItemGroup Condition="'$(EnableDefaultItems)' == 'true'">
+        <None Remove="**\*.ice"/>
+        <None Remove="**\SliceCompile.*.d"/>
+    </ItemGroup>
 </Project>
