@@ -21,6 +21,12 @@
     <Import Project="$(MSBuildThisFileDirectory)\Ice.3.6.0.Cpp.props"
             Condition="'$(IceVersion)' == '3.6.0' and Exists('$(MSBuildThisFileDirectory)\Ice.3.6.0.Cpp.props')"/>
 
+    <!-- With Ice 3.6 the LocalDebuggerEviroment settings are not set in the targets file we add IceBin
+         to the PATH here -->
+    <PropertyGroup Condition="'$(IceIntVersion)' != '' and ('$(IceIntVersion)' &lt; '30700' or '$(IceVersion)' == '3.6.0')">
+        <LocalDebuggerEnvironment>PATH=$(IceBin)</LocalDebuggerEnvironment>
+    </PropertyGroup>
+
     <ItemGroup>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)ProjectItemsSchema.xaml" />
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.Cpp.xaml">
