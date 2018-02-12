@@ -520,17 +520,12 @@ namespace IceBuilder.MSBuild
         protected override string GenerateCommandLineCommands()
         {
             CommandLineBuilder builder = new CommandLineBuilder(false);
-            if(!HeaderExt.Equals("h"))
-            {
-                builder.AppendSwitch("--header-ext");
-                builder.AppendFileNameIfNotNull(HeaderExt);
-            }
 
-            if(!SourceExt.Equals("cpp"))
-            {
-                builder.AppendSwitch("--source-ext");
-                builder.AppendFileNameIfNotNull(SourceExt);
-            }
+            builder.AppendSwitch("--header-ext");
+            builder.AppendFileNameIfNotNull(HeaderExt);
+
+            builder.AppendSwitch("--source-ext");
+            builder.AppendFileNameIfNotNull(SourceExt);
 
             if(!string.IsNullOrEmpty(BaseDirectoryForGeneratedInclude))
             {
