@@ -1,3 +1,13 @@
+## Changes in Ice Builder for MSBuild 5.0.3
+
+- Fix SliceCppTask task to always pass --header-ext and --source-ext
+  command line switches to slice2cpp, previously that was only done
+  for non default arguments see issue #2
+
+- Fix bogus MSBuildAssemblyVersion check, this property is not set with
+  old Visual Studio versions the code must check it is set before do a
+  version comparison.
+
 ## Changes in Ice Builder for MSBuild 5.0.2
 
 - Fix bogus condition that cause SliceCompile items from outside
