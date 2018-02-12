@@ -42,7 +42,7 @@
         attribute is not supported with older MSBuild versions.
     -->
     <Import Project="$(MSBuildThisFileDirectory)\zeroc.icebuilder.msbuild.csharp.15.0.targets"
-            Condition="'$(MSBuildAssemblyVersion)' &gt; '14.0'"/>
+            Condition="'$(MSBuildAssemblyVersion)' != '' and '$(MSBuildAssemblyVersion)' &gt; '14.0'"/>
 
     <Target Name="SliceCompile" BeforeTargets="BeforeBuild"
             Condition="@(SliceCompile) != ''">
