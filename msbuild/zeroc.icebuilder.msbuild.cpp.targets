@@ -38,7 +38,7 @@
         <AvailableItemName Include="SliceCompile"/>
     </ItemGroup>
 
-    <ItemDefinitionGroup Condition="'$(IceCppMapping)' == 'cpp11' and '$(IceIntVersion)' &gt;= '30700' and '$(VisualStudioVersion)' &gt;= '14.0'">
+    <ItemDefinitionGroup Condition="'$(IceCppMapping)' == 'cpp11' and '$(IceIntVersion)' != '' and '$(IceIntVersion)' &gt;= '30700' and '$(VisualStudioVersion)' &gt;= '14.0'">
         <ClCompile>
             <PreprocessorDefinitions>ICE_CPP11_MAPPING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
         </ClCompile>
