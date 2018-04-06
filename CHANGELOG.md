@@ -1,3 +1,8 @@
+## Changes in Ice Builder for MSBuild 5.0.4
+
+- Fix a bogus comparison that can result in failure loading projects
+  if Ice NuGet pakcages are not installed. See #3
+
 ## Changes in Ice Builder for MSBuild 5.0.3
 
 - Fix SliceCppTask task to always pass --header-ext and --source-ext
