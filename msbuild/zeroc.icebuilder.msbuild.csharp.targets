@@ -53,8 +53,8 @@
         <Error Text="Ice Installation invalid or not detected. Invalid IceToolsPath setting `$(IceToolsPath)'"
                Condition="!Exists('$(IceToolsPath)')" />
 
-        <Error Text="The Ice Builder requires Ice Version 3.6 or later but $(IceHome) version is $(IceVersion.Replace('.51', 'b'))"
-               Condition="'$(IceVersion)' == '' Or '$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600' Or '$(IceIntVersion)' == '30651'" />
+        <Error Text="The Ice Builder requires Ice Version 3.6 or later. Invalid IceHome setting `$(IceHome)'"
+               Condition="'$(IceIntVersion)' == '' Or '$(IceIntVersion)' &lt; '30600'" />
 
         <MakeDir Directories="%(SliceCompile.OutputDir)"/>
 
