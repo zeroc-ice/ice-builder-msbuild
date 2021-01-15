@@ -1,3 +1,10 @@
+## Changes in Ice Builder for MSBuild 5.0.5
+
+- Fix a bug that result in bogus compiler options add to the generated
+  items. See #6
+
+- Fix a bug that result in generated items being compiled twice. See #7
+
 ## Changes in Ice Builder for MSBuild 5.0.4
 
 - Fix a bogus comparison that can result in failure loading projects
