@@ -101,9 +101,18 @@
             running the SliceCompile target so that the Visual Studio extension has a chance to add the items to the project in
             a persistent way. If the extension is not enabled or we are building from the command line we just add the
             missing items in a transient way.
+
+            First create a property `_SliceCompileGeneratedItems` to hold the paths of all generated items, then we
+            create a ItemGroup to add a ClCompile item for each generated item that is not part of the project. Using an
+            intermediate property for the ClCompile Include avoids _SliceCompile item metadata being copied to the
+            generated ClCompile item.
         -->
+        <CreateProperty Value="$([System.IO.Path]::GetFullPath('%(_SliceCompile.OutputDir)\%(_SliceCompile.Filename).%(_SliceCompile.SourceExt)'))">
+            <Output TaskParameter="Value" PropertyName="_SliceCompileGeneratedItems" />
+        </CreateProperty>
+
         <ItemGroup>
-            <ClCompile Include="@(_SliceCompile->'%(OutputDir)\%(Filename).%(SourceExt)')"
+            <ClCompile Include="$(_SliceCompileGeneratedItems)"
                        Exclude="@(ClCompile->'%(FullPath)');@(ClCompile->'%(Identity)')" />
         </ItemGroup>
 
