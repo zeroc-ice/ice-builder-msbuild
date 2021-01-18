@@ -1,3 +1,8 @@
+## Changes in Ice Builder for MSBuild 5.0.6
+
+- Fix a bug introduced in 5.0.5 that cause generated headers being
+  add to the list of C++ compiled items (ClCompile).
+
 ## Changes in Ice Builder for MSBuild 5.0.5
 
 - Fix a bug that result in bogus compiler options add to the generated
