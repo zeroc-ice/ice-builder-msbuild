@@ -5,7 +5,7 @@
       <Version>5.0.5</Version>
       <OutputPath>../../lib</OutputPath>
       <TargetFramework>netstandard2.0</TargetFramework>
-      <TimeStampServer Condition="'$(SIGN_TIMESTAMPSERVER)' == ''">http://timestamp.verisign.com/scripts/timstamp.dll</TimeStampServer>
+      <TimeStampServer Condition="'$(SIGN_TIMESTAMPSERVER)' == ''">http://timestamp.digicert.com</TimeStampServer>
       <SignCommand Condition="Exists('$(SIGN_CERTIFICATE)')">signtool sign /f "$(SIGN_CERTIFICATE)" /p $(SIGN_PASSWORD) /t $(TimeStampServer)</SignCommand>
     </PropertyGroup>
     <ItemGroup>
