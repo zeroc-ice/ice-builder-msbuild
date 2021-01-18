@@ -669,7 +669,7 @@ namespace IceBuilder.MSBuild
         }
 
         [Output]
-        public string[] GeneratedPaths
+        public string[] GeneratedCompiledPaths
         {
             get;
             private set;
@@ -681,6 +681,10 @@ namespace IceBuilder.MSBuild
         }
 
         abstract protected ITaskItem[] GeneratedItems(ITaskItem source);
+
+        // Same as generated items but only returns the generated items that need to be compiled
+        // for example it excludes C++ headers
+        protected abstract ITaskItem[] GeneratedCompiledItems(ITaskItem source);
 
         protected virtual string GetGeneratedPath(ITaskItem item, string outputDir, string ext)
         {
@@ -718,7 +722,7 @@ namespace IceBuilder.MSBuild
         public override bool Execute()
         {
             List<ITaskItem> computed = new List<ITaskItem>();
-            List<string> generatedPaths = new List<string>();
+            List<string> generatedCompiledPaths = new List<string>();
             foreach(ITaskItem source in Sources)
             {
                 bool skip = true;
@@ -737,7 +741,8 @@ namespace IceBuilder.MSBuild
                 FileInfo generatedInfo = null;
                 FileInfo dependInfo = null;
 
-                generatedPaths.AddRange(generatedItems.Select(item => item.GetMetadata("FullPath")));
+                generatedCompiledPaths.AddRange(
+                    GeneratedCompiledItems(source).Select(item => item.GetMetadata("FullPath")));
                 //
                 // Check if the Slice compiler is older than the source file
                 //
@@ -932,7 +937,7 @@ namespace IceBuilder.MSBuild
                     computed.Add(computedSource);
             }
             ComputedSources = computed.ToArray();
-            GeneratedPaths = generatedPaths.ToArray();
+            GeneratedCompiledPaths = generatedCompiledPaths.ToArray();
             return true;
         }
     }
@@ -990,6 +995,17 @@ namespace IceBuilder.MSBuild
                 new TaskItem(GetGeneratedPath(source, headerOutputDir, headerExt))
             };
         }
+
+        // Same as generated items but only returns the generated items that need to be compiled
+        // for example it excludes C++ headers
+        protected override ITaskItem[] GeneratedCompiledItems(ITaskItem source)
+        {
+            var generatedItems = GeneratedItems(source);
+            return new ITaskItem[]
+            {
+                generatedItems[0]
+            };
+        }
     }
 
     public class Slice2CSharpDependTask : SliceDependTask
@@ -1000,6 +1016,13 @@ namespace IceBuilder.MSBuild
             {
                 new TaskItem(GetGeneratedPath(source, source.GetMetadata("OutputDir"), ".cs")),
             };
+        }
+
+        // Same as generated items but only returns the generated items that need to be compiled
+        // for example it excludes C++ headers
+        protected override ITaskItem[] GeneratedCompiledItems(ITaskItem source)
+        {
+            return GeneratedItems(source);
         }
 
         protected override string ToolName

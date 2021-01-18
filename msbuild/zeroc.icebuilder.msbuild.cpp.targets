@@ -77,7 +77,7 @@
 
              <Output
                 PropertyName      = "_SliceCompileGeneratedPaths"
-                TaskParameter     = "GeneratedPaths"/>
+                TaskParameter     = "GeneratedCompiledPaths"/>
 
         </Slice2CppDependTask>
 
