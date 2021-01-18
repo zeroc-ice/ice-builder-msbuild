@@ -668,6 +668,13 @@ namespace IceBuilder.MSBuild
             private set;
         }
 
+        [Output]
+        public string[] GeneratedPaths
+        {
+            get;
+            private set;
+        }
+
         protected abstract string ToolName
         {
             get;
@@ -711,6 +718,7 @@ namespace IceBuilder.MSBuild
         public override bool Execute()
         {
             List<ITaskItem> computed = new List<ITaskItem>();
+            List<string> generatedPaths = new List<string>();
             foreach(ITaskItem source in Sources)
             {
                 bool skip = true;
@@ -728,6 +736,8 @@ namespace IceBuilder.MSBuild
                 var generatedItems = GeneratedItems(source);
                 FileInfo generatedInfo = null;
                 FileInfo dependInfo = null;
+
+                generatedPaths.AddRange(generatedItems.Select(item => item.GetMetadata("FullPath")));
                 //
                 // Check if the Slice compiler is older than the source file
                 //
@@ -922,6 +932,7 @@ namespace IceBuilder.MSBuild
                     computed.Add(computedSource);
             }
             ComputedSources = computed.ToArray();
+            GeneratedPaths = generatedPaths.ToArray();
             return true;
         }
     }

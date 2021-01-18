@@ -69,6 +69,10 @@
                 ItemName          = "_SliceCompile"
                 TaskParameter     = "ComputedSources"/>
 
+            <Output
+                PropertyName      = "_SliceCompileGeneratedPaths"
+                TaskParameter     = "GeneratedPaths"/>
+
         </Slice2CSharpDependTask>
 
         <!-- Compile the Slice files -->
@@ -88,18 +92,11 @@
             a persistent way. If the extension is not enabled or we are building from the command line we just add the
             missing items in a transient way.
 
-            First create a property `_SliceCompileGeneratedItems` to hold the paths of all generated items, then we
-            create a ItemGroup to add a Compile item for each generated item that is not part of the project. Using an
-            intermediate property for the Compile Include avoids _SliceCompile item metadata being copied to the
-            generated Compile item.
+            The builder's depend task has an output property named GeneratedPaths that contains the paths of all generated items.
         -->
 
-        <CreateProperty Value="$([System.IO.Path]::GetFullPath('%(_SliceCompile.OutputDir)\%(_SliceCompile.Filename).cs'))">
-            <Output TaskParameter="Value" PropertyName="_SliceCompileGeneratedItems" />
-        </CreateProperty>
-
         <ItemGroup>
-            <Compile Include="$(_SliceCompileGeneratedItems)"
+            <Compile Include="$(_SliceCompileGeneratedPaths)"
                      Exclude="@(Compile->'%(FullPath)');@(Compile->'%(Identity)')" />
         </ItemGroup>
     </Target>
