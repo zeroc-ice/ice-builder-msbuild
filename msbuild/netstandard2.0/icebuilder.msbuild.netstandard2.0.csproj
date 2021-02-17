@@ -6,7 +6,8 @@
       <OutputPath>../../lib</OutputPath>
       <TargetFramework>netstandard2.0</TargetFramework>
       <TimeStampServer Condition="'$(SIGN_TIMESTAMPSERVER)' == ''">http://timestamp.digicert.com</TimeStampServer>
-      <SignCommand Condition="Exists('$(SIGN_CERTIFICATE)')">signtool sign /f "$(SIGN_CERTIFICATE)" /p $(SIGN_PASSWORD) /t $(TimeStampServer)</SignCommand>
+      <SignCommandSHA1 Condition="Exists('$(SIGN_CERTIFICATE)')">signtool sign /f "$(SIGN_CERTIFICATE)" /p $(SIGN_PASSWORD) /t $(TimeStampServer)</SignCommandSHA1>
+      <SignCommandSHA256 Condition="Exists('$(SIGN_CERTIFICATE)')">signtool sign /f "$(SIGN_CERTIFICATE)" /p $(SIGN_PASSWORD) /tr $(TimeStampServer) /td sha256 /fd sha256 /as</SignCommandSHA256>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="../../Tasks.cs" />
@@ -16,6 +17,7 @@
       <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.5.180" />
     </ItemGroup>
     <Target Name="Sign" AfterTargets="CopyFilesToOutputDirectory" Condition="Exists('$(SIGN_CERTIFICATE)')">
-        <Exec Command="$(SignCommand) $(OutputPath)$(AssemblyName).dll" />
+        <Exec Command="$(SignCommandSHA1) $(OutputPath)$(AssemblyName).dll" />
+        <Exec Command="$(SignCommandSHA256) $(OutputPath)$(AssemblyName).dll" />
     </Target>
 </Project>

@@ -13,7 +13,8 @@
     <TargetFrameworkProfile />
     <TimeStampServer Condition="'$(SIGN_TIMESTAMPSERVER)' == ''">http://timestamp.digicert.com</TimeStampServer>
     <SignToolPath Condition="Exists('$(WindowsSDK80Path)bin\x86\signtool.exe')">$(WindowsSDK80Path)bin\x86\signtool.exe</SignToolPath>
-    <SignCommand Condition="Exists('$(SIGN_CERTIFICATE)')">"$(SignToolPath)" sign /f "$(SIGN_CERTIFICATE)" /p $(SIGN_PASSWORD) /t $(TimeStampServer)</SignCommand>
+    <SignCommandSHA1 Condition="Exists('$(SIGN_CERTIFICATE)')">signtool sign /f "$(SIGN_CERTIFICATE)" /p $(SIGN_PASSWORD) /t $(TimeStampServer)</SignCommandSHA1>
+    <SignCommandSHA256 Condition="Exists('$(SIGN_CERTIFICATE)')">signtool sign /f "$(SIGN_CERTIFICATE)" /p $(SIGN_PASSWORD) /tr $(TimeStampServer) /td sha256 /fd sha256 /as</SignCommandSHA256>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +47,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild" Condition="Exists('$(SIGN_CERTIFICATE)')">
-    <Exec Command="$(SignCommand) $(OutputPath)$(AssemblyName).dll" />
+      <Exec Command="$(SignCommandSHA1) $(OutputPath)$(AssemblyName).dll" />
+      <Exec Command="$(SignCommandSHA256) $(OutputPath)$(AssemblyName).dll" />
   </Target>
 </Project>
