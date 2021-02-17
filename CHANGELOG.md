@@ -1,3 +1,8 @@
+## Changes in Ice Builder for MSBuild 5.0.7
+
+- Update SliceCompile target for C# projects to run before CoreCompile
+  target instead of before BeforeBuild target.
+
 ## Changes in Ice Builder for MSBuild 5.0.6
 
 - Fix a bug introduced in 5.0.5 that cause generated headers being
