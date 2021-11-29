@@ -1,8 +1,4 @@
-// **********************************************************************
-//
-// Copyright (c) 2009-2018 ZeroC, Inc. All rights reserved.
-//
-// **********************************************************************
+// Copyright (c) ZeroC, Inc. All rights reserved.
 
 using System;
 using System.Reflection;
@@ -14,6 +10,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Ice Builder for MSBuild")]
 [assembly: AssemblyCompany("ZeroC, Inc.")]
 [assembly: AssemblyProduct("Ice Builder")]
-[assembly: AssemblyCopyright("Copyright (c) 2009-2018 ZeroC, Inc.")]
-[assembly: AssemblyVersion("5.0.7")]
+[assembly: AssemblyCopyright("Copyright (c) ZeroC, Inc.")]
+[assembly: AssemblyVersion("5.0.8")]
 [assembly: ComVisibleAttribute(false)]

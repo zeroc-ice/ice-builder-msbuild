@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
       <AssemblyName>zeroc.icebuilder.msbuild</AssemblyName>
-      <Version>5.0.7</Version>
+      <Version>5.0.8</Version>
       <OutputPath>../../lib</OutputPath>
       <TargetFramework>netstandard2.0</TargetFramework>
       <TimeStampServer Condition="'$(SIGN_TIMESTAMPSERVER)' == ''">http://timestamp.digicert.com</TimeStampServer>

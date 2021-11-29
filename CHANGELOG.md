@@ -1,3 +1,7 @@
+## Changes in Ice Builder for MSBuild 5.0.8
+
+- Add Ice Builder property page for .NET SDK style projects (requires Visual Studio 2022).
+
 ## Changes in Ice Builder for MSBuild 5.0.7
 
 - Update SliceCompile target for C# projects to run before CoreCompile
