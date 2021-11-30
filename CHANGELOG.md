@@ -1,6 +1,6 @@
 ## Changes in Ice Builder for MSBuild 5.0.9
 
-- Fix a bug in CSharp targets that result in Slice files not being display in Visual Studio
+- Fix a bug in CSharp targets that result in Slice files not being displayed in Visual Studio
   solution explorer.
 
 ## Changes in Ice Builder for MSBuild 5.0.8
