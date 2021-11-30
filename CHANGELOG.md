@@ -1,3 +1,8 @@
+## Changes in Ice Builder for MSBuild 5.0.9
+
+- Fix a bug in CSharp targets that result in Slice files not being display in Visual Studio
+  solution explorer.
+
 ## Changes in Ice Builder for MSBuild 5.0.8
 
 - Add Ice Builder property page for .NET SDK style projects (requires Visual Studio 2022).

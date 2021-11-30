@@ -3,7 +3,7 @@
     <metadata>
         <id>zeroc.icebuilder.msbuild</id>
         <title>ZeroC Ice Builder for MSBuild</title>
-        <version>5.0.8</version>
+        <version>5.0.9</version>
         <authors>ZeroC</authors>
         <licenseUrl>https://raw.githubusercontent.com/zeroc-ice/ice-builder-msbuild/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/zeroc-ice/ice-builder-msbuild</projectUrl>

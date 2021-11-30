@@ -28,11 +28,11 @@
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)ProjectItemsSchema.xaml" />
         <!-- This capability is used to apply the Slice property page designer -->
         <ProjectCapability Include="SliceCompile" />
-        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.CSharp.File.xaml">
-            <Context>BrowseObject;File</Context>
-        </PropertyPageSchema>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.CSharp.xaml">
             <Context>Project</Context>
+        </PropertyPageSchema>
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)SliceCompile.CSharp.File.xaml">
+            <Context>File;BrowseObject</Context>
         </PropertyPageSchema>
         <AvailableItemName Include="SliceCompile"/>
     </ItemGroup>
