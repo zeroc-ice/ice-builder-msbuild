@@ -15,6 +15,13 @@ Ice Builder for MSBuild requires Ice 3.6 or higher, and MSBuild 4.0 or higher.
 directly as described below, or within the Visual Studio IDE using the
 [Ice Builder for Visual Studio][1] extension.
 
+> [!IMPORTANT]
+> Ice 3.8 introduces a new MSBuild-based Slice builder called **Slice Tools**.  
+> For C++ projects, Slice Tools is included in the [ZeroC.Ice.Cpp] NuGet package.  
+> For C# projects, Slice Tools is provided by the [ZeroC.Ice.Slice.Tools] NuGet package.  
+>
+> As a result, **Ice Builder for MSBuild is no longer required when using Ice 3.8**.
+
 ## Contents
 
 * [Installation](#installation)
@@ -245,3 +252,5 @@ used by your certificate store.
 [5]: https://doc.zeroc.com/pages/viewpage.action?pageId=18255332
 [6]: https://doc.zeroc.com/pages/viewpage.action?pageId=18255322
 [7]: https://doc.zeroc.com/display/Ice37/slice2cs+Command-Line+Options
+[ZeroC.Ice.Cpp]: https://www.nuget.org/packages/ZeroC.Ice.Cpp/
+[ZeroC.Ice.Slice.Tools]: https://www.nuget.org/packages/ZeroC.Ice.Slice.Tools/
