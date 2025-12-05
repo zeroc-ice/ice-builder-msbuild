@@ -20,7 +20,8 @@ directly as described below, or within the Visual Studio IDE using the
 > For C++ projects, Slice Tools is included in the [ZeroC.Ice.Cpp] NuGet package.  
 > For C# projects, Slice Tools is provided by the [ZeroC.Ice.Slice.Tools] NuGet package.  
 >
-> As a result, **Ice Builder for MSBuild is no longer required when using Ice 3.8**.
+> If you are using Ice 3.8, we recommend removing all references to the Ice Builder for MSBuild from your project files,
+> and switch to the new Slice Tools instead.
 
 ## Contents
 
